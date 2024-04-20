@@ -23,19 +23,13 @@ export default function SpellCard({ spell }: { spell: any }) {
         </span>
         {spell.range}
       </p>
-      <div className="flex gap-1">
+      <p>
         <span className="font-semibold">
-          Components:
+          Components:&nbsp;
         </span>
-        <ul className="flex gap-1">
-          {spell.components.map((comp: string) => (
-            <li key={comp} className="[&:not(:last-child)]:after:content-[',']">
-              {comp}
-            </li>
-          ))}
-        </ul>
-        {spell.material && <p>({spell.material})</p>}
-      </div>
+        {spell.components.join(', ')}
+        {spell.material && ` (${spell.material})`}
+      </p>
       <p>
         <span className="font-semibold">
           Duration:&nbsp;

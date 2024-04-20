@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { inter } from "@/styles/fonts";
 import "@/styles/globals.css";
-import Navbar from "@/components/navbar";
+
+import Navbar from "@/components/ui/navbar";
 
 export const metadata: Metadata = {
   title: "Grimoire",

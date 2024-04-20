@@ -1,11 +1,16 @@
 import React from 'react';
-import { fetchCategoryIndex } from '@/lib/queries';
-import SpellCard from '@/components/spell-card';
+import { notFound } from 'next/navigation';
+import { getSpell } from '@/lib/queries';
+import SpellCard from '@/components/spells/spell-card';
 
-export default async function MonsterPage({ params }: { params: { index: string }}) {
+export default async function SpellsPage({ params }: { params: { index: string }}) {
   const { index } = params;
 
-  const data = await fetchCategoryIndex('spells', index);
+  const data = await getSpell(index);
+
+  if (data.error) {
+    notFound();
+  }
 
   return (
     <section className="m-10">

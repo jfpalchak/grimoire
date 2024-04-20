@@ -1,12 +1,12 @@
-import { fetchCategoryIndex } from '@/lib/queries';
 import React from 'react'
-import MonsterCard from './monster-card';
-import SpellCard from './spell-card';
 import { notFound } from 'next/navigation';
+import { fetchQuery } from '@/lib/queries';
+import MonsterCard from './monsters/monster-card';
+import SpellCard from './spells/spell-card';
 
 export default async function CardContent({ category, index }: { category: any, index: any }) {
 
-  const data = await fetchCategoryIndex(category, index);
+  const data = await fetchQuery(`${category}/${index}`);
 
   switch (category) {
     case 'monsters':
@@ -16,6 +16,6 @@ export default async function CardContent({ category, index }: { category: any, 
     // case 'equipment':
     //   return <EquipmentCard equipment={data} />;
     default:
-      return <p>Whoops.</p>;
+      return <p>404</p>;
   }
 }
