@@ -1,42 +1,28 @@
 import { notFound } from "next/navigation";
 
-export async function fetchCategory(category: string) {
+const API_URL = "https://www.dnd5eapi.co/api/";
 
+export async function fetchQuery(query: string) {
   try {
-    const response = await fetch(`https://www.dnd5eapi.co/api/${category}`, {
+    const response = await fetch(`${API_URL}${query}`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
       },
     });
-
-    if (!response.ok) {
-      notFound();
-    }
     
-    return await response.json();
+    return response.json();
   } catch (error) {
-    console.log(`Error fetching '${category}'`, error);
-    throw new Error(`Failed to fetch category: ${category}.`);
+    console.log(`Error fetching '${query}'`, error);
+    throw new Error(`Failed to fetch ${query}. ${error}`);
   }
 }
 
-export async function fetchCategoryIndex(category: string, index: string) {
+export async function getSpell(index: string) {
   try {
-    const response = await fetch(`https://www.dnd5eapi.co/api/${category}/${index}`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      notFound();
-    }
-    
-    return await response.json();
+    const data = await fetchQuery(`spells/${index}`);
+    return data;
   } catch (error) {
-    console.log(`Error fetching '${index}'`, error);
-    throw new Error(`Failed to fetch index: ${category}/${index}.`);
+    throw new Error(`${error}`);
   }
 }
