@@ -1,8 +1,10 @@
 
 export default function Home() {
   return (
-    <main>
-      <p>Hello</p>
-    </main>
+    <section className="m-10">
+      <div>
+        <h1 className="">Home</h1>
+      </div>
+    </section>
   );
 }

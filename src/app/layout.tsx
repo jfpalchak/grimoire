@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { inter } from "@/styles/fonts";
-import "@styles/globals.css";
+import "@/styles/globals.css";
+import Navbar from "@/components/navbar";
 
 export const metadata: Metadata = {
   title: "Grimoire",
@@ -15,7 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
+        <Navbar />
+        <main>
+          {children}
+        </main>
       </body>
     </html>
   );
