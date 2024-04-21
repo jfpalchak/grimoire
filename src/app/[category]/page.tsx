@@ -9,16 +9,15 @@ type Params = {
     category: string;
   };
   searchParams: {
-    [key: string]: string | number;
+    [key: string]: string;
   };
 };
 
-export default async function Page({ params, searchParams }: Params) {
-  const { category } = params;
+export default async function Page({ params: { category }, searchParams }: Params) {
 
   const data = await fetchDND(category);
 
-  if (data.error) {
+  if (!data) {
     notFound();
   }
 
