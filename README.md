@@ -1,3 +1,7 @@
+### TODO
+* Would like to transition from using fetch API to GraphQL.
+* Create a single card component that can be used for all categories, instead of creating multiple cards for each category.
+
 
 ### Dynamic Routes for Category & Index:
 ```
