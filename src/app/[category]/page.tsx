@@ -1,7 +1,8 @@
 import React from 'react'
 import Link from 'next/link';
-import { fetchQuery } from '@/lib/queries';
+import { fetchQuery } from '@/lib/services';
 import Search from '@/components/ui/search';
+import { notFound } from 'next/navigation';
 
 type Params = {
   params: {
@@ -17,9 +18,13 @@ export default async function Page({ params, searchParams }: Params) {
 
   const data = await fetchQuery(category);
 
+  if (data.error) {
+    notFound();
+  }
+
   const searchFilter = (item: any) => {
     return (
-      searchParams.query === undefined 
+      !searchParams.query 
       || item.name.toLowerCase().includes(searchParams.query)
       || item.level == searchParams.query
     );

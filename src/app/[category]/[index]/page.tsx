@@ -1,7 +1,14 @@
 import React, { Suspense } from 'react';
 import CardContent from '@/components/card-content';
 
-export default async function IndexPage({ params }: { params: { index: string, category: string }}) {
+interface Props {
+  params: {
+    category: string;
+    index: string;
+  }
+}
+
+export default async function IndexPage({ params }: Props) {
   const { category, index } = params;
 
   return (
