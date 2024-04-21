@@ -1,3 +1,5 @@
+// Type definitions for Grimoire & the DND 5e SRD API
+
 export {}
 
 declare global {
