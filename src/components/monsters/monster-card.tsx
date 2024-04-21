@@ -1,6 +1,14 @@
-import React from 'react'
+import { notFound } from 'next/navigation';
+import { getMonster } from '@/lib/services';
 
-export default function MonsterCard({ monster }: { monster: any }) {
+export default async function MonsterCard({ index }: { index: any }) {
+
+  const monster = await getMonster(index);
+
+  if (monster.error) {
+    notFound();
+  }
+
   return (
     <div>
       <h1 className="mt-10 text-xl font-bold">

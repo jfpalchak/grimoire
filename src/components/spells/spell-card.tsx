@@ -1,6 +1,14 @@
-import React from 'react'
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { getSpell } from '@/lib/services';
 
-export default function SpellCard({ spell }: { spell: any }) {
+export default async function SpellCard({ index }: { index: any }) {
+  const spell = await getSpell(index);
+  
+  if (spell.error) {
+    notFound();
+  }
+
   return (
     <div>
       <h1 className="mt-10 text-xl font-bold">
@@ -42,16 +50,18 @@ export default function SpellCard({ spell }: { spell: any }) {
           Classes:
         </span>
         <ul className="flex gap-1">
-          {spell.classes.map(({ name }: { name: string }) => (
-            <li key={name} className="[&:not(:last-child)]:after:content-[',']">
-              {name}
+          {spell.classes.map(({ name, index }: { name: string, index: string }) => (
+            <li key={index} className="[&:not(:last-child)]:after:content-[',']">
+              <Link href={`/classes/${index}`} className="hover:underline">
+                {name}
+              </Link>
             </li>
           ))}
         </ul>
       </div>
       <div className="mt-2 flex flex-col gap-1">
-        {spell.desc.map((paragraph: string, _index: number) => (
-          <p key={_index}>
+        {spell.desc.map((paragraph: string, i: number) => (
+          <p key={i}>
             {paragraph}
           </p>
         ))}
@@ -61,8 +71,8 @@ export default function SpellCard({ spell }: { spell: any }) {
           <span className="font-semibold italic">
             At Higher Levels:
           </span>
-          {spell.higher_level.map((paragraph: string, _index: number) => (
-            <p key={_index}>
+          {spell.higher_level.map((paragraph: string, i: number) => (
+            <p key={i}>
               {paragraph}
             </p>
           ))}
