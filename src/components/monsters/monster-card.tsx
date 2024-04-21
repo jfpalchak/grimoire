@@ -5,7 +5,7 @@ export default async function MonsterCard({ index }: { index: any }) {
 
   const monster = await getMonster(index);
 
-  if (monster.error) {
+  if (!monster) {
     notFound();
   }
 

@@ -5,7 +5,7 @@ import { getSpell } from '@/lib/services';
 export default async function SpellCard({ index }: { index: any }) {
   const spell = await getSpell(index);
   
-  if (spell.error) {
+  if (!spell) {
     notFound();
   }
 
@@ -50,7 +50,7 @@ export default async function SpellCard({ index }: { index: any }) {
           Classes:
         </span>
         <ul className="flex gap-1">
-          {spell.classes.map(({ name, index }: { name: string, index: string }) => (
+          {spell.classes.map(({ name, index }) => (
             <li key={index} className="[&:not(:last-child)]:after:content-[',']">
               <Link href={`/classes/${index}`} className="hover:underline">
                 {name}
@@ -60,18 +60,18 @@ export default async function SpellCard({ index }: { index: any }) {
         </ul>
       </div>
       <div className="mt-2 flex flex-col gap-1">
-        {spell.desc.map((paragraph: string, i: number) => (
+        {spell.desc.map((paragraph, i) => (
           <p key={i}>
             {paragraph}
           </p>
         ))}
       </div>
-      {spell.higher_level.length > 0 && (
+      {spell.higher_level && spell.higher_level.length > 0 && (
         <div className="mt-2 flex flex-col gap-1">
           <span className="font-semibold italic">
             At Higher Levels:
           </span>
-          {spell.higher_level.map((paragraph: string, i: number) => (
+          {spell.higher_level.map((paragraph, i) => (
             <p key={i}>
               {paragraph}
             </p>

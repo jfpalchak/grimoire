@@ -1,5 +1,6 @@
 import { getEquipment } from '@/lib/services';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import React from 'react';
 
 interface ContentItem {
@@ -44,6 +45,10 @@ const ParsedCategory = ({ equipment }: any) => {
 
 export default async function EquipmentCard({ index }: { index: string }) {
   const equipment = await getEquipment(index);
+
+  if (!equipment) {
+    notFound();
+  }
 
   return (
     <div>

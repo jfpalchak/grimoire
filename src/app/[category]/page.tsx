@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link';
-import { fetchQuery } from '@/lib/services';
+import { fetchDND } from '@/lib/services';
 import Search from '@/components/ui/search';
 import { notFound } from 'next/navigation';
 
@@ -16,7 +16,7 @@ type Params = {
 export default async function Page({ params, searchParams }: Params) {
   const { category } = params;
 
-  const data = await fetchQuery(category);
+  const data = await fetchDND(category);
 
   if (data.error) {
     notFound();
