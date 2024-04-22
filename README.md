@@ -1,7 +1,6 @@
 ### TODO
 * Would like to transition from using fetch API to GraphQL.
-* Create a single card component that can be used for all categories, instead of creating multiple cards for each category.
-
+* Get markdown parsing for item descriptions -> react-markdown & remark-gfm?
 
 ### Dynamic Routes for Category & Index:
 ```
