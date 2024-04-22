@@ -12,21 +12,8 @@ interface TableProps {
   stat: string;
 }
 
-const DiceTable = ({ data, stat = 'Damage', caption}: TableProps) => {
+const DiceTable = ({ data, stat, caption}: TableProps) => {
   return (
-    // <div className="grid grid-cols-2">
-    //   <h3 className="font-semibold col-span-2">{caption}</h3>
-    //   <div className="flex justify-around col-span-2">
-    //     <span>Level</span>
-    //     <span>Damage</span>
-    //   </div>
-    //   {Object.entries(data).map((level) => (
-    //     <div className="flex justify-around col-span-2 :nth">
-    //       <span>{level[0]}</span>
-    //       <span>{level[1]}</span>
-    //     </div>
-    //   ))}
-    // </div>
     <table className="w-60 text-center">
       <caption className="font-semibold">{caption}</caption>
       <thead>
@@ -37,7 +24,7 @@ const DiceTable = ({ data, stat = 'Damage', caption}: TableProps) => {
       </thead>
       <tbody>
       {Object.entries(data).map(([level, dice]) => (
-        <tr className="">
+        <tr key={level}>
           <td>{level}</td>
           <td>{dice}</td>
         </tr>
@@ -65,10 +52,11 @@ export default async function SpellCard({ index }: { index: any }) {
         {spell.level ? `level ${spell.level}` : 'cantrip'}
         {' - '}
         <Link href={`/magic-schools/${spell.school.index}`} className="hover:underline">
-        {spell.school.name}
+          {spell.school.name}
         </Link>
         {spell.ritual && '(ritual)'}
       </p>
+
       <p>
         <span className="font-semibold">
           Casting Time:&nbsp;
@@ -96,34 +84,6 @@ export default async function SpellCard({ index }: { index: any }) {
         {spell.concentration && 'Concentration, '}
         {spell.duration}
       </p>
-      {/* SPELL DC & DAMAGE */}
-      {/* {spell.dc && (
-        <p>
-          <span className="font-semibold">
-            Saving Throw:&nbsp;
-          </span>
-          <Link href={`/ability-scores/${index}`} className="hover:underline">
-            {spell.dc.dc_type.name}
-          </Link>
-          {` (on success: ${spell.dc.dc_success})`}
-        </p>
-      )} */}
-      {/* {spell.damage && (
-        <div className="my-2 flex gap-4">
-          {spell.damage.damage_at_slot_level && (
-            <DamageTable
-              data={spell.damage.damage_at_slot_level}
-              caption="Damage per Slot Level"
-            />
-          )}
-          {spell.damage.damage_at_character_level && (
-            <DamageTable
-              data={spell.damage.damage_at_character_level}
-              caption="Damage per Character Level"
-            />
-          )}
-        </div>
-      )} */}
       <div className="mt-2 flex gap-1">
         <span className="font-semibold">
           Classes:
@@ -138,6 +98,8 @@ export default async function SpellCard({ index }: { index: any }) {
           ))}
         </ul>
       </div>
+
+      {/* DESCRIPTION */}
       <div className="mt-2 flex flex-col gap-1">
         {spell.desc.map((paragraph, i) => (
           <p key={i}>
@@ -158,6 +120,7 @@ export default async function SpellCard({ index }: { index: any }) {
         </div>
       )}
 
+      {/* SPELL DC & DAMAGE / HEAL DICE*/}
       {spell.damage && (
         <div className="mt-2 flex gap-4">
           {spell.damage.damage_at_slot_level && (
