@@ -45,10 +45,16 @@ declare global {
     level: number;
     damage?: {
         damage_type: Reference;
-        damage_at_slot_level: {
-            [slotLevel: number]: string;
+        damage_at_slot_level?: {
+            [level: string]: string;
         };
+        damage_at_character_level?: {
+          [level: string]: string;
+        }
     };
+    heal_at_slot_level: {
+      [level: string]: string;
+    }
     dc?: {
         dc_type: Reference;
         dc_success: string;
