@@ -38,8 +38,8 @@ export async function getEquipment(index: string) {
   return equipment;
 }
 
-// Factory for creating getAll() and get(index) endpoints for a given category:
-function endpoints<T>(category: string) {
+// Factory for creating getAll() and get(index) fetch methods for a given category:
+function gets<T>(category: string) {
   return {
     getAll: async (): Promise<APIResponse> => await fetchDND(category),
     get: async (index: string): Promise<T> => await fetchDND(`${category}/${index}`),
@@ -48,10 +48,10 @@ function endpoints<T>(category: string) {
 
 // API object containing query methods for fetching data from the DnD 5e SRD API
 const dnd = {
-  fetch: async (query: string): Promise<any> => await fetchDND(query),
-  monsters: endpoints<Monster>('monsters'),
-  spells: endpoints<Spell>('spells'),
-  equipment: endpoints<any>('equipment'),
+  fetch: async (query: string) => await fetchDND(query),
+  monsters: gets<Monster>('monsters'),
+  spells: gets<Spell>('spells'),
+  equipment: gets<any>('equipment'),
 }
 
 export { dnd };
