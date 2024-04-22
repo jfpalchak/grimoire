@@ -153,16 +153,16 @@ type APIResponse = {
 
 type Get<T> = (query: string) => Promise<T>;
 
-type Endpoints<T> = {
+type Calls<T> = {
   getAll: () => Promise<APIResponse>;
   get: Get<T>
 }
 
 interface DnDAPI {
   query: Get<any>;
-  monsters: Endpoints<Monster>;
-  spells: Endpoints<Spell>;
-  equipment: Endpoints<any>;
+  monsters: Calls<Monster>;
+  spells: Calls<Spell>;
+  equipment: Calls<any>;
 }
 
 }

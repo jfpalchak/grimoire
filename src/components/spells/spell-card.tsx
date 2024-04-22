@@ -2,12 +2,12 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getSpell, dnd } from '@/lib/services';
 
-interface DamageDice {
+interface LevelDice {
   [level: string]: string;
 }
 
 interface TableProps {
-  data: DamageDice;
+  data: LevelDice;
   caption: string;
   stat: string;
 }
