@@ -1,4 +1,4 @@
-import { getEquipment } from '@/lib/services';
+import { getEquipment, dnd } from '@/lib/services';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import React from 'react';
@@ -44,7 +44,9 @@ const ParsedCategory = ({ equipment }: any) => {
 }
 
 export default async function EquipmentCard({ index }: { index: string }) {
-  const equipment = await getEquipment(index);
+
+  // const equipment = await getEquipment(index);
+  const equipment = await dnd.equipment.get(index);
 
   if (!equipment) {
     notFound();

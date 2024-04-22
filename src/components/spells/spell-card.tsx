@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getSpell } from '@/lib/services';
+import { getSpell, dnd } from '@/lib/services';
 
-export default async function SpellCard({ index }: { index: any }) {
-  const spell = await getSpell(index);
+export default async function SpellCard({ index }: { index: any }) {  
+
+  // const spell = await getSpell(index);
+  const spell = await dnd.spells.get(index);
   
   if (!spell) {
     notFound();

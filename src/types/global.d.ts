@@ -140,4 +140,23 @@ interface Equipment {
 
 }
 
+type APIResponse = {
+  count: number;
+  results: Reference[];
+}
+
+type Get<T> = (query: string) => Promise<T>;
+
+type Endpoints<T> = {
+  getAll: () => Promise<APIResponse>;
+  get: Get<T>
+}
+
+interface DnDAPI {
+  query: Get<any>;
+  monsters: Endpoints<Monster>;
+  spells: Endpoints<Spell>;
+  equipment: Endpoints<any>;
+}
+
 }

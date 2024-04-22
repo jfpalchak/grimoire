@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link';
-import { fetchDND } from '@/lib/services';
+import { fetchDND, dnd } from '@/lib/services';
 import Search from '@/components/ui/search';
 import { notFound } from 'next/navigation';
 
@@ -15,7 +15,8 @@ type Params = {
 
 export default async function Page({ params: { category }, searchParams }: Params) {
 
-  const data = await fetchDND(category);
+  // const data: APIResponse = await fetchDND(category);
+  const data: APIResponse = await dnd.fetch(category);
 
   if (!data) {
     notFound();
