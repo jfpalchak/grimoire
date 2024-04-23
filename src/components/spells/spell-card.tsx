@@ -4,7 +4,6 @@ import { getSpell, dnd } from '@/lib/services';
 
 import ParsedMarkdown from '@/components/markdown';
 
-
 interface LevelDice {
   [level: string]: string;
 }
@@ -104,14 +103,17 @@ export default async function SpellCard({ index }: { index: any }) {
       </div>
 
       {/* DESCRIPTION */}
-      <div className="mt-2 flex flex-col gap-1">
-        {spell.desc.map((paragraph, i) => (
-          <div key={`desc_${i}`}>
-            <ParsedMarkdown>
-              {paragraph}
-            </ParsedMarkdown>
-          </div>
-        ))}
+      <div className="mt-2 flex flex-col gap-1 [&_h5]:font-semibold [&_h5]:text-center [&_table]:text-center [&_ul]:pl-6 [&_ul]:list-disc">
+        {/* Format any markdown text to properly render on the DOM: */}
+        <ParsedMarkdown>
+          {spell.desc.reduce((article, row, i) => {
+            if (row.includes('|') && spell.desc[i + 1]?.includes('|')) {
+              return article + row + '\n';
+            } else {
+              return article + row + '\n\n';
+            }
+          }, '')}
+        </ParsedMarkdown>
       </div>
       {spell.higher_level && spell.higher_level.length > 0 && (
         <div className="mt-2 flex flex-col gap-1">
