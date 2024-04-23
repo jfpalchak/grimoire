@@ -1,6 +1,7 @@
 ### TODO
 * Would like to transition from using fetch API to GraphQL.
-* Get markdown parsing for item descriptions -> react-markdown & remark-gfm?
+* Fix formatting on markdown tables in spell descriptions.
+  * Examples: control-weather, confusion, creation
 
 ### Dynamic Routes for Category & Index:
 ```
