@@ -39,7 +39,7 @@ export default async function Page({ params: { category }, searchParams }: Param
       </div>
       <div>
         <ul className="mt-5 flex flex-col gap-2">
-          {data.results.filter(searchFilter).map((item: { index: string, name: string, level?: number}) => (
+          {data.results.filter(searchFilter).map((item) => (
             <Link
               key={item.index}
               href={`${category}/${item.index}`}

@@ -68,7 +68,7 @@ export default async function SpellCard({ index }: { index: any }) {
           Range:&nbsp;
         </span>
         {spell.range}
-        {spell.area_of_effect && ` (${spell.area_of_effect.size} ft ${spell.area_of_effect.type})`}
+        {spell.area_of_effect && ` (${spell.area_of_effect.size}-foot ${spell.area_of_effect.type})`}
       </p>
       <p>
         <span className="font-semibold">
@@ -84,6 +84,7 @@ export default async function SpellCard({ index }: { index: any }) {
         {spell.concentration && 'Concentration, '}
         {spell.duration}
       </p>
+
       <div className="mt-2 flex gap-1">
         <span className="font-semibold">
           Classes:
@@ -122,21 +123,19 @@ export default async function SpellCard({ index }: { index: any }) {
 
       {/* SPELL DC & DAMAGE / HEAL DICE*/}
       {spell.damage && (
-        <div className="mt-2 flex gap-4">
-          {spell.damage.damage_at_slot_level && (
-            <DiceTable
-              data={spell.damage.damage_at_slot_level}
-              caption="Damage per Slot Level"
-              stat="Damage"
-            />
-          )}
-          {spell.damage.damage_at_character_level && (
-            <DiceTable
-              data={spell.damage.damage_at_character_level}
-              caption="Damage per Character Level"
-              stat="Damage"
-            />
-          )}
+        <div className="mt-2">
+          {Object.keys(spell.damage).map((key) => {
+            if (key !== 'damage_type') {
+              return (
+                <DiceTable
+                  key={key}
+                  data={spell.damage![key]}
+                  caption={`Damage per ${key.includes('slot') ? 'Slot' : 'Character'} Level`}
+                  stat="Damage"
+                />
+              );
+            }
+          })}
         </div>
       )}
 

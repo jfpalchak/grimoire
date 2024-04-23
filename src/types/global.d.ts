@@ -45,6 +45,9 @@ declare global {
     level: number;
     damage?: {
         damage_type: Reference;
+        [damageLevel: string]: {
+          [level: string]: string;
+        }
         damage_at_slot_level?: {
             [level: string]: string;
         };
