@@ -2,6 +2,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getSpell, dnd } from '@/lib/services';
 
+import ParsedMarkdown from '@/components/markdown';
+
+
 interface LevelDice {
   [level: string]: string;
 }
@@ -24,7 +27,7 @@ const DiceTable = ({ data, stat, caption}: TableProps) => {
       </thead>
       <tbody>
       {Object.entries(data).map(([level, dice]) => (
-        <tr key={level}>
+        <tr key={`${level}_damage`}>
           <td>{level}</td>
           <td>{dice}</td>
         </tr>
@@ -103,9 +106,11 @@ export default async function SpellCard({ index }: { index: any }) {
       {/* DESCRIPTION */}
       <div className="mt-2 flex flex-col gap-1">
         {spell.desc.map((paragraph, i) => (
-          <p key={i}>
-            {paragraph}
-          </p>
+          <div key={`desc_${i}`}>
+            <ParsedMarkdown>
+              {paragraph}
+            </ParsedMarkdown>
+          </div>
         ))}
       </div>
       {spell.higher_level && spell.higher_level.length > 0 && (
@@ -114,9 +119,11 @@ export default async function SpellCard({ index }: { index: any }) {
             At Higher Levels:
           </span>
           {spell.higher_level.map((paragraph, i) => (
-            <p key={i}>
-              {paragraph}
-            </p>
+            <div key={`higher_level_${i}`}>
+              <ParsedMarkdown>
+                {paragraph}
+              </ParsedMarkdown>
+            </div>
           ))}
         </div>
       )}
