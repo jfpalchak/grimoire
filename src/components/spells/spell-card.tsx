@@ -87,7 +87,7 @@ export default async function SpellCard({ index }: { index: any }) {
         {spell.duration}
       </p>
       {spell.dc && (
-        <div className="mt-2">
+        <div className="mt-2 w-fit peer/saving">
           <p>
             <span className="font-semibold">
               Saving Throw:&nbsp;
@@ -101,7 +101,7 @@ export default async function SpellCard({ index }: { index: any }) {
       )}
 
       {/* DESCRIPTION */}
-      <div className="mt-2">
+      <div className="mt-2 [&_em]:peer-hover/saving:bg-slate-200">
         <Markdown>
           {formatMD(spell.desc)}
         </Markdown>

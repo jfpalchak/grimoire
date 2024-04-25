@@ -11,7 +11,18 @@ export function formatMD(text: string[]): string {
       if (row.includes('|') && text[i + 1]?.includes('|')) {
         return article + row + '\n';
       } else {
-        return article + row + '\n\n';
+        return article + highlight(row) + '\n\n';
       }
     }, '');
+}
+
+// If the given string includes details of a saving throw,
+// and is not a list item,
+// return the string with emphasis (in markdown),
+// otherwise return the string without emphasis.
+function highlight(row: string): string {
+  if (row.includes('saving throw') && !row.startsWith('-')) {
+    return row = '_' + row + '_';
+  }
+  return row;
 }
