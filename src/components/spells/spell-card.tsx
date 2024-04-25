@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getSpell, dnd } from '@/lib/services';
+import { dnd } from '@/lib/services';
 
-import ParsedMarkdown from '@/components/markdown';
+import Markdown from '@/components/markdown';
+import { formatMD } from '@/lib/utils';
 
 interface LevelDice {
   [level: string]: string;
@@ -38,7 +39,6 @@ const DiceTable = ({ data, stat, caption}: TableProps) => {
 
 export default async function SpellCard({ index }: { index: any }) {  
 
-  // const spell = await getSpell(index);
   const spell = await dnd.spells.get(index);
   
   if (!spell) {
@@ -104,29 +104,18 @@ export default async function SpellCard({ index }: { index: any }) {
 
       {/* DESCRIPTION */}
       <div className="mt-2 flex flex-col gap-1 [&_h5]:font-semibold [&_h5]:text-center [&_table]:text-center [&_ul]:pl-6 [&_ul]:list-disc">
-        {/* Format any markdown text to properly render on the DOM: */}
-        <ParsedMarkdown>
-          {spell.desc.reduce((article, row, i) => {
-            if (row.includes('|') && spell.desc[i + 1]?.includes('|')) {
-              return article + row + '\n';
-            } else {
-              return article + row + '\n\n';
-            }
-          }, '')}
-        </ParsedMarkdown>
+        <Markdown>
+          {formatMD(spell.desc)}
+        </Markdown>
       </div>
       {spell.higher_level && spell.higher_level.length > 0 && (
         <div className="mt-2 flex flex-col gap-1">
           <span className="font-semibold italic">
             At Higher Levels:
           </span>
-          {spell.higher_level.map((paragraph, i) => (
-            <div key={`higher_level_${i}`}>
-              <ParsedMarkdown>
-                {paragraph}
-              </ParsedMarkdown>
-            </div>
-          ))}
+          <Markdown>
+            {formatMD(spell.higher_level)}
+          </Markdown>
         </div>
       )}
 
