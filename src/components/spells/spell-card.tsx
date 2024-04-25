@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getSpell, dnd } from '@/lib/services';
+import { dnd } from '@/lib/services';
+
+import Markdown from '@/components/markdown';
+import { formatMD } from '@/lib/utils';
 
 interface LevelDice {
   [level: string]: string;
@@ -14,7 +17,7 @@ interface TableProps {
 
 const DiceTable = ({ data, stat, caption}: TableProps) => {
   return (
-    <table className="w-60 text-center">
+    <table>
       <caption className="font-semibold">{caption}</caption>
       <thead>
         <tr>
@@ -24,7 +27,7 @@ const DiceTable = ({ data, stat, caption}: TableProps) => {
       </thead>
       <tbody>
       {Object.entries(data).map(([level, dice]) => (
-        <tr key={level}>
+        <tr key={`${level}_damage`}>
           <td>{level}</td>
           <td>{dice}</td>
         </tr>
@@ -36,7 +39,6 @@ const DiceTable = ({ data, stat, caption}: TableProps) => {
 
 export default async function SpellCard({ index }: { index: any }) {  
 
-  // const spell = await getSpell(index);
   const spell = await dnd.spells.get(index);
   
   if (!spell) {
@@ -54,7 +56,7 @@ export default async function SpellCard({ index }: { index: any }) {
         <Link href={`/magic-schools/${spell.school.index}`} className="hover:underline">
           {spell.school.name}
         </Link>
-        {spell.ritual && '(ritual)'}
+        {spell.ritual && ' (ritual)'}
       </p>
 
       <p>
@@ -84,40 +86,34 @@ export default async function SpellCard({ index }: { index: any }) {
         {spell.concentration && 'Concentration, '}
         {spell.duration}
       </p>
-
-      <div className="mt-2 flex gap-1">
-        <span className="font-semibold">
-          Classes:
-        </span>
-        <ul className="flex gap-1">
-          {spell.classes.map(({ name, index }) => (
-            <li key={index} className="[&:not(:last-child)]:after:content-[',']">
-              <Link href={`/classes/${index}`} className="hover:underline">
-                {name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {spell.dc && (
+        <div className="mt-2">
+          <p>
+            <span className="font-semibold">
+              Saving Throw:&nbsp;
+            </span>
+            <Link href={`/ability-scores/${index}`} className="hover:underline">
+              {spell.dc.dc_type.name}
+            </Link>
+            {` (effect: ${spell.dc.dc_success})`}
+          </p>
+        </div>
+      )}
 
       {/* DESCRIPTION */}
-      <div className="mt-2 flex flex-col gap-1">
-        {spell.desc.map((paragraph, i) => (
-          <p key={i}>
-            {paragraph}
-          </p>
-        ))}
+      <div className="mt-2">
+        <Markdown>
+          {formatMD(spell.desc)}
+        </Markdown>
       </div>
       {spell.higher_level && spell.higher_level.length > 0 && (
         <div className="mt-2 flex flex-col gap-1">
           <span className="font-semibold italic">
             At Higher Levels:
           </span>
-          {spell.higher_level.map((paragraph, i) => (
-            <p key={i}>
-              {paragraph}
-            </p>
-          ))}
+          <Markdown>
+            {formatMD(spell.higher_level)}
+          </Markdown>
         </div>
       )}
 
@@ -149,19 +145,20 @@ export default async function SpellCard({ index }: { index: any }) {
         </div>
       )}
 
-      {spell.dc && (
-        <div className="mt-2">
-          <p>
-            <span className="font-semibold">
-              Saving Throw:&nbsp;
-            </span>
-            <Link href={`/ability-scores/${index}`} className="hover:underline">
-              {spell.dc.dc_type.name}
-            </Link>
-            {` (effect: ${spell.dc.dc_success})`}
-          </p>
-        </div>
-      )}
+      <div className="mt-3 flex gap-1">
+        <span className="font-semibold">
+          Classes:
+        </span>
+        <ul className="flex gap-1">
+          {spell.classes.map(({ name, index }) => (
+            <li key={index} className="[&:not(:last-child)]:after:content-[',']">
+              <Link href={`/classes/${index}`} className="hover:underline">
+                {name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   )
 }
