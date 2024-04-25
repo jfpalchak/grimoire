@@ -1,10 +1,10 @@
-import Markdown from 'react-markdown';
+import { default as ReactMarkdown } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-export default function ParsedMarkdown ({ children }: { children: string }) {
+export default function Markdown({ children }: { children: string }) {
   return (
-    <Markdown remarkPlugins={[remarkGfm]}>
+    <ReactMarkdown remarkPlugins={[remarkGfm]}>
       {children}
-    </Markdown>
+    </ReactMarkdown>
   );
 }
