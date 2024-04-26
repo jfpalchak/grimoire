@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getMonster, dnd } from '@/lib/services';
+import { modifier } from '@/lib/utils';
 
 export default async function MonsterCard({ index }: { index: any }) {
 
@@ -34,14 +35,34 @@ export default async function MonsterCard({ index }: { index: any }) {
         <span className="font-semibold">
           Speed:
         </span>
-        {/* <ul className="flex gap-1">
-          {monster.components.map((comp: string) => (
-            <li key={comp} className="[&:not(:last-child)]:after:content-[',']">
-              {comp}
-            </li>
-          ))}
-        </ul> */}
-        {/* {monster.material && <p>({monster.material})</p>} */}
+      </div>
+
+      {/* ABILITY SCORES */}
+      <div className="my-2 flex gap-4 text-center">
+        <div>
+          <h5 className="font-semibold">STR</h5>
+          <p>{monster.strength} (+{modifier(monster.strength)})</p>
+        </div>
+        <div>
+          <h5 className="font-semibold">DEX</h5>
+          <p>{monster.dexterity} (+{modifier(monster.dexterity)})</p>
+        </div>
+        <div>
+          <h5 className="font-semibold">CON</h5>
+          <p>{monster.constitution} (+{modifier(monster.constitution)})</p>
+        </div>
+        <div>
+          <h5 className="font-semibold">INT</h5>
+          <p>{monster.intelligence} (+{modifier(monster.intelligence)})</p>
+        </div>
+        <div>
+          <h5 className="font-semibold">WIS</h5>
+          <p>{monster.wisdom} (+{modifier(monster.wisdom)})</p>
+        </div>
+        <div>
+          <h5 className="font-semibold">CHA</h5>
+          <p>{monster.charisma} (+{modifier(monster.charisma)})</p>
+        </div>
       </div>
       <p>
         <span className="font-semibold">

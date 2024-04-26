@@ -3,6 +3,9 @@
 * Fix formatting on markdown tables in spell descriptions.
   * Examples: control-weather, confusion, creation
 
+* Monster Card:
+  * Examples: Ancient Red Dragon, Azer
+  
 ### Dynamic Routes for Category & Index:
 ```
 - [category]

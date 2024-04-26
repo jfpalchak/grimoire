@@ -74,12 +74,12 @@ interface Monster {
   name: string;
   url: string;
   desc?: string[];
-  charisma?: number;
-  constitution?: number;
-  dexterity?: number;
-  intelligence?: number;
-  strength?: number;
-  wisdom?: number;
+  charisma: number;
+  constitution: number;
+  dexterity: number;
+  intelligence: number;
+  strength: number;
+  wisdom: number;
   image?: string;
   size: 'Tiny' | 'Small' | 'Medium' | 'Large' | 'Huge' | 'Gargantuan';
   type: string;
