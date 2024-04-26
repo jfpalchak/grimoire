@@ -11,14 +11,14 @@ export const dnd = {
       });
   
       if (!response.ok) {
-        throw new Error(`Network response not OK. Status: ${response.status} - ${response.statusText}`);
+        throw new Error(`Network response not OK. Status: ${response.status} ${response.statusText}`);
       }
   
       const data = await response.json();
       
       return data;
     } catch (error) {
-      console.log(`Error fetching '${query}' :`, error);
+      console.log(`Error fetching '${query}':`, error);
     }
   },
 };
