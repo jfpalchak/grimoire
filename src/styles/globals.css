@@ -84,7 +84,14 @@
 .markdown {
   @apply flex flex-col gap-1.5
         [&_table]:mb-1
-        [&_em]:not-italic
         [&_h5]:font-semibold [&_h5]:text-center [&_h5]:my-1
         [&_ul]:pl-6 [&_ul]:list-disc;
+}
+
+.highlight-saving-throw {
+  & em:not(:has(strong)) {
+    @apply not-italic peer-[.saving-throw]:peer-hover:bg-slate-200
+  }
+  /* @apply [&_em:not(:has(strong))]:not-italic 
+        [&_em:not(:has(strong))]:peer-[.saving-throw]:peer-hover:bg-slate-200 */
 }

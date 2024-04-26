@@ -87,7 +87,7 @@ export default async function SpellCard({ index }: { index: any }) {
         {spell.duration}
       </p>
       {spell.dc && (
-        <div className="mt-2 w-fit peer/saving">
+        <div className="mt-2 w-fit saving-throw peer">
           <p>
             <span className="font-semibold">
               Saving Throw:&nbsp;
@@ -95,13 +95,13 @@ export default async function SpellCard({ index }: { index: any }) {
             <Link href={`/ability-scores/${index}`} className="hover:underline">
               {spell.dc.dc_type.name}
             </Link>
-            {` (effect: ${spell.dc.dc_success})`}
+            {/* {` (effect: ${spell.dc.dc_success})`} */}
           </p>
         </div>
       )}
 
       {/* DESCRIPTION */}
-      <div className="mt-2 [&_em]:peer-hover/saving:bg-slate-200">
+      <div className="mt-2 highlight-saving-throw">
         <Markdown>
           {formatMD(spell.desc)}
         </Markdown>
@@ -145,7 +145,7 @@ export default async function SpellCard({ index }: { index: any }) {
         </div>
       )}
 
-      <div className="mt-3 flex gap-1">
+      <div className="mt-5 flex gap-1">
         <span className="font-semibold">
           Classes:
         </span>

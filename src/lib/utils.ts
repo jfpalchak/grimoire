@@ -17,11 +17,13 @@ export function formatMD(text: string[]): string {
 }
 
 // If the given string includes details of a saving throw,
-// and is not a list item,
+// and is not a list or bolded item,
 // return the string with emphasis (in markdown),
 // otherwise return the string without emphasis.
 function highlight(row: string): string {
-  if (row.includes('saving throw') && !row.startsWith('-')) {
+  const hasSavingThrow = row.match('make.*saving throw|must.*saving throw.*$');
+  const isNotFormatted = !(row.startsWith('-') || row.startsWith('*'));
+  if (hasSavingThrow && isNotFormatted) {
     return row = '_' + row + '_';
   }
   return row;
