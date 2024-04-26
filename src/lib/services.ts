@@ -1,6 +1,6 @@
 
 const API_URL = "https://www.dnd5eapi.co/api/";
-const headerOptions = {
+const requestOptions = {
   method: 'GET',
   headers: {
     'Accept': 'application/json',
@@ -9,7 +9,7 @@ const headerOptions = {
 
 export async function fetchDND(query: string) {
   try {
-    const response = await fetch(`${API_URL}${query}`, headerOptions);
+    const response = await fetch(`${API_URL}${query}`, requestOptions);
 
     if (!response.ok) {
       throw new Error(`Network response not OK. Status: ${response.status} - ${response.statusText}`);
@@ -38,7 +38,7 @@ export async function getEquipment(index: string) {
   return equipment;
 }
 
-// Factory for creating getAll() and get(index) fetch methods for a given category:
+// Create getAll() and get(index) fetch methods for a given category:
 function gets<T>(category: string) {
   return {
     getAll: async (): Promise<APIResponse> => await fetchDND(category),

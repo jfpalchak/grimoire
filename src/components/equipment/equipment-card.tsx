@@ -1,7 +1,8 @@
-import { getEquipment, dnd } from '@/lib/services';
+import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import React from 'react';
+import { dnd } from '@/lib/services';
+import { shortUrl } from '@/lib/utils';
 
 interface ContentItem {
   item: {
@@ -27,25 +28,21 @@ const typeofCategory = (category: string) => {
 };
 
 const ParsedCategory = ({ equipment }: any) => {
-
   const type = typeofCategory(equipment.equipment_category.index);
-
   const category = equipment[type];
 
   if (typeof category === 'object') {
     return (
-      <Link href={`/equipment-categories/${category.index}`} className="hover:underline">
+      <Link href={shortUrl(category.url)} className="hover:underline">
         {category.name}
       </Link>
     );
   }
-
   return category;
 }
 
 export default async function EquipmentCard({ index }: { index: string }) {
 
-  // const equipment = await getEquipment(index);
   const equipment = await dnd.equipment.get(index);
 
   if (!equipment) {
@@ -58,7 +55,7 @@ export default async function EquipmentCard({ index }: { index: string }) {
         {equipment.name}
       </h1>
       <p className="my-3 italic">
-        <Link href={`/equipment-categories/${equipment.equipment_category.index}`} className="hover:underline">
+        <Link href={shortUrl(equipment.equipment_category.url)} className="hover:underline">
           {equipment.equipment_category.name}
         </Link>
       </p>
@@ -98,7 +95,7 @@ export default async function EquipmentCard({ index }: { index: string }) {
             {equipment.contents.map(({ item, quantity }: ContentItem) => (
                 <li key={item.index}>
                   {quantity}&nbsp;
-                  <Link href={`/equipment/${item.index}`} className="hover:underline">
+                  <Link href={shortUrl(item.url)} className="hover:underline">
                     {item.name}
                   </Link>
                 </li>
@@ -112,9 +109,9 @@ export default async function EquipmentCard({ index }: { index: string }) {
             Properties:
           </span>
           <ul>
-            {equipment.properties.map(({ index, name }: { index: string, name: string }) => (
+            {equipment.properties.map(({ index, name, url }: { index: string, name: string, url: string }) => (
               <li key={index}>
-                <Link href={`/weapon-properties/${index}`} className="hover:underline">
+                <Link href={shortUrl(url)} className="hover:underline">
                   {name}
                 </Link>
               </li>

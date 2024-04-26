@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { dnd } from '@/lib/services';
 
+import { dnd } from '@/lib/services';
+import { formatMD, shortUrl } from '@/lib/utils';
 import Markdown from '@/components/markdown';
-import { formatMD } from '@/lib/utils';
 
 interface LevelDice {
   [level: string]: string;
@@ -18,7 +18,9 @@ interface TableProps {
 const DiceTable = ({ data, stat, caption}: TableProps) => {
   return (
     <table>
-      <caption className="font-semibold">{caption}</caption>
+      <caption className="font-semibold">
+        {caption}
+      </caption>
       <thead>
         <tr>
           <th>Level</th>
@@ -53,7 +55,7 @@ export default async function SpellCard({ index }: { index: any }) {
       <p className="my-3 italic">
         {spell.level ? `level ${spell.level}` : 'cantrip'}
         {' - '}
-        <Link href={`/magic-schools/${spell.school.index}`} className="hover:underline">
+        <Link href={shortUrl(spell.school.url)} className="hover:underline">
           {spell.school.name}
         </Link>
         {spell.ritual && ' (ritual)'}
@@ -92,7 +94,7 @@ export default async function SpellCard({ index }: { index: any }) {
             <span className="font-semibold">
               Saving Throw:&nbsp;
             </span>
-            <Link href={`/ability-scores/${index}`} className="hover:underline">
+            <Link href={shortUrl(spell.dc.dc_type.url)} className="hover:underline">
               {spell.dc.dc_type.name}
             </Link>
             {/* {` (effect: ${spell.dc.dc_success})`} */}
@@ -117,7 +119,7 @@ export default async function SpellCard({ index }: { index: any }) {
         </div>
       )}
 
-      {/* SPELL DC & DAMAGE / HEAL DICE*/}
+      {/* DAMAGE / HEAL DICE*/}
       {spell.damage && (
         <div className="mt-2">
           {Object.keys(spell.damage).map((key) => {
@@ -134,7 +136,6 @@ export default async function SpellCard({ index }: { index: any }) {
           })}
         </div>
       )}
-
       {spell.heal_at_slot_level && (
         <div className="mt-2">
           <DiceTable
@@ -150,9 +151,9 @@ export default async function SpellCard({ index }: { index: any }) {
           Classes:
         </span>
         <ul className="flex gap-1">
-          {spell.classes.map(({ name, index }) => (
+          {spell.classes.map(({ name, index, url }) => (
             <li key={index} className="[&:not(:last-child)]:after:content-[',']">
-              <Link href={`/classes/${index}`} className="hover:underline">
+              <Link href={shortUrl(url)} className="hover:underline">
                 {name}
               </Link>
             </li>
@@ -160,5 +161,5 @@ export default async function SpellCard({ index }: { index: any }) {
         </ul>
       </div>
     </div>
-  )
+  );
 }
