@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import { dnd } from '@/lib/services';
+import { getSpell } from '@/lib/services';
 import { formatMD, shortUrl } from '@/lib/utils';
 import Markdown from '@/components/markdown';
 
@@ -41,7 +41,7 @@ const DiceTable = ({ data, stat, caption}: TableProps) => {
 
 export default async function SpellCard({ index }: { index: any }) {  
 
-  const spell = await dnd.spells.get(index);
+  const spell = await getSpell(index);
   
   if (!spell) {
     notFound();

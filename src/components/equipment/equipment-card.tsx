@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { dnd } from '@/lib/services';
+import { getEquipment } from '@/lib/services';
 import { shortUrl } from '@/lib/utils';
 
 interface ContentItem {
@@ -43,7 +43,7 @@ const ParsedCategory = ({ equipment }: any) => {
 
 export default async function EquipmentCard({ index }: { index: string }) {
 
-  const equipment = await dnd.equipment.get(index);
+  const equipment = await getEquipment(index);
 
   if (!equipment) {
     notFound();

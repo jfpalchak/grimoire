@@ -1,11 +1,11 @@
 import { notFound } from 'next/navigation';
-import { getMonster, dnd } from '@/lib/services';
+import { getMonster } from '@/lib/services';
 import { modifier } from '@/lib/utils';
 
 export default async function MonsterCard({ index }: { index: any }) {
 
   // const monster = await getMonster(index);
-  const monster = await dnd.monsters.get(index);
+  const monster = await getMonster(index);
 
   if (!monster) {
     notFound();

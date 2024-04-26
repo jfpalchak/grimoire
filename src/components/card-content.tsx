@@ -8,7 +8,7 @@ import EquipmentCard from './equipment/equipment-card';
 export default async function CardContent({ category, index }: { category: any, index: any }) {
 
   // const data = await fetchDND(`${category}/${index}`);
-  // const data = await dnd.fetch(`${category}/${index}`);
+  // const data = await dnd.get(`${category}/${index}`);
 
   switch (category) {
     case 'monsters':
