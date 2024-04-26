@@ -13,7 +13,7 @@ export function shortUrl(url: string): string {
 // Format an array of markdown text to properly render on the DOM.
 export function formatMD(text: string[]): string {
   return text.reduce((article, row, i) => {
-      if (row.includes('|') && text[i + 1]?.includes('|')) {
+      if (row.startsWith('|') && text[i + 1]?.startsWith('|')) {
         return article + row + '\n';
       } else {
         return article + highlight(row) + '\n\n';
@@ -22,11 +22,10 @@ export function formatMD(text: string[]): string {
 }
 
 // If the given string includes details of a saving throw,
-// and is not a list or bolded item,
-// return the string with emphasis (in markdown),
-// otherwise return the string without emphasis.
+// return the string with emphasis (in markdown).
 function highlight(row: string): string {
-  const hasSavingThrow = row.match('(make.*saving throw|must.*saving throw).*$');
+  const regex = /(make.*saving|must.*saving)/;
+  const hasSavingThrow = regex.test(row);
   const isNotFormatted = !(row.startsWith('-') || row.startsWith('*'));
   if (hasSavingThrow && isNotFormatted) {
     return '_' + row + '_';
