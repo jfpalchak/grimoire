@@ -91,4 +91,14 @@
     @apply [&_em:not(:has(strong))]:not-italic 
           [&_em:not(:has(strong))]:peer-[.saving-throw]:peer-hover:bg-slate-200
   }
+
+  .list-comma {
+    @apply [&>li]:after-comma
+  }
+}
+
+@layer utilities {
+  .after-comma {
+    @apply [&:not(:last-child)]:after:content-[',']
+  }
 }

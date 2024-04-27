@@ -150,9 +150,9 @@ export default async function SpellCard({ index }: { index: any }) {
         <span className="font-semibold">
           Classes:
         </span>
-        <ul className="flex gap-1">
+        <ul className="flex gap-1 list-comma">
           {spell.classes.map(({ name, index, url }) => (
-            <li key={index} className="[&:not(:last-child)]:after:content-[',']">
+            <li key={index}>
               <Link href={shortUrl(url)} className="hover:underline">
                 {name}
               </Link>
