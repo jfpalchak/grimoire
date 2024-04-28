@@ -1,10 +1,10 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getMonster } from '@/lib/services';
-import { modifier } from '@/lib/utils';
+import { modifier, proficiencies, shortUrl } from '@/lib/utils';
 
 export default async function MonsterCard({ index }: { index: any }) {
 
-  // const monster = await getMonster(index);
   const monster = await getMonster(index);
 
   if (!monster) {
@@ -25,20 +25,26 @@ export default async function MonsterCard({ index }: { index: any }) {
         <span className="font-semibold">
           Armor Class:&nbsp;
         </span>
+        {monster.armor_class.map(({ type, value, armor }) => `${value} (${type})`)
+                            .join(', ')}
       </p>
       <p>
         <span className="font-semibold">
           Hit Points:&nbsp;
         </span>
+        {monster.hit_points}
+        {` (${monster.hit_points_roll ?? monster.hit_dice})`}
       </p>
       <div className="flex gap-1">
         <span className="font-semibold">
           Speed:
         </span>
+        {Object.entries(monster.speed).map(([movement, feet]) => 
+          (movement === 'walk') ? feet : `${movement} ${feet}`).join(', ')}
       </div>
 
       {/* ABILITY SCORES */}
-      <div className="my-2 flex gap-4 text-center">
+      <div className="my-2 flex flex-wrap gap-4 text-center">
         <div>
           <h5 className="font-semibold">STR</h5>
           <p>{monster.strength} (+{modifier(monster.strength)})</p>
@@ -64,40 +70,28 @@ export default async function MonsterCard({ index }: { index: any }) {
           <p>{monster.charisma} (+{modifier(monster.charisma)})</p>
         </div>
       </div>
-      <p>
-        <span className="font-semibold">
-          Stats:&nbsp;
-        </span>
-      </p>
-      <div className="flex gap-1">
-        <span className="font-semibold">
-          Saving Throws:
-        </span>
-        {/* <ul className="flex gap-1">
-          {monster.classes.map(({ name }: { name: string }) => (
-            <li key={name} className="[&:not(:last-child)]:after:content-[',']">
-              {name}
-            </li>
-          ))}
-        </ul> */}
+
+      {/* PROFICIENCIES */}
+      <div className="flex flex-col gap-1">
+        {proficiencies(monster.proficiencies).map(([proficiency, stats]) => (
+          <div key={proficiency} className="flex gap-1">
+            <span className="font-semibold">
+              {proficiency}:
+            </span>
+            <ul className="flex gap-1 list-comma">
+              {stats.map(({ stat, value, url }) => (
+                <li key={url}>
+                  <Link href={shortUrl(url)} className="hover:underline">
+                    {stat}
+                  </Link>
+                  {` +${value}`}
+                </li>
+                ))}
+            </ul>
+          </div>
+        ))}
       </div>
-      <div className="">
-        <span className="font-semibold">
-          Skills:
-        </span>
-      </div>
-      {/* {monster.higher_level.length > 0 && (
-        <div className="mt-2 flex flex-col gap-1">
-          <span className="font-semibold italic">
-            At Higher Levels:
-          </span>
-          {monster.higher_level.map((paragraph: string, _index: number) => (
-            <p key={_index}>
-              {paragraph}
-            </p>
-          ))}
-        </div>
-      )} */}
+      
     </div>
   )
 }

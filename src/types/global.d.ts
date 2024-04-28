@@ -119,7 +119,7 @@ interface Monster {
           success_type?: string;
       };
   }[];
-  speed?: {
+  speed: {
       walk?: string;
       burrow?: string;
       climb?: string;
@@ -131,16 +131,16 @@ interface Monster {
   };
   languages: string;
   challenge_rating: number;
+  proficiencies: {
+      value: number;
+      proficiency: Reference;
+  }[];
   proficiency_bonus: number;
   xp: number;
   damage_vulnerabilities: string[];
   damage_resistances: string[];
   damage_immunities: string[];
   condition_immunities: Reference[];
-  proficiencies: {
-      value: number;
-      proficiency: Reference;
-  }[];
   legendary_actions: any[];
 }
 
