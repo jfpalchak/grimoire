@@ -45,12 +45,12 @@ export function modifier(score: number): number {
   }
 }
 
-export type Proficiency = { 
+type Proficiency = { 
   value: number;
   proficiency: Reference;
 }
 
-export type FlatProficiency = {
+type FlatProficiency = {
   type: string;
   stat: string;
   value: number;
@@ -73,8 +73,10 @@ function flatProf({ value, proficiency }: Proficiency): FlatProficiency {
 export function proficiencies(array: Proficiency[]): [string, ProficiencyData[]][] {
   const profMap = array.reduce((map, prof) => {
     const { type, ...stats } = flatProf(prof);
+
     const existing = map.get(type) ?? [];
     map.set(type, [...existing, stats]);
+
     return map;
   }, new Map<string, ProficiencyData[]>());
 

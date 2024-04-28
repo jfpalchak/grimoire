@@ -1,1 +1,1 @@
-export const API_URL = "https://www.dnd5eapi.co/api/";
+export const API_URL = process.env.NEXT_APP_API_URL as string;
