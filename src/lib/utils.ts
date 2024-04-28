@@ -45,24 +45,24 @@ export function modifier(score: number): number {
   }
 }
 
-type Proficiency = { 
+export type Proficiency = { 
   value: number;
   proficiency: Reference;
 }
 
-type FlatProficiency = {
+export type FlatProficiency = {
   type: string;
   stat: string;
   value: number;
   url: string;
 }
 
-type ProficiencyData = Omit<FlatProficiency, 'type'>;
+export type ProficiencyData = Omit<FlatProficiency, 'type'>;
 
 // Get the type of a given proficiency and the name of its associated stat,
 // flatten the rest of the data, and
 // return an object of the flattened proficiency data.
-export function flattenProficiency({ value, proficiency }: Proficiency): FlatProficiency {
+function flatProf({ value, proficiency }: Proficiency): FlatProficiency {
   const [type, stat] = proficiency.name.split(':');
   return { type, stat, value, url: proficiency.url };
 }
@@ -71,13 +71,12 @@ export function flattenProficiency({ value, proficiency }: Proficiency): FlatPro
 // flatten the data, group according to their associated proficiency, and
 // return an array containing the key/value pairs for each prof. and its associated monster stats. 
 export function proficiencies(array: Proficiency[]): [string, ProficiencyData[]][] {
-  const profObj: { [type: string]: ProficiencyData[] } = {};
+  const profMap = array.reduce((map, prof) => {
+    const { type, ...stats } = flatProf(prof);
+    const existing = map.get(type) ?? [];
+    map.set(type, [...existing, stats]);
+    return map;
+  }, new Map<string, ProficiencyData[]>());
 
-  for (const prof of array) {
-    const { type, ...stats } = flattenProficiency(prof);
-    if (!profObj[type]) profObj[type] = [];
-    profObj[type].push(stats);
-  }
-
-  return Object.entries(profObj);
+  return Array.from(profMap);
 }
