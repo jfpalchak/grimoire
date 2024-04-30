@@ -70,6 +70,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -79,7 +80,9 @@
           [&_td]:py-1 [&_td]:max-w-1
           [&_tr:nth-child(even)]:bg-slate-100
   }
+}
 
+@layer components {
   .markdown {
     @apply flex flex-col gap-1.5
           [&_table]:mb-1
