@@ -5,12 +5,8 @@ import { getSpell } from '@/lib/services';
 import { formatMD, shortUrl } from '@/lib/utils';
 import Markdown from '@/components/markdown';
 
-interface LevelDice {
-  [level: string]: string;
-}
-
 interface TableProps {
-  data: LevelDice;
+  data: Record<string, string>;
   caption: string;
   stat: string;
 }
@@ -29,7 +25,7 @@ const DiceTable = ({ data, stat, caption}: TableProps) => {
       </thead>
       <tbody>
       {Object.entries(data).map(([level, dice]) => (
-        <tr key={`${level}_damage`}>
+        <tr key={`${level}_${dice}`}>
           <td>{level}</td>
           <td>{dice}</td>
         </tr>
@@ -49,18 +45,22 @@ export default async function SpellCard({ index }: { index: any }) {
 
   return (
     <div>
-      <h1 className="mt-10 text-xl font-bold">
-        {spell.name}
-      </h1>
-      <p className="my-3 italic">
-        {spell.level ? `level ${spell.level}` : 'cantrip'}
-        {' - '}
-        <Link href={shortUrl(spell.school.url)} className="hover:underline">
-          {spell.school.name}
-        </Link>
-        {spell.ritual && ' (ritual)'}
-      </p>
+      {/* HEADER */}
+      <div>
+        <h1 className="mt-10 text-xl font-bold">
+          {spell.name}
+        </h1>
+        <p className="my-3 italic">
+          {spell.level ? `level ${spell.level}` : 'cantrip'}
+          {' - '}
+          <Link href={shortUrl(spell.school.url)} className="hover:underline">
+            {spell.school.name}
+          </Link>
+          {spell.ritual && ' (ritual)'}
+        </p>
+      </div>
 
+      {/* STAT BLOCK */}
       <p>
         <span className="font-semibold">
           Casting Time:&nbsp;
@@ -119,7 +119,7 @@ export default async function SpellCard({ index }: { index: any }) {
         </div>
       )}
 
-      {/* DAMAGE / HEAL DICE*/}
+      {/* DAMAGE / HEAL DICE */}
       {spell.damage && (
         <div className="mt-2">
           {Object.keys(spell.damage).map((key) => {
@@ -146,6 +146,7 @@ export default async function SpellCard({ index }: { index: any }) {
         </div>
       )}
 
+      {/* CLASS LIST */}
       <div className="mt-5 flex gap-1">
         <span className="font-semibold">
           Classes:

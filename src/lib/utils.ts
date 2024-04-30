@@ -27,9 +27,11 @@ function highlight(row: string): string {
   const regex = /(make.*saving|must.*saving)/;
   const hasSavingThrow = regex.test(row);
   const isNotFormatted = !(row.startsWith('-') || row.startsWith('*'));
+
   if (hasSavingThrow && isNotFormatted) {
     return '_' + row + '_';
   }
+  
   return row;
 }
 
@@ -60,7 +62,6 @@ type FlatProficiency = {
 export type ProficiencyData = Omit<FlatProficiency, 'type'>;
 
 // Get the type of a given proficiency and the name of its associated stat,
-// flatten the rest of the data, and
 // return an object of the flattened proficiency data.
 function flatProf({ value, proficiency }: Proficiency): FlatProficiency {
   const [type, stat] = proficiency.name.split(':');
@@ -69,7 +70,7 @@ function flatProf({ value, proficiency }: Proficiency): FlatProficiency {
 
 // Given an array of proficiency objects, 
 // flatten the data, group according to their associated proficiency, and
-// return an array containing the key/value pairs for each prof. and its associated monster stats. 
+// return an array containing key/value pairs for each prof. and its associated stats. 
 export function proficiencies(array: Proficiency[]): [string, ProficiencyData[]][] {
   const profMap = array.reduce((map, prof) => {
     const { type, ...stats } = flatProf(prof);

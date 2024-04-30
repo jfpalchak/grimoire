@@ -57,7 +57,7 @@ declare global {
     };
     heal_at_slot_level: {
       [level: string]: string;
-    }
+    };
     dc?: {
         dc_type: Reference;
         dc_success: string;
@@ -144,7 +144,6 @@ interface Monster {
   legendary_actions: any[];
 }
 
-
 interface Equipment {
 
 }
@@ -152,20 +151,6 @@ interface Equipment {
 type APIResponse = {
   count: number;
   results: Reference[];
-}
-
-type Get<T> = (query: string) => Promise<T>;
-
-type Calls<T> = {
-  getAll: () => Promise<APIResponse>;
-  get: Get<T>
-}
-
-interface DnDAPI {
-  query: Get<any>;
-  monsters: Calls<Monster>;
-  spells: Calls<Spell>;
-  equipment: Calls<any>;
 }
 
 }
