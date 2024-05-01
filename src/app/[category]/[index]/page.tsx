@@ -13,7 +13,7 @@ export default async function IndexPage({ params }: Props) {
 
   return (
     <section className="m-10">
-      <div className="border-b-2">
+      <div className="mb-5 border-b-2">
         <p className="font-semibold">Category: {category}</p>
       </div>
       <Suspense fallback={<p>Loading...</p>}>
