@@ -4,6 +4,18 @@ export {}
 
 declare global {
 
+  type Reference = {
+    index: string;
+    name: string;
+    url: string;
+    level?: number;
+  };
+
+  type APIResponse = {
+    count: number;
+    results: Reference[];
+  }
+
   type Alignment = (
     'chaotic neutral' |
     'chaotic evil' |
@@ -18,12 +30,41 @@ declare global {
     'unaligned'
   );
 
-  type Reference = {
-    index: string;
+  type DifficultyClass = {
+    dc_type: Reference;
+    dc_value: number;
+    dc_success?: string;
+    success_type?: string;
+  };
+
+  type Action = {
     name: string;
-    url: string;
-    level?: number;
-  }
+    desc: string;
+    dc?: DifficultyClass;
+    usage?: {
+      type: string;
+      times?: number;
+      dice?: string;
+      min_value?: number;
+    };
+    damage?: {
+      damage_dice?: string;
+      damage_type?: Reference;
+    }[];
+    attack_bonus?: number;
+    actions?: {
+      action_name?: string;
+      count?: number;
+      type?: 'melee' | 'ranged' | 'ability' | 'magic';
+    }[];
+  };
+
+  type UsageType = {
+    type: string;
+    times?: number;
+    dice?: string;
+    min_value?: number;
+  };
 
   interface Spell {
     index: string;
@@ -58,10 +99,7 @@ declare global {
     heal_at_slot_level: {
       [level: string]: string;
     };
-    dc?: {
-        dc_type: Reference;
-        dc_success: string;
-    };
+    dc?: DifficultyClass;
     school: Reference;
     classes: Reference[];
     subclasses?: Reference[];
@@ -82,6 +120,13 @@ interface Monster {
   wisdom: number;
   image?: string;
   size: 'Tiny' | 'Small' | 'Medium' | 'Large' | 'Huge' | 'Gargantuan';
+  speed: {
+      walk?: string;
+      burrow?: string;
+      climb?: string;
+      fly?: string;
+      swim?: string;
+  };
   type: string;
   subtype?: string;
   alignment: Alignment;
@@ -96,61 +141,28 @@ interface Monster {
   hit_dice?: string;
   hit_points_roll?: string;
   forms?: Reference[];
-  actions: {
-      name?: string;
-      desc?: string;
-      attack_bonus?: number;
-      damage?: {
-          damage_dice?: string;
-          damage_type?: Reference;
-      }[];
-      actions?: {
-        action_name?: string;
-        count?: number;
-        type?: 'melee' | 'ranged' | 'ability' | 'magic';
-      }[];
-  }[];
-  special_abilities: {
-      name?: string;
-      desc?: string;
-      dc?: {
-          dc_type?: Reference;
-          dc_value?: number;
-          success_type?: string;
-      };
-  }[];
-  speed: {
-      walk?: string;
-      burrow?: string;
-      climb?: string;
-      fly?: string;
-      swim?: string;
-  };
-  senses?: {
-      [sense: string]: string | number;
-  };
-  languages: string;
-  challenge_rating: number;
-  proficiencies: {
-      value: number;
-      proficiency: Reference;
-  }[];
-  proficiency_bonus: number;
-  xp: number;
+  special_abilities: Action[];
+  actions: Action[];
+  legendary_actions: Action[];
   damage_vulnerabilities: string[];
   damage_resistances: string[];
   damage_immunities: string[];
   condition_immunities: Reference[];
-  legendary_actions: any[];
+  senses?: {
+      [sense: string]: string | number;
+  };
+  languages: string;
+  proficiencies: {
+    value: number;
+    proficiency: Reference;
+  }[];
+  challenge_rating: number;
+  proficiency_bonus: number;
+  xp: number;
 }
 
 interface Equipment {
 
-}
-
-type APIResponse = {
-  count: number;
-  results: Reference[];
 }
 
 }
