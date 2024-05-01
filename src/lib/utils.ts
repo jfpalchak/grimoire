@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 // Remove the '/api' portion of a given url string.
 export function shortUrl(url: string): string {
-  return url.slice(4);
+  return url.substring(4);
 }
 
 // Format an array of markdown text to properly render on the DOM.
@@ -82,4 +82,15 @@ export function proficiencies(array: Proficiency[]): [string, ProficiencyData[]]
   }, new Map<string, ProficiencyData[]>());
 
   return Array.from(profMap);
+}
+
+export function getActionUsage(usage: UsageType) {
+  switch(usage.type) {
+    case 'per day':
+      return ` (${usage.times} ${usage.type})`;
+    case 'recharge on roll':
+      return ` (${usage.type}, ${usage.min_value}+ on ${usage.dice})`;
+    default:
+      return null;
+  }
 }
