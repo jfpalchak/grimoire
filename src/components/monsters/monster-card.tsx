@@ -6,8 +6,7 @@ import {
   proficiencies,
   modifier,
   shortUrl,
-  formatMD,
-  getActionUsage,
+  formatActionMD,
 } from '@/lib/utils';
 
 import Markdown from '../markdown';
@@ -24,54 +23,42 @@ export default async function MonsterCard({ index }: { index: any }) {
     <div>
       {/* HEADER */}
       <div>
-        <h1 className="text-3xl font-semibold text-red-800">
+        <h1 className="text-3xl font-semibold text-red-900">
           {monster.name}
         </h1>
-        <p className="mt-1 mb-4 italic">
+        <div className="mt-1 mb-4 italic">
           {monster.size} {monster.type}
           {!!monster.subtype && ` (${monster.subtype})`},
           {` ${monster.alignment}`}
-        </p>
-      </div>
-
-      <Divider />
-
-      {/* ATTRIBUTES */}
-      <div>
-        <p>
-          <span className="font-semibold">
-            Armor Class:&nbsp;
-          </span>
-          <span>
-            {monster.armor_class.map(({ type, value, armor }) => `${value} (${type})`)
-                                .join(', ')}
-          </span>
-        </p>
-        <p>
-          <span className="font-semibold">
-            Hit Points:&nbsp;
-          </span>
-          <span>
-            {monster.hit_points}
-            {` (${monster.hit_points_roll ?? monster.hit_dice})`}
-          </span>
-        </p>
-        <div className="flex gap-1">
-          <span className="font-semibold">
-            Speed:
-          </span>
-          <span>
-            {Object.entries(monster.speed)
-                    .map(([movement, feet]) => (movement === 'walk') ? feet : `${movement} ${feet}`)
-                    .join(', ')}
-          </span>
         </div>
       </div>
 
       <Divider />
 
+      {/* ATTRIBUTES */}
+      <div className="text-red-900">
+        <Attribute
+          name="Armor Class"
+          value={monster.armor_class.map(({ type, value, armor }) => `${value} (${type})`).join(', ')}
+        />
+        <Attribute
+          name="Hit Points"
+          value={`${monster.hit_points} (${monster.hit_points_roll ?? monster.hit_dice})`}
+        />
+        <Attribute 
+          name="Speed"
+          value={
+            Object.entries(monster.speed)
+                  .map(([movement, feet]) => (movement === 'walk') ? feet : `${movement} ${feet}`)
+                  .join(', ')
+          }
+        />
+      </div>
+
+      <Divider />
+
       {/* ABILITY SCORES */}
-      <div className="my-2 flex flex-wrap gap-4 text-center">
+      <div className="my-2 flex flex-wrap gap-4 text-center text-red-900">
         <Stat ability='STR' score={monster.strength} />
         <Stat ability='DEX' score={monster.dexterity} />
         <Stat ability='CON' score={monster.constitution} />
@@ -83,95 +70,87 @@ export default async function MonsterCard({ index }: { index: any }) {
       <Divider />
 
       {/* PROFICIENCIES & STATS */}
-      <div className="flex flex-col">
-        {proficiencies(monster.proficiencies).map((data) => (
-          <Proficiency key={data[0]} stats={data} />
-        ))}
-      </div>
-      {monster.damage_vulnerabilities.length > 0 && (
+      <div className="text-red-900">
         <div>
-          <span className="font-semibold">
-            Damage Vulnerabilities:&nbsp;
-          </span> 
-          <span>
-            {monster.damage_vulnerabilities.join(', ')}
-          </span>
+          {proficiencies(monster.proficiencies).map((data) => (
+            <Proficiency key={data[0]} stats={data} />
+            // <Attribute 
+            //   key={proficiency[0]}
+            //   name={proficiency[0]}
+            //   className="flex"
+            //   value={
+            //     <ul className="flex gap-1 list-comma">
+            //       {proficiency[1].map(({ stat, value, url }) => (
+            //         <li key={url}>
+            //           <Link href={shortUrl(url)} className="hover:underline">
+            //             {stat}
+            //           </Link>
+            //           {` +${value}`}
+            //         </li>
+            //         ))}
+            //     </ul>
+            //   }
+            // />
+          ))}
         </div>
-      )}
-      {monster.damage_resistances.length > 0 && (
-        <div>
-          <span className="font-semibold">
-            Damage Resistances:&nbsp;
-          </span> 
-          <span>
-            {monster.damage_resistances.join(', ')}
-          </span>
-        </div>
-      )}
-      {monster.damage_immunities.length > 0 && (
-        <div>
-          <span className="font-semibold">
-            Damage Immunities:&nbsp;
-          </span> 
-          <span>
-            {monster.damage_immunities.join(', ')}
-          </span>
-        </div>
-      )}
-      {monster.condition_immunities.length > 0 && (
-        <div className="flex gap-1">
-          <span className="font-semibold">
-            Condition Immunities:
-          </span> 
-          <ul className="flex gap-1 list-comma">
-            {monster.condition_immunities.map(({ name, index, url }) => (
-              <li key={index}>
-                <Link href={shortUrl(url)} className="hover:underline">
-                  {name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {monster.senses && (
-        <div>
-          <span className="font-semibold">
-            Senses:&nbsp;
-          </span> 
-          {Object.entries(monster.senses)
-                  .map(([sense, stat]) => (`${sense.replaceAll('_', ' ')} ${stat}`))
-                  .join(', ')}
-        </div>
-      )}
-      {monster.languages && (
-        <div>
-          <span className="font-semibold">
-            Languages:&nbsp;
-          </span>
-          <span>
-            {monster.languages}
-          </span>
-        </div>
-      )}
+        {monster.damage_vulnerabilities.length > 0 && (
+          <Attribute name="Damage Vulnerabilities" value={monster.damage_vulnerabilities.join(', ')} />
+        )}
+        {monster.damage_resistances.length > 0 && (
+          <Attribute name="Damage Resistances" value={monster.damage_resistances.join(', ')} />
+        )}
+        {monster.damage_immunities.length > 0 && (
+          <Attribute name="Damage Immunities" value={monster.damage_immunities.join(', ')} />
+        )}
+        {monster.condition_immunities.length > 0 && (
+          <div className="flex gap-1">
+            <span className="font-semibold">
+              Condition Immunities:
+            </span> 
+            <ul className="flex gap-1 list-comma">
+              {monster.condition_immunities.map(({ name, index, url }) => (
+                <li key={index}>
+                  <Link href={shortUrl(url)} className="hover:underline">
+                    {name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          // <Attribute
+          //   name="Condition Immunities"
+          //   className="flex"
+          //   value={
+          //     <ul className="flex gap-1 list-comma">
+          //       {monster.condition_immunities.map(({ name, index, url }) => (
+          //         <li key={index}>
+          //           <Link href={shortUrl(url)} className="hover:underline">
+          //             {name}
+          //           </Link>
+          //         </li>
+          //       ))}
+          //     </ul>
+          //   }
+          // />
+        )}
+        {monster.senses && (
+          <Attribute
+            name="Senses"
+            value={
+              Object.entries(monster.senses)
+                    .map(([sense, stat]) => (`${sense.replaceAll('_', ' ')} ${stat}`))
+                    .join(', ')
+            }
+          />
+        )}
+        {monster.languages && (
+          <Attribute name="Languages" value={monster.languages} />
+        )}
 
-      {/* CHALLENGE RATING */}
-      <div className="flex gap-6">
-        <div>
-          <span className="font-semibold">
-            Challenge:&nbsp;
-          </span>
-          <span>
-            {`${monster.challenge_rating} (${monster.xp} XP)`}
-          </span>
-        </div>
-        <div>
-          <span className="font-semibold">
-            Proficiency Bonus:&nbsp;
-          </span>
-          <span>
-            {`+${monster.proficiency_bonus}`}
-          </span>
+        {/* CHALLENGE RATING */}
+        <div className="flex gap-6">
+          <Attribute name="Challenge" value={`${monster.challenge_rating} (${monster.xp} XP)`} />
+          <Attribute name="Proficiency Bonus" value={`+${monster.proficiency_bonus}`} />
         </div>
       </div>
 
@@ -182,20 +161,6 @@ export default async function MonsterCard({ index }: { index: any }) {
         actions={monster.special_abilities}
         className="mt-5"
       />
-      {/* <div className="mt-5">
-        {monster.special_abilities.map((trait) => (
-          <p key={trait.name} className="my-1.5">
-            <strong>
-              <em>
-                {trait.name}
-                {trait.usage && getActionUsage(trait.usage)}
-                .&nbsp;
-              </em>
-            </strong>
-            {trait.desc}
-          </p>
-        ))}
-      </div> */}
 
       {/* ACTIONS */}
       <AbilityBlock 
@@ -203,24 +168,8 @@ export default async function MonsterCard({ index }: { index: any }) {
         actions={monster.actions}
         className="mt-2"
       />
-      {/* <div className="mt-2">
-        <h2 className="my-4 text-2xl text-red-800 border-b-2 border-red-800">
-          Actions
-        </h2>
-        {monster.actions.map((action) => (
-          <p key={action.name} className="my-1.5">
-            <strong>
-              <em>
-                {action.name}
-                {action.usage && getActionUsage(action.usage)}
-                .&nbsp;
-              </em>
-            </strong>
-            {action.desc}
-          </p>
-        ))}
-      </div> */}
 
+      {/* LEGENDARY ACTIONS */}
       {monster.legendary_actions.length > 0 && (
         <AbilityBlock 
           header="Legendary Actions"
@@ -228,26 +177,8 @@ export default async function MonsterCard({ index }: { index: any }) {
             `The ${monster.name} can take 3 legendary actions, choosing from the options below. Only one legendary action option can be used at a time and only at the end of another creature's turn. The ${monster.name} regains spent legendary actions at the start of its turn.`
           }
           actions={monster.legendary_actions}
-          className="mt-2"
+          className="mt-2 [&_strong]:not-italic"
         />
-        // <div className="mt-2">
-        //   <h2 className="my-4 text-2xl text-red-800 border-b-2 border-red-800">
-        //     Legendary Actions
-        //   </h2>
-        //   <p className="my-2">
-        //     The {monster.name} can take 3 legendary actions, choosing from the options below. Only one legendary action option can be used at a time and only at the end of another creature&apos;s turn. The {monster.name} regains spent legendary actions at the start of its turn.
-        //   </p>
-        //   {monster.legendary_actions.map((action) => (
-        //     <p key={action.name} className="my-1.5">
-        //       <strong>
-        //         {action.name}
-        //         {action.usage && getActionUsage(action.usage)}
-        //         .&nbsp;
-        //       </strong>
-        //       {action.desc}
-        //     </p>
-        //   ))}
-        // </div>
       )}
 
     </div>
@@ -259,11 +190,24 @@ const Divider = () => <div className="my-2 border-b-2 border-red-800" />;
 const Stat = ({ ability, score }: { ability: string, score: number }) => {
   return (
     <div>
-      <h5 className="font-semibold text-red-800">{ability}</h5>
-      <p>{`${score} (${(score<10?'':'+') + modifier(score)})`}</p>
+      <div className="font-semibold">{ability}</div>
+      <div>{`${score} (${(score<10?'':'+') + modifier(score)})`}</div>
     </div>
   );
 };
+
+const Attribute = ({ name, value, className }: { name: string, value: JSX.Element | string, className?: string }) => {
+  return (
+    <div className={className}>
+      <span className="font-semibold">
+        {name}:&nbsp;
+      </span>
+      <span>
+        {value}
+      </span>
+    </div>
+  );
+}
 
 const Proficiency = ({ stats }: { stats: [string, ProficiencyData[]] }) => {
   const [proficiency, abilities] = stats;
@@ -297,7 +241,7 @@ const AbilityBlock = ({ actions, header, desc, className }: AbilityBlockProps) =
   return (
     <div className={className}>
       {header && (
-        <h2 className="my-4 text-2xl text-red-800 border-b-2 border-red-800">
+        <h2 className="my-4 text-2xl text-red-900 border-b border-red-900">
           {header}
         </h2>
       )}
@@ -307,14 +251,11 @@ const AbilityBlock = ({ actions, header, desc, className }: AbilityBlockProps) =
         </p>
       )}
       {actions.map((action) => (
-        <p key={action.name} className="my-1.5">
-          <span className={`font-semibold ${desc ? '' : 'italic'}`}>
-            {action.name}
-            {action.usage && getActionUsage(action.usage)}
-            .&nbsp;
-          </span>
-          {action.desc}
-        </p>
+        <div key={action.name} className="my-1.5">
+          <Markdown>
+            {formatActionMD(action)}
+          </Markdown>
+        </div>
       ))}
     </div>
   );
