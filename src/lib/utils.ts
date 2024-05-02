@@ -84,13 +84,20 @@ export function proficiencies(array: Proficiency[]): [string, ProficiencyData[]]
   return Array.from(profMap);
 }
 
-export function getActionUsage(usage: UsageType) {
+
+export function formatActionMD(action: Action) {
+  return `***${action.name + formatUsage(action.usage)}*** ${action.desc.replaceAll('\n', '\n\n')}`;
+}
+
+export function formatUsage(usage?: UsageType): string {
+  if (!usage) return '.';
+
   switch(usage.type) {
     case 'per day':
-      return ` (${usage.times} ${usage.type})`;
+      return ` (${usage.times} ${usage.type}).`;
     case 'recharge on roll':
-      return ` (${usage.type}, ${usage.min_value}+ on ${usage.dice})`;
+      return ` (${usage.type}, ${usage.min_value}+ on ${usage.dice}).`;
     default:
-      return null;
+      return '!'; // ! = testing // prod = '.'
   }
 }
