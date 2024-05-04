@@ -64,7 +64,7 @@ export type ProficiencyData = Omit<FlatProficiency, 'type'>;
 // Get the type of a given proficiency and the name of its associated stat,
 // return an object of the flattened proficiency data.
 function flatProf({ value, proficiency }: Proficiency): FlatProficiency {
-  const [type, stat] = proficiency.name.split(':');
+  const [type, stat] = proficiency.name.split(': ');
   return { type, stat, value, url: proficiency.url };
 }
 
@@ -94,9 +94,9 @@ export function formatUsage(usage?: UsageType): string {
 
   switch(usage.type) {
     case 'per day':
-      return ` (${usage.times} ${usage.type}).`;
+      return ' ' + `(${usage.times} ${usage.type}).`;
     case 'recharge on roll':
-      return ` (${usage.type}, ${usage.min_value}+ on ${usage.dice}).`;
+      return ' ' + `(${usage.type}, ${usage.min_value}+ on ${usage.dice}).`;
     default:
       return '!'; // ! = testing // prod = '.'
   }
