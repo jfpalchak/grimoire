@@ -86,10 +86,10 @@ export function proficiencies(array: Proficiency[]): [string, ProficiencyData[]]
 
 
 export function formatActionMD(action: Action) {
-  return `***${action.name + formatUsage(action.usage)}*** ${action.desc.replaceAll('\n', '\n\n')}`;
+  return `***${action.name + formatUsage(action.usage)}*** ${formatDesc(action.desc)}`;
 }
 
-export function formatUsage(usage?: UsageType): string {
+function formatUsage(usage?: UsageType): string {
   if (!usage) return '.';
 
   switch(usage.type) {
@@ -101,3 +101,20 @@ export function formatUsage(usage?: UsageType): string {
       return '!'; // ! = testing // prod = '.'
   }
 }
+
+function formatDesc(desc: string) {
+  const regexPatterns = [
+    /Melee or Ranged Weapon Attack:/g,
+    /Ranged Weapon Attack:/g,
+    /Melee Weapon Attack:/g,
+    /Hit:/g
+  ];
+  
+  let formattedDesc = desc.replaceAll('\n', '\n\n');
+  for (const pattern of regexPatterns) {
+    formattedDesc = formattedDesc.replace(pattern, (match) => `_${match}_`);
+  }
+
+  return formattedDesc;
+}
+
