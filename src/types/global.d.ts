@@ -111,7 +111,7 @@ interface Monster {
   level?: number;
   name: string;
   url: string;
-  desc?: string[];
+  desc?: string;
   charisma: number;
   constitution: number;
   dexterity: number;
@@ -136,6 +136,8 @@ interface Monster {
       value: number;
       proficiency?: Reference;
       armor?: Reference[];
+      spell?: Reference;
+      condition?: Reference;
   }[];
   hit_points: number;
   hit_dice?: string;
