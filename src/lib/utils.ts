@@ -10,7 +10,7 @@ export function shortUrl(url: string): string {
   return url.substring(4);
 }
 
-// Format an array of markdown text to properly render on the DOM.
+// Format an array of strings containing markdown text to properly render on the DOM.
 export function formatMD(text: string[]): string {
   return text.reduce((article, row, i) => {
       if (row.startsWith('|') && text[i + 1]?.startsWith('|')) {
@@ -84,11 +84,14 @@ export function proficiencies(array: Proficiency[]): [string, ProficiencyData[]]
   return Array.from(profMap);
 }
 
-
-export function formatActionMD(action: Action) {
+// Given a monster's action/ability object, 
+// return a formatted string containing markdown.
+export function formatActionMD(action: Action): string {
   return `***${action.name + formatUsage(action.usage)}*** ${formatDesc(action.desc)}`;
 }
 
+// Given the usage conditions for an action/ability,
+// return the data formatted as a string.
 function formatUsage(usage?: UsageType): string {
   if (!usage) return '.';
 
@@ -102,18 +105,13 @@ function formatUsage(usage?: UsageType): string {
   }
 }
 
+// Given a string containing the description of an action/ability,
+// format line breaks for markdown, and italicize any instance of Attack/Hit text.
 function formatDesc(desc: string) {
-  const regexPatterns = [
-    /Melee or Ranged Weapon Attack:/g,
-    /Ranged Weapon Attack:/g,
-    /Melee Weapon Attack:/g,
-    /Hit:/g
-  ];
-  
-  let formattedDesc = desc.replaceAll('\n', '\n\n');
-  for (const pattern of regexPatterns) {
-    formattedDesc = formattedDesc.replace(pattern, (match) => `_${match}_`);
-  }
+  const regex = /(Melee or Ranged|Ranged|Melee) Weapon Attack:|Hit:/g;
+
+  const formattedDesc = desc.replace(regex, (match) => `_${match}_`)
+                            .replaceAll('\n', '\n\n');
 
   return formattedDesc;
 }
