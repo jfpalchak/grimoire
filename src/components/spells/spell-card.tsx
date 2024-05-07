@@ -2,10 +2,10 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { getSpell } from '@/lib/services';
-import { formatMD, shortUrl } from '@/lib/utils';
+import { formatSpellMD, shortUrl } from '@/lib/utils';
 import Markdown from '@/components/markdown';
 
-interface TableProps {
+type TableProps = {
   data: Record<string, string>;
   caption: string;
   stat: string;
@@ -105,7 +105,7 @@ export default async function SpellCard({ index }: { index: any }) {
       {/* DESCRIPTION */}
       <div className="mt-2 highlight-saving-throw">
         <Markdown>
-          {formatMD(spell.desc)}
+          {formatSpellMD(spell.desc)}
         </Markdown>
       </div>
       {spell.higher_level && spell.higher_level.length > 0 && (
@@ -114,7 +114,7 @@ export default async function SpellCard({ index }: { index: any }) {
             At Higher Levels:
           </span>
           <Markdown>
-            {formatMD(spell.higher_level)}
+            {formatSpellMD(spell.higher_level)}
           </Markdown>
         </div>
       )}

@@ -11,7 +11,7 @@ export function shortUrl(url: string): string {
 }
 
 // Format an array of strings containing markdown text to properly render on the DOM.
-export function formatMD(text: string[]): string {
+export function formatSpellMD(text: string[]): string {
   return text.reduce((article, row, i) => {
       if (row.startsWith('|') && text[i + 1]?.startsWith('|')) {
         return article + row + '\n';
@@ -87,7 +87,7 @@ export function proficiencies(array: Proficiency[]): [string, ProficiencyData[]]
 // Given a monster's action/ability object, 
 // return a formatted string containing markdown.
 export function formatActionMD(action: Action): string {
-  return `***${action.name + formatUsage(action.usage)}*** ${formatDesc(action.desc)}`;
+  return `***${action.name}${formatUsage(action.usage)}*** ${formatDesc(action.desc)}`;
 }
 
 // Given the usage conditions for an action/ability,
@@ -97,9 +97,9 @@ function formatUsage(usage?: UsageType): string {
 
   switch(usage.type) {
     case 'per day':
-      return ' ' + `(${usage.times} ${usage.type}).`;
+      return ` (${usage.times} ${usage.type}).`;
     case 'recharge on roll':
-      return ' ' + `(${usage.type}, ${usage.min_value}+ on ${usage.dice}).`;
+      return ` (${usage.type}, ${usage.min_value}+ on ${usage.dice}).`;
     default:
       return '!'; // ! = testing // prod = '.'
   }
@@ -107,7 +107,7 @@ function formatUsage(usage?: UsageType): string {
 
 // Given a string containing the description of an action/ability,
 // format line breaks for markdown, and italicize any instance of Attack/Hit text.
-function formatDesc(desc: string) {
+export function formatDesc(desc: string): string {
   const regex = /(Melee or Ranged|Ranged|Melee) Weapon Attack:|Hit:/g;
 
   const formattedDesc = desc.replace(regex, (match) => `_${match}_`)
