@@ -200,7 +200,7 @@ const Stat = ({ ability, score }: { ability: string, score: number }) => {
   );
 };
 
-interface AttributeProps {
+type AttributeProps = {
   name: string;
   value: string | JSX.Element[];
   className?: string;
@@ -219,7 +219,7 @@ const Attribute = ({ name, value, className }: AttributeProps) => {
   );
 }
 
-interface AbilityBlockProps {
+type AbilityBlockProps = {
   actions: Action[];
   className: string;
   header?: string;
