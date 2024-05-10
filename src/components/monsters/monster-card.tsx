@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, ReactNode } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getMonster } from '@/lib/services';
@@ -202,7 +202,7 @@ const Stat = ({ ability, score }: { ability: string, score: number }) => {
 
 type AttributeProps = {
   name: string;
-  value: string | JSX.Element[];
+  value: ReactNode;
   className?: string;
 }
 
