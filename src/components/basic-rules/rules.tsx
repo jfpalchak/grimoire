@@ -5,16 +5,17 @@ import { notFound } from 'next/navigation';
 import Markdown from '@/components/markdown';
 import { bookmark, shortUrl } from '@/lib/utils';
 import { dnd } from '@/lib/api';
+import { getRules } from '@/lib/services';
 
 export default async function Rules({ index }: { index: string }) {
 
-  const rules = await dnd.get(`rules/${index}`);
+  const rules = await getRules(index);
 
   if (!rules) {
     notFound();
   }
 
-  const sectionPromises = rules.subsections.map(({ url }: any) => dnd.get(shortUrl(url)));
+  const sectionPromises: Promise<RuleSubsection>[] = rules.subsections.map(({ url }) => dnd.get(shortUrl(url)));
   const sections = await Promise.all(sectionPromises);
 
   return (

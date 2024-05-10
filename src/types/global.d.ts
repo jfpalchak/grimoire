@@ -66,9 +66,7 @@ declare global {
     min_value?: number;
   };
 
-  interface Spell {
-    index: string;
-    name: string;
+  interface Spell extends Reference {
     desc: string[];
     higher_level?: string[];
     range: string;
@@ -83,7 +81,6 @@ declare global {
     concentration: boolean;
     casting_time: string;
     attack_type?: string;
-    level: number;
     damage?: {
         damage_type: Reference;
         [damageLevel: string]: {
@@ -103,14 +100,9 @@ declare global {
     school: Reference;
     classes: Reference[];
     subclasses?: Reference[];
-    url: string;
 }
 
-interface Monster {
-  index: string;
-  level?: number;
-  name: string;
-  url: string;
+interface Monster extends Reference {
   desc?: string;
   charisma: number;
   constitution: number;
@@ -163,8 +155,13 @@ interface Monster {
   xp: number;
 }
 
-interface Equipment {
+interface Equipment extends Reference {}
 
+interface Rules extends Omit<Reference, 'level'> {
+  desc: string;
+  subsections: Reference[];
 }
+
+interface RuleSubsection extends Omit<Rules, 'subsections'> {}
 
 }
