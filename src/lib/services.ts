@@ -11,3 +11,7 @@ export const getMonster = async (index: string): Promise<Monster> => {
 export const getEquipment = async (index: string) => {
   return await dnd.get(`equipment/${index}`);
 };
+
+export const getRules = async (index: string): Promise<Rules> => {
+  return await dnd.get(`rules/${index}`);
+}
