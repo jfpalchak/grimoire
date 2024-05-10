@@ -3,10 +3,10 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import Markdown from '@/components/markdown';
-import { shortUrl } from '@/lib/utils';
+import { bookmark, shortUrl } from '@/lib/utils';
 import { dnd } from '@/lib/api';
 
-export default async function Rules({  index }: { index: string }) {
+export default async function Rules({ index }: { index: string }) {
 
   const rules = await dnd.get(`rules/${index}`);
 
@@ -14,22 +14,22 @@ export default async function Rules({  index }: { index: string }) {
     notFound();
   }
 
-  const sectionPromises = rules.subsections.map((section: any) => dnd.get(shortUrl(section.url)));
+  const sectionPromises = rules.subsections.map(({ url }: any) => dnd.get(shortUrl(url)));
   const sections = await Promise.all(sectionPromises);
 
   return (
-    <section className="m-10">
+    <section>
       <div className="mb-5 border-b-2">
         <p className="font-semibold">Rules: {rules.name}</p>
       </div>
       <article>
-        <div id={rules.name}>
+        <div id={bookmark(rules.name)}>
           <Markdown>
             {rules.desc}
           </Markdown>
         </div>
         {sections.map((article, index) => (
-          <div id={article.name.replace(/\s/g, '')} key={`${article.name}_${index}`} className="mt-5">
+          <div id={bookmark(article.name)} key={`${article.name}_${index}`} className="mt-5">
             <Markdown>
               {article.desc}
             </Markdown>

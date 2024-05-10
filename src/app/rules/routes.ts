@@ -1,6 +1,6 @@
-export const chapters = [
+export const rules = [
   { 
-    chapter: 'Using Ability Scores',
+    name: 'Using Ability Scores',
     path: '/rules/using-ability-scores',
     sections: [
       'Ability Scores and Modifiers',
@@ -12,7 +12,7 @@ export const chapters = [
     ],
   },
   { 
-    chapter: 'Adventuring',
+    name: 'Adventuring',
     path: '/rules/adventuring',
     sections: [
       'Time',
@@ -26,7 +26,7 @@ export const chapters = [
     ],
   },
   { 
-    chapter: 'Combat',
+    name: 'Combat',
     path: '/rules/combat',
     sections: [
       'The Order of Combat',
@@ -40,7 +40,7 @@ export const chapters = [
     ],
   },
   {
-    chapter: 'Spellcasting',
+    name: 'Spellcasting',
     path: '/rules/spellcasting',
     sections: [
       'What Is a Spell?',
@@ -48,7 +48,7 @@ export const chapters = [
     ],
   },
   {
-    chapter: 'Equipment',
+    name: 'Equipment',
     path: '/rules/equipment',
     sections: [
       'Standard Exchange Rates',
@@ -61,7 +61,7 @@ export const chapters = [
     ],
   },
   {
-    chapter: 'Appendix',
+    name: 'Appendix',
     path: '/rules/appendix',
     sections: [
       'Fantasy-Historical Pantheons',

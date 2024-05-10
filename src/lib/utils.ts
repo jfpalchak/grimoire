@@ -10,6 +10,11 @@ export function shortUrl(url: string): string {
   return url.substring(4);
 }
 
+// Remove all whitespace from a given string.
+export function bookmark(string: string): string {
+  return string.replace(/\s/g, '');
+}
+
 // Format an array of strings containing markdown text to properly render on the DOM.
 export function formatSpellMD(text: string[]): string {
   return text.reduce((article, row, i) => {
