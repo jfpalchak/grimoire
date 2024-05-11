@@ -10,7 +10,7 @@ interface Props {
 export default async function RulePage({ params }: Props) {
 
   return (
-    <div className="my-10 mx-4 flex gap-7">
+    <div className="mt-10 mb-20 mx-4 flex gap-7">
       <RulesSideNav />
       <Rules index={params.index} />
     </div>
