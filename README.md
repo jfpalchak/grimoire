@@ -1,13 +1,14 @@
 ### TODO
-* Would like to transition from using fetch API to GraphQL (urql).
+* Would like to transition from using fetch API to GraphQL (urql, or apollo).
 
-* WIP Monster Card:
-  * Examples: Archmage, Mummy Lord, Aboleth, Azer
-* WIP Equipment Card
-  * WIP Magic Item Card
-
-* WIP Rules:
-  * Each Rule endpoint contains numerous rule-sections.
+* WIP Spells Card & Monster Card styles.
+* WIP Equipment & Magic Item Card
+* WIP Class Card
+* WIP Navigation
+  * -> Basic Rules
+  * -> Explore: Spells, Monsters, Classes, Equipment, etc
+  * -> Spellbook: user collection of saved spells, etc
+    * -> Custom spells? Custom monsters?
 
 ### NOTE FOR SEARCH/FILTER
 Don't use searchParams as props, as this sends a network request each time we update the searchParams and receive new prop values from the server.
