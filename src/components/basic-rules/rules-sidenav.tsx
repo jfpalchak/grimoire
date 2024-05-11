@@ -15,7 +15,7 @@ export default function RulesSideNav() {
   const { currentView } = useObserver(chapter);
 
   return (
-    <aside className="static">
+    <aside className="static hidden md:block">
       <div className="sticky top-10 w-64 py-4 border-2">
         <h4 className="mb-2 text-lg pl-4 font-semibold">
           <Link href={`#${bookmark(chapter.name)}`}>
@@ -28,7 +28,7 @@ export default function RulesSideNav() {
               key={section}
               className={cn('py-1 text-sm',
                 bookmark(section) === currentView 
-                  ? 'font-semibold border-l-4 border-l-red-800 bg-slate-100' 
+                  ? 'border-l-4 border-l-red-800 font-semibold' 
                   : 'border-l-4 border-l-transparent',
               )}
             >

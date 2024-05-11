@@ -1,22 +1,19 @@
 import React from 'react';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import Markdown from '@/components/markdown';
-import { bookmark, shortUrl } from '@/lib/utils';
-import { dnd } from '@/lib/api';
 import { getRules } from '@/lib/services';
+import { bookmark } from '@/lib/utils';
 
 export default async function Rules({ index }: { index: string }) {
 
-  const rules = await getRules(index);
+  const chapter = await getRules(index);
 
-  if (!rules) {
+  if (!chapter) {
     notFound();
   }
 
-  const sectionPromises: Promise<RuleSubsection>[] = rules.subsections.map(({ url }) => dnd.get(shortUrl(url)));
-  const sections = await Promise.all(sectionPromises);
+  const { rules, sections } = chapter;
 
   return (
     <section>
@@ -29,8 +26,8 @@ export default async function Rules({ index }: { index: string }) {
             {rules.desc}
           </Markdown>
         </div>
-        {sections.map((article, index) => (
-          <div id={bookmark(article.name)} key={`${article.name}_${index}`} className="mt-5">
+        {sections.map((article, _index) => (
+          <div id={bookmark(article.name)} key={`${article.name}_${_index}`} className="mt-5">
             <Markdown>
               {article.desc}
             </Markdown>
