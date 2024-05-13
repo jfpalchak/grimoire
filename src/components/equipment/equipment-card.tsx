@@ -4,32 +4,48 @@ import { notFound } from 'next/navigation';
 import { getEquipment } from '@/lib/services';
 import { shortUrl } from '@/lib/utils';
 
-interface ContentItem {
-  item: {
-    index: string;
-    name: string;
-    url: string;
-  };
-  quantity: number;
+enum CategoryType {
+  Weapon  = 'weapon_category',
+  Armor   = 'armor_category',
+  Vehicle = 'vehicle_category',
+  Tool    = 'tool_category',
+  Gear    = 'gear_category'
 }
 
-const typeofCategory = (category: string) => {
-  const splitCat = category.split('-');
-  const type = splitCat.length > 1 ? splitCat[splitCat.length-1] : splitCat[0];
-
-  switch (type) {
-    case 'tools':
-      return 'tool_category';
-    case 'vehicles':
-      return 'vehicle_category';
-    default: 
-      return `${type}_category`;
-  }
+const isWeapon = (equipment: Equipment): equipment is Weapon => {
+  return CategoryType.Weapon in equipment;
+};
+const isArmor = (equipment: Equipment): equipment is Armor => {
+  return CategoryType.Armor in equipment;
+};
+const isVehicle = (equipment: Equipment): equipment is Vehicle => {
+  return CategoryType.Vehicle in equipment;
+};
+const isTool = (equipment: Equipment): equipment is Tool => {
+  return CategoryType.Tool in equipment;
+};
+const isGear = (equipment: Equipment): equipment is Gear => {
+  return CategoryType.Gear in equipment;
 };
 
-const ParsedCategory = ({ equipment }: any) => {
-  const type = typeofCategory(equipment.equipment_category.index);
-  const category = equipment[type];
+const getCategory = (equipment: Equipment) => {
+  if (isArmor(equipment)) {
+    return equipment.armor_category;
+  } else if (isWeapon(equipment)) {
+    return equipment.weapon_category;
+  } else if (isVehicle(equipment)) {
+    return equipment.vehicle_category;
+  } else if (isTool(equipment)) {
+    return equipment.tool_category;
+  } else if (isGear(equipment)) {
+    return equipment.gear_category;
+  } else {
+    return 'Unknown Category';
+  }
+}
+
+const ParsedCategory = ({ equipment }: { equipment: Equipment }) => {
+  const category = getCategory(equipment);
 
   if (typeof category === 'object') {
     return (
@@ -86,6 +102,70 @@ export default async function EquipmentCard({ index }: { index: string }) {
           ))}
         </div>
       )}
+
+      {isVehicle(equipment) && (
+        <>
+          <div>
+            <span className="font-semibold">
+              Speed:&nbsp;
+            </span>
+            <span>
+              {`${equipment.speed.quantity} ${equipment.speed.unit}`}
+            </span>
+          </div>
+          <div>
+            <span className="font-semibold">
+              Capacity:&nbsp;
+            </span>
+            <span>
+              {equipment.capacity}
+            </span>
+          </div>
+        </>
+      )}
+
+      {isArmor(equipment) && (
+        <>
+          <div>
+            <span className="font-semibold">
+              Armor Class:&nbsp;
+            </span>
+            <span>
+              {equipment.armor_class.base}
+              {equipment.armor_class.dex_bonus && ' + Dex modifier'}
+              {Number.isInteger(equipment.armor_class.max_bonus) && ` (max ${equipment.armor_class.max_bonus})`}
+            </span>
+          </div>
+          {equipment.str_minimum > 0 && (
+            <div>
+              <span className="font-semibold">
+                Strength Required:&nbsp;
+              </span>
+              <span>
+                {equipment.str_minimum }
+              </span>
+            </div>
+          )}
+          <div>
+            <span className="font-semibold">
+              Stealth:&nbsp;
+            </span>
+            <span>
+              {equipment.stealth_disadvantage ? 'Disadvantage' : 'Unaffected'}
+            </span>
+          </div>
+        </>
+      )}
+
+      {/* WEAPON */}
+      {/* Range */}
+      {/* Damage */}
+      {isWeapon(equipment) && (
+        <div>
+          
+        </div>
+      )}
+
       {equipment.contents.length > 0 && (
         <div className="mt-2">
           <span className="font-semibold">
