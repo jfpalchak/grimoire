@@ -30,11 +30,21 @@ declare global {
     'unaligned'
   );
 
+  type Rarity = ('Varies' | 'Common' | 'Uncommon' | 'Rare' | 'Very Rare' | 'Legendary' | 'Artifact');
+
   type DifficultyClass = {
     dc_type: Reference;
     dc_value: number;
     dc_success?: string;
     success_type?: string;
+  };
+
+  type DamageType = {
+    damage_dice?: string;
+    damage_type?: Reference;
+    damage_at_slot_level?: Record<string, string>;
+    damage_at_character_level?: Record<string, string>;
+    [dmgLvl: string]: { [level: string]: string };
   };
 
   type Action = {
@@ -47,10 +57,7 @@ declare global {
       dice?: string;
       min_value?: number;
     };
-    damage?: {
-      damage_dice?: string;
-      damage_type?: Reference;
-    }[];
+    damage?: DamageType[];
     attack_bonus?: number;
     actions?: {
       action_name?: string;
@@ -81,18 +88,7 @@ declare global {
     concentration: boolean;
     casting_time: string;
     attack_type?: string;
-    damage?: {
-        damage_type: Reference;
-        [damageLevel: string]: {
-          [level: string]: string;
-        }
-        damage_at_slot_level?: {
-            [level: string]: string;
-        };
-        damage_at_character_level?: {
-          [level: string]: string;
-        }
-    };
+    damage?: DamageType;
     heal_at_slot_level: {
       [level: string]: string;
     };
@@ -100,68 +96,137 @@ declare global {
     school: Reference;
     classes: Reference[];
     subclasses?: Reference[];
-}
+  }
 
-interface Monster extends Reference {
-  desc?: string;
-  charisma: number;
-  constitution: number;
-  dexterity: number;
-  intelligence: number;
-  strength: number;
-  wisdom: number;
-  image?: string;
-  size: 'Tiny' | 'Small' | 'Medium' | 'Large' | 'Huge' | 'Gargantuan';
-  speed: {
-      walk?: string;
-      burrow?: string;
-      climb?: string;
-      fly?: string;
-      swim?: string;
-  };
-  type: string;
-  subtype?: string;
-  alignment: Alignment;
-  alignments?: Alignment[];
-  armor_class: {
-      type: string;
+  interface Monster extends Reference {
+    desc?: string;
+    charisma: number;
+    constitution: number;
+    dexterity: number;
+    intelligence: number;
+    strength: number;
+    wisdom: number;
+    image?: string;
+    size: 'Tiny' | 'Small' | 'Medium' | 'Large' | 'Huge' | 'Gargantuan';
+    speed: {
+        walk?: string;
+        burrow?: string;
+        climb?: string;
+        fly?: string;
+        swim?: string;
+    };
+    type: string;
+    subtype?: string;
+    alignment: Alignment;
+    alignments?: Alignment[];
+    armor_class: {
+        type: string;
+        value: number;
+        proficiency?: Reference;
+        armor?: Reference[];
+        spell?: Reference;
+        condition?: Reference;
+    }[];
+    hit_points: number;
+    hit_dice?: string;
+    hit_points_roll?: string;
+    forms?: Reference[];
+    special_abilities: Action[];
+    actions: Action[];
+    legendary_actions: Action[];
+    damage_vulnerabilities: string[];
+    damage_resistances: string[];
+    damage_immunities: string[];
+    condition_immunities: Reference[];
+    senses?: {
+        [sense: string]: string | number;
+    };
+    languages: string;
+    proficiencies: {
       value: number;
-      proficiency?: Reference;
-      armor?: Reference[];
-      spell?: Reference;
-      condition?: Reference;
-  }[];
-  hit_points: number;
-  hit_dice?: string;
-  hit_points_roll?: string;
-  forms?: Reference[];
-  special_abilities: Action[];
-  actions: Action[];
-  legendary_actions: Action[];
-  damage_vulnerabilities: string[];
-  damage_resistances: string[];
-  damage_immunities: string[];
-  condition_immunities: Reference[];
-  senses?: {
-      [sense: string]: string | number;
+      proficiency: Reference;
+    }[];
+    challenge_rating: number;
+    proficiency_bonus: number;
+    xp: number;
+  }
+
+  type ContentItem = {
+    item: Reference;
+    quantity: number;
   };
-  languages: string;
-  proficiencies: {
-    value: number;
-    proficiency: Reference;
-  }[];
-  challenge_rating: number;
-  proficiency_bonus: number;
-  xp: number;
-}
 
-interface Equipment extends Reference {}
+  interface IEquipment extends Reference {
+    equipment_category: Reference;
+    cost: {
+      quantity: number;
+      unit: string;
+    };
+    weight: number;
+    contents: ContentItem[];
+    properties: Reference[];
+    special: string[];
+    desc: string[];
+  }
 
-interface Rules extends Omit<Reference, 'level'> {
-  desc: string;
-  subsections: Reference[];
-}
+  interface Vehicle extends IEquipment {
+    [vehicle_category: string]: string;
+    speed: {
+      quantity: number;
+      unit: string;
+    };
+    capacity: number;
+  }
 
-interface RuleSubsection extends Omit<Rules, 'subsections'> {}
+  interface Tool extends IEquipment {
+    [tool_category: string]: string;
+  }
+
+  interface Gear extends IEquipment {
+    [gear_category: string]: Reference;
+  }
+
+  interface Weapon extends IEquipment { 
+    [weapon_category: string]: string;
+    weapon_range: string;
+    category_range: string;
+    damage: DamageType;
+    two_handed_damage: DamageType;
+    range: Record<string, number>;
+    throw_range: Record<string, number>;
+  }
+
+  interface Armor extends IEquipment {
+    [armor_category: string]: string;
+    armor_class: {
+      base: number;
+      dex_bonus: boolean;
+      max_bonus: number;
+    };
+    str_minimum: number;
+    stealth_disadvantage: boolean;
+  }
+
+  type Equipment = Gear | Tool | Vehicle | Weapon | Armor;
+
+  interface MagicItem extends Reference {
+    equipment_category: Reference;
+    rarity: Record<'name', Rarity>;
+    variants: Reference[];
+    variant: boolean;
+    desc: string[];
+  }
+
+  interface Rules extends Omit<Reference, 'level'> {
+    desc: string;
+    subsections: Reference[];
+  }
+
+  interface RulesSubsection extends Omit<Rules, 'subsections'> {}
+
+  interface RulesChapter {
+    rules: Rules;
+    sections: RulesSubsection[];
+  }
 
 }

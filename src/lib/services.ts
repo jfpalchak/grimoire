@@ -9,20 +9,15 @@ export const getMonster = async (index: string): Promise<Monster> => {
   return await dnd.get(`monsters/${index}`);
 };
 
-export const getEquipment = async (index: string) => {
+export const getEquipment = async (index: string): Promise<Equipment> => {
   return await dnd.get(`equipment/${index}`);
-};
-
-type RulesChapter = {
-  rules: Rules;
-  sections: RuleSubsection[];
 };
 
 export const getRules = async (index: string): Promise<RulesChapter | undefined> => {
   try {
     const rules: Rules = await dnd.get(`rules/${index}`);
 
-    const sectionPromises: Promise<RuleSubsection>[] = rules.subsections.map(({ url }) => dnd.get(shortUrl(url)));
+    const sectionPromises: Promise<RulesSubsection>[] = rules.subsections.map(({ url }) => dnd.get(shortUrl(url)));
     const sections = await Promise.all(sectionPromises);
 
     return { rules, sections };
