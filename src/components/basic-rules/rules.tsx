@@ -26,8 +26,8 @@ export default async function Rules({ index }: { index: string }) {
             {rules.desc}
           </Markdown>
         </div>
-        {sections.map((article, _index) => (
-          <div id={bookmark(article.name)} key={`${article.name}_${_index}`} className="mt-5">
+        {sections.map((article) => (
+          <div id={bookmark(article.name)} key={article.index} className="mt-5">
             <Markdown>
               {article.desc}
             </Markdown>

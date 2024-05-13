@@ -8,22 +8,22 @@ import useObserver from "@/hooks/use-observer";
 
 export default function RulesSideNav() {
   const path = usePathname();
-  const chapter = rules.find((c) => c.path === path);
+  const thisChapter = rules.find((c) => c.path === path);
   
-  if (!chapter) return null;
+  if (!thisChapter) return null;
   
-  const { currentView } = useObserver(chapter);
+  const { currentView } = useObserver(thisChapter);
 
   return (
     <aside className="static hidden md:block">
       <div className="sticky top-10 w-64 py-4 border-2">
         <h4 className="mb-2 text-lg pl-4 font-semibold">
-          <Link href={`#${bookmark(chapter.name)}`}>
-            {chapter.name}
+          <Link href={`#${bookmark(thisChapter.name)}`}>
+            {thisChapter.name}
           </Link>
         </h4>
         <ul className="flex flex-col gap-1">
-          {chapter.sections.map((section) => (
+          {thisChapter.sections.map((section) => (
             <li 
               key={section}
               className={cn('py-1 text-sm',
