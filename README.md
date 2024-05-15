@@ -1,7 +1,8 @@
 ### TODO
 * Would like to transition from using fetch API to GraphQL (urql, or apollo).
+* Validate API responses with Zod?
 
-* WIP Spells Card & Monster Card styles.
+* WIP Spells Card & Monster Card.
 * WIP Equipment & Magic Item Card
 * WIP Class Card
 * WIP Navigation
