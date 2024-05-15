@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { bookmark } from "@/lib/utils";
+import { bookmark } from "@/utils/format";
 
 export default function useObserver({ sections }: { sections: string[] }) {
   const [currentView, setCurrentView] = useState<string | null>(null);

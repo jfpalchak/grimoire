@@ -1,5 +1,13 @@
 import { dnd } from "./api";
-import { shortUrl } from "./utils";
+import { shortUrl } from "@/utils/format";
+import type {
+  Spell,
+  Monster,
+  Equipment,
+  Rules,
+  RulesChapter,
+  RulesSubsection,
+} from "@/types";
 
 export const getSpell = async (index: string): Promise<Spell> => {
   return await dnd.get(`spells/${index}`);

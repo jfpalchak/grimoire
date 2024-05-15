@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { dnd } from '@/lib/api';
 import Search from '@/components/ui/search';
+import type { APIResponse } from '@/types';
 
 type Params = {
   params: {
@@ -13,6 +14,10 @@ type Params = {
   };
 };
 
+// Don't use searchParams as props, as this sends a network request each time we 
+// update the searchParams and receive new prop values from the server.
+// Instead, we'll want to use the useSearchParams hook in a client component, 
+// as this will save our Page from sending new network requests each time we update the url search params.
 export default async function Page({ params: { category }, searchParams }: Params) {
 
   const data: APIResponse = await dnd.get(category);

@@ -1,48 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+
 import { getEquipment } from '@/lib/services';
-import { shortUrl } from '@/lib/utils';
-
-enum CategoryType {
-  Weapon  = 'weapon_category',
-  Armor   = 'armor_category',
-  Vehicle = 'vehicle_category',
-  Tool    = 'tool_category',
-  Gear    = 'gear_category'
-}
-
-const isWeapon = (equipment: Equipment): equipment is Weapon => {
-  return CategoryType.Weapon in equipment;
-};
-const isArmor = (equipment: Equipment): equipment is Armor => {
-  return CategoryType.Armor in equipment;
-};
-const isVehicle = (equipment: Equipment): equipment is Vehicle => {
-  return CategoryType.Vehicle in equipment;
-};
-const isTool = (equipment: Equipment): equipment is Tool => {
-  return CategoryType.Tool in equipment;
-};
-const isGear = (equipment: Equipment): equipment is Gear => {
-  return CategoryType.Gear in equipment;
-};
-
-const getCategory = (equipment: Equipment) => {
-  if (isArmor(equipment)) {
-    return equipment.armor_category;
-  } else if (isWeapon(equipment)) {
-    return equipment.weapon_category;
-  } else if (isVehicle(equipment)) {
-    return equipment.vehicle_category;
-  } else if (isTool(equipment)) {
-    return equipment.tool_category;
-  } else if (isGear(equipment)) {
-    return equipment.gear_category;
-  } else {
-    return 'Unknown Category';
-  }
-}
+import { shortUrl } from '@/utils/format';
+import { isWeapon, isArmor, isVehicle, getCategory } from '@/utils/type-guards';
+import type { Equipment } from '@/types';
 
 const ParsedCategory = ({ equipment }: { equipment: Equipment }) => {
   const category = getCategory(equipment);
@@ -95,7 +58,7 @@ export default async function EquipmentCard({ index }: { index: string }) {
       </p>
       {equipment.desc.length > 0 && (
         <div className="mt-2 flex flex-col gap-1">
-          {equipment.desc.map((paragraph: string, i: number) => (
+          {equipment.desc.map((paragraph, i) => (
             <p key={i}>
               {paragraph}
             </p>
@@ -136,16 +99,14 @@ export default async function EquipmentCard({ index }: { index: string }) {
               {Number.isInteger(equipment.armor_class.max_bonus) && ` (max ${equipment.armor_class.max_bonus})`}
             </span>
           </div>
-          {equipment.str_minimum > 0 && (
-            <div>
-              <span className="font-semibold">
-                Strength Required:&nbsp;
-              </span>
-              <span>
-                {equipment.str_minimum }
-              </span>
-            </div>
-          )}
+          <div>
+            <span className="font-semibold">
+              Strength Requirement:&nbsp;
+            </span>
+            <span>
+              {equipment.str_minimum || 'None'}
+            </span>
+          </div>
           <div>
             <span className="font-semibold">
               Stealth:&nbsp;
@@ -172,7 +133,7 @@ export default async function EquipmentCard({ index }: { index: string }) {
             Contents:
           </span>
           <ul>
-            {equipment.contents.map(({ item, quantity }: ContentItem) => (
+            {equipment.contents.map(({ item, quantity }) => (
                 <li key={item.index}>
                   {quantity}&nbsp;
                   <Link href={shortUrl(item.url)} className="hover:underline">
@@ -189,7 +150,7 @@ export default async function EquipmentCard({ index }: { index: string }) {
             Properties:
           </span>
           <ul>
-            {equipment.properties.map(({ index, name, url }: { index: string, name: string, url: string }) => (
+            {equipment.properties.map(({ index, name, url }) => (
               <li key={index}>
                 <Link href={shortUrl(url)} className="hover:underline">
                   {name}
@@ -200,5 +161,5 @@ export default async function EquipmentCard({ index }: { index: string }) {
         </div>
       )}
     </div>
-  )
+  );
 }

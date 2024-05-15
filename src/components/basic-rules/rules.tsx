@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 
 import Markdown from '@/components/markdown';
 import { getRules } from '@/lib/services';
-import { bookmark } from '@/lib/utils';
+import { bookmark } from '@/utils/format';
 
 export default async function Rules({ index }: { index: string }) {
 

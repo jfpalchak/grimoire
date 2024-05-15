@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link';
 import { rules } from './routes';
-import { bookmark } from '@/lib/utils';
+import { bookmark } from '@/utils/format';
 
 export default async function Page() {
 

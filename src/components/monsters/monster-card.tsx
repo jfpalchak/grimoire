@@ -1,13 +1,12 @@
 import { Fragment, ReactNode } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+
 import { getMonster } from '@/lib/services';
-import {
-  proficiencies,
-  modifier,
-  shortUrl,
-  formatActionMD,
-} from '@/lib/utils';
+import { proficiencies } from '@/utils/proficiencies';
+import { modifier } from '@/utils/modifier';
+import { shortUrl, formatActionMD } from '@/utils/format';
+import type { Action } from '@/types';
 
 import Markdown from '@/components/markdown';
 

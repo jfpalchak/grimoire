@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
+import { bookmark } from "@/utils/format";
+import { cn } from "@/utils/cn";
 import { rules } from "@/app/rules/routes";
-import { bookmark, cn } from "@/lib/utils";
 import useObserver from "@/hooks/use-observer";
 
 export default function RulesSideNav() {

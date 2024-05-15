@@ -2,8 +2,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { getSpell } from '@/lib/services';
-import { formatSpellMD, shortUrl } from '@/lib/utils';
+import { formatSpellMD, shortUrl } from '@/utils/format';
 import Markdown from '@/components/markdown';
+import type { DamageDice } from '@/types';
 
 type TableProps = {
   data: Record<string, string>;
@@ -127,7 +128,7 @@ export default async function SpellCard({ index }: { index: any }) {
               return (
                 <DiceTable
                   key={key}
-                  data={spell.damage![key]}
+                  data={spell.damage![key] as DamageDice}
                   caption={`Damage per ${key.includes('slot') ? 'Slot' : 'Character'} Level`}
                   stat="Damage"
                 />
