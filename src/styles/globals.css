@@ -78,7 +78,7 @@
   table {
     @apply w-full text-sm text-center
           [&_td]:py-1 [&_td]:max-w-1
-          [&_tr:nth-child(even)]:bg-slate-100
+          [&_tr:nth-child(even)]:bg-neutral-600/10
   }
 }
 
@@ -97,11 +97,39 @@
 
   .highlight-saving-throw {
     @apply [&_em:not(:has(strong))]:not-italic 
-          [&_em:not(:has(strong))]:peer-[.saving-throw]:peer-hover:bg-slate-200
+          [&_em:not(:has(strong))]:peer-[.saving-throw]:peer-hover:bg-neutral-600/10
   }
 
   .list-comma {
     @apply [&>li]:after-comma
+  }
+
+  .stat-card-texture {
+    background: url('/assets/top-texture.png'), url('/assets/texture.png');
+    background-size: 100% auto;
+    background-position: top center;
+    background-repeat: no-repeat, repeat;
+
+    position: relative;
+
+    &::before, 
+    &::after {
+      content: '';
+      display: block;
+      background: url('/assets/stat-bar.png') center;
+      background-size: 100% 100%;
+      height: 6px;
+      position: absolute;
+      left: -3px;
+      right: -3px;
+    }
+
+    &::before {
+      top: -3px;
+    }
+    &::after {
+      bottom: -3px;
+    }
   }
 }
 

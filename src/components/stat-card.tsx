@@ -36,7 +36,7 @@ const CardHeader = ({ className, children }: Props) => {
 
 const CardTitle = ({ className, children }: Props) => {
   return (
-    <h1 className={cn('mt-10 text-3xl font-semibold text-red-900', className)}>
+    <h1 className={cn('text-3xl font-semibold text-red-900', className)}>
       {children}
     </h1>
   );
@@ -74,9 +74,14 @@ const CardFootnote = ({ className, children }: Props) => {
   );
 };
 
-function Card ({ children }: Props) {
+function Card ({ className, children }: Props) {
   return (
-    <div>
+    <div className={cn(
+      'stat-card-texture',
+      'shadow-md shadow-slate-400 p-4',
+      className
+      )}
+    >
       {children}
     </div>
   );
