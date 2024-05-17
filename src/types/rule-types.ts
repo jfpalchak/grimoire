@@ -43,8 +43,8 @@ export type DifficultyClass = {
 export type DamageDice = Record<string, string>;
 
 export type DamageType = {
-  damage_dice?: string;
-  damage_type?: Reference;
+  damage_dice: string;
+  damage_type: Reference;
   damage_at_slot_level?: DamageDice;
   damage_at_character_level?: DamageDice;
   [dmgLvl: string]: DamageDice | Reference | string | undefined;

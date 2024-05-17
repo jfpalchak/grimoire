@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -33,62 +33,23 @@ export default async function EquipmentCard({ index }: { index: string }) {
       <h1 className="mt-10 text-xl font-bold">
         {equipment.name}
       </h1>
-      <p className="my-3 italic">
+      <div className="my-3 italic">
+        {isArmor(equipment) && (
+          <span>
+            <ParsedCategory equipment={equipment} />
+            &nbsp;
+          </span>
+        )}
         <Link href={shortUrl(equipment.equipment_category.url)} className="hover:underline">
-          {equipment.equipment_category.name}
+          {isWeapon(equipment)
+            ? `${equipment.weapon_range} ${equipment.equipment_category.name} (${getCategory(equipment)})`
+            : equipment.equipment_category.name
+          }
         </Link>
-      </p>
-      <p>
-        <span className="font-semibold">
-          Category:&nbsp;
-        </span>
-        <ParsedCategory equipment={equipment} />
-      </p>
-      <p>
-        <span className="font-semibold">
-          Weight:&nbsp;
-        </span>
-        {equipment.weight}
-      </p>
-      <p>
-        <span className="font-semibold">
-          Cost:&nbsp;
-        </span>
-        {equipment.cost.quantity} {equipment.cost.unit}
-      </p>
-      {equipment.desc.length > 0 && (
-        <div className="mt-2 flex flex-col gap-1">
-          {equipment.desc.map((paragraph, i) => (
-            <p key={i}>
-              {paragraph}
-            </p>
-          ))}
-        </div>
-      )}
-
-      {isVehicle(equipment) && (
-        <>
-          <div>
-            <span className="font-semibold">
-              Speed:&nbsp;
-            </span>
-            <span>
-              {`${equipment.speed.quantity} ${equipment.speed.unit}`}
-            </span>
-          </div>
-          <div>
-            <span className="font-semibold">
-              Capacity:&nbsp;
-            </span>
-            <span>
-              {equipment.capacity}
-            </span>
-          </div>
-        </>
-      )}
+      </div>
 
       {isArmor(equipment) && (
-        <>
+        <div className="my-2">
           <div>
             <span className="font-semibold">
               Armor Class:&nbsp;
@@ -115,24 +76,108 @@ export default async function EquipmentCard({ index }: { index: string }) {
               {equipment.stealth_disadvantage ? 'Disadvantage' : 'Unaffected'}
             </span>
           </div>
-        </>
-      )}
-
-      {/* WEAPON */}
-      {/* Range */}
-      {/* Damage */}
-      {isWeapon(equipment) && (
-        <div>
-          
         </div>
       )}
 
+      {isVehicle(equipment) && (
+        <div className="mb-2">
+          {equipment.speed && (
+            <div>
+              <span className="font-semibold">
+                Speed:&nbsp;
+              </span>
+              <span>
+                {`${equipment.speed.quantity} ${equipment.speed.unit}`}
+              </span>
+            </div>
+          )}
+          {equipment.capacity && (
+            <div>
+              <span className="font-semibold">
+                Capacity:&nbsp;
+              </span>
+              <span>
+                {equipment.capacity}
+              </span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {isWeapon(equipment) && (
+        <div className="my-2">
+          <div>
+            <span className="font-semibold">
+              Damage:&nbsp;
+            </span>
+            <span>
+              {equipment.damage.damage_dice}
+            </span>
+            {equipment.two_handed_damage && (
+              <span>
+                {` (${equipment.two_handed_damage.damage_dice})`}
+              </span>
+            )}
+          </div>
+          <div>
+            <span className="font-semibold">
+              Damage Type:&nbsp;
+            </span>
+            <span>
+              {equipment.damage.damage_type.name}
+            </span>
+          </div>
+          <div>
+            <span className="font-semibold">
+              Range:&nbsp;
+            </span>
+            <span>
+              {equipment.range.normal}
+              {equipment.range.long ? `/${equipment.range.long}` : ''}
+            </span>
+          </div>
+        </div>
+      )}
+
+      {(!isArmor(equipment) || !isWeapon(equipment)) && (
+        <div>
+          <span className="font-semibold">
+            Category:&nbsp;
+          </span>
+          <span>
+            <ParsedCategory equipment={equipment} />
+          </span>
+        </div>
+      )}
+      <div>
+        <span className="font-semibold">
+          Weight:&nbsp;
+        </span>
+        {equipment.weight}
+        &nbsp;
+        {equipment.weight === 1 ? 'lb' : 'lbs'}
+      </div>
+      <div>
+        <span className="font-semibold">
+          Cost:&nbsp;
+        </span>
+        {equipment.cost.quantity} {equipment.cost.unit}
+      </div>
+      {equipment.desc.length > 0 && (
+        <div className="mt-2 flex flex-col gap-1">
+          {equipment.desc.map((paragraph, i) => (
+            <p key={i}>
+              {paragraph}
+            </p>
+          ))}
+        </div>
+      )}
       {equipment.contents.length > 0 && (
         <div className="mt-2">
           <span className="font-semibold">
             Contents:
           </span>
-          <ul>
+          <ul className="list-inside list-disc">
             {equipment.contents.map(({ item, quantity }) => (
                 <li key={item.index}>
                   {quantity}&nbsp;
@@ -147,17 +192,18 @@ export default async function EquipmentCard({ index }: { index: string }) {
       {equipment.properties.length > 0 && (
         <div className="mt-2">
           <span className="font-semibold">
-            Properties:
+            Properties:&nbsp;
           </span>
-          <ul>
-            {equipment.properties.map(({ index, name, url }) => (
-              <li key={index}>
+          <span>
+            {equipment.properties.map(({ index, name, url }, _index) => (
+              <Fragment key={index}>
                 <Link href={shortUrl(url)} className="hover:underline">
                   {name}
                 </Link>
-              </li>
+                {_index < equipment.properties.length -1 ? ', ' : ''}
+              </Fragment>
             ))}
-          </ul>
+          </span>
         </div>
       )}
     </div>
