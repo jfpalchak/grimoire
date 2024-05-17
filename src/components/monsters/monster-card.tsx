@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { getMonster } from '@/lib/services';
 import { proficiencies } from '@/utils/proficiencies';
 import { modifier } from '@/utils/modifier';
-import { shortUrl, formatActionMD } from '@/utils/format';
+import { shortUrl, formatActionMD, formatMonsterAC } from '@/utils/format';
 import type { Action } from '@/types';
 
 import Markdown from '@/components/markdown';
@@ -38,7 +38,7 @@ export default async function MonsterCard({ index }: { index: any }) {
       <div className="text-red-900">
         <Attribute
           name="Armor Class"
-          value={monster.armor_class.map(({ type, value, armor, spell, condition }) => `${value} (${condition?'while '+condition.name:type}${spell?': '+spell.name:armor?': '+armor.map((a)=>a.name).join(', '):''})`).join(', ')}
+          value={formatMonsterAC(monster.armor_class)}
         />
         <Attribute
           name="Hit Points"
@@ -205,7 +205,7 @@ type AttributeProps = {
   className?: string;
 }
 
-const Attribute = ({ name, value, className }: AttributeProps) => {
+export const Attribute = ({ name, value, className }: AttributeProps) => {
   return (
     <div className={className}>
       <span className="font-semibold">

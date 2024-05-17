@@ -1,4 +1,4 @@
-import type { Action, UsageType } from '@/types';
+import type { Action, UsageType, Monster } from '@/types';
 
 // Remove the '/api' portion of a given url string.
 export function shortUrl(url: string): string {
@@ -12,7 +12,8 @@ export function bookmark(string: string): string {
 
 // Format an array of markdown text to properly render on the DOM.
 export function formatSpellMD(text: string[]): string {
-  return text.reduce((article, row, i) => {
+  return text
+    .reduce((article, row, i) => {
       if (row.startsWith('|') && text[i + 1]?.startsWith('|')) {
         return article + row + '\n';
       } else {
@@ -64,4 +65,25 @@ function formatDesc(desc: string): string {
   const formattedDesc = desc.replace(regex, (match) => `_${match}_`)
                             .replaceAll('\n', '\n\n');
   return formattedDesc;
+}
+
+type MonsterAC = Monster['armor_class'];
+
+// Given a monster's armor_class property,
+// return the object's data formatted as a string.
+export function formatMonsterAC(monsterAC: MonsterAC): string {
+  return monsterAC
+    .map(({ type, value, armor, spell, condition }) => {
+      const acConditionOrType = condition 
+        ? `while ${condition.name}`
+        : type;
+      const acSpellOrArmor = spell 
+        ? `: ${spell.name}`
+        : armor 
+        ? `: ${armor.map((a)=>a.name).join(', ')}`
+        : '';
+      const ac = `${value} (${acConditionOrType}${acSpellOrArmor})`;
+      return ac;
+    })
+    .join(', ');
 }
