@@ -1,4 +1,4 @@
-import { Fragment, ReactNode } from 'react';
+import { Fragment } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -9,6 +9,53 @@ import { shortUrl, formatActionMD, formatMonsterAC } from '@/utils/format';
 import type { Action } from '@/types';
 
 import Markdown from '@/components/markdown';
+import Card, { Attribute } from '../stat-card';
+
+type StatProps = {
+  ability: string;
+  score: number;
+};
+
+const Stat = ({ ability, score }: StatProps) => {
+  const sign = score < 10 ? '' : '+' ;
+  return (
+    <div>
+      <div className="font-semibold">{ability}</div>
+      <div>{`${score} (${sign}${modifier(score)})`}</div>
+    </div>
+  );
+};
+
+type AbilityBlockProps = {
+  actions: Action[];
+  className: string;
+  header?: string;
+  desc?: string;
+};
+
+const AbilityBlock = ({ actions, header, desc, className }: AbilityBlockProps) => {
+  return (
+    <div className={className}>
+      {header && (
+        <h2 className="my-4 text-2xl text-red-900 border-b border-red-900">
+          {header}
+        </h2>
+      )}
+      {desc && (
+        <p className="my-2">
+          {desc}
+        </p>
+      )}
+      {actions.map((action) => (
+        <div key={action.name} className="my-1.5">
+          <Markdown>
+            {formatActionMD(action)}
+          </Markdown>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 export default async function MonsterCard({ index }: { index: any }) {
 
@@ -19,23 +66,21 @@ export default async function MonsterCard({ index }: { index: any }) {
   }
 
   return (
-    <div>
-      {/* HEADER */}
-      <div>
-        <h1 className="text-3xl font-semibold text-red-900">
+    <Card>
+      <Card.Header>
+        <Card.Title>
           {monster.name}
-        </h1>
-        <div className="mt-1 mb-4 italic">
+        </Card.Title>
+        <Card.Subtitle>
           {monster.size} {monster.type}
           {!!monster.subtype && ` (${monster.subtype})`},
           {` ${monster.alignment}`}
-        </div>
-      </div>
+        </Card.Subtitle>
+      </Card.Header>
 
-      <Divider />
+      <Card.Divider />
 
-      {/* ATTRIBUTES */}
-      <div className="text-red-900">
+      <Card.StatBlock>
         <Attribute
           name="Armor Class"
           value={formatMonsterAC(monster.armor_class)}
@@ -52,24 +97,23 @@ export default async function MonsterCard({ index }: { index: any }) {
                   .join(', ')
           }
         />
-      </div>
+      </Card.StatBlock>
 
-      <Divider />
+      <Card.Divider />
 
       {/* ABILITY SCORES */}
-      <div className="my-2 flex flex-wrap gap-4 text-center text-red-900">
+      <Card.StatBlock className="my-2 flex flex-wrap gap-4 text-center">
         <Stat ability='STR' score={monster.strength} />
         <Stat ability='DEX' score={monster.dexterity} />
         <Stat ability='CON' score={monster.constitution} />
         <Stat ability='INT' score={monster.intelligence} />
         <Stat ability='WIS' score={monster.wisdom} />
         <Stat ability='CHA' score={monster.charisma} />
-      </div>
+      </Card.StatBlock>
 
-      <Divider />
+      <Card.Divider />
 
-      {/* PROFICIENCIES & STATS */}
-      <div className="text-red-900">
+      <Card.StatBlock>
         {proficiencies(monster.proficiencies).map((proficiency) => (
           <Attribute
             key={proficiency[0]}
@@ -145,106 +189,44 @@ export default async function MonsterCard({ index }: { index: any }) {
             value={`+${monster.proficiency_bonus}`}
           />
         </div>
-      </div>
+      </Card.StatBlock>
 
-      <Divider />
+      <Card.Divider />
 
-      {/* TRAITS */}
-      <AbilityBlock
-        actions={monster.special_abilities}
-        className="mt-5"
-      />
-
-      {/* ACTIONS */}
-      <AbilityBlock 
-        header="Actions"
-        actions={monster.actions}
-        className="mt-2"
-      />
-      {monster.legendary_actions.length > 0 && (
-        <AbilityBlock 
-          header="Legendary Actions"
-          desc={
-            `The ${monster.name} can take 3 legendary actions, choosing from the options below. Only one legendary action option can be used at a time and only at the end of another creature's turn. The ${monster.name} regains spent legendary actions at the start of its turn.`
-          }
-          actions={monster.legendary_actions}
-          className="mt-2 [&_strong]:not-italic"
+      <Card.Content>
+        <AbilityBlock
+          actions={monster.special_abilities}
+          className="mt-5"
         />
-      )}
+        <AbilityBlock 
+          header="Actions"
+          actions={monster.actions}
+          className="mt-2"
+        />
+        {monster.legendary_actions.length > 0 && (
+          <AbilityBlock 
+            header="Legendary Actions"
+            desc={
+              `The ${monster.name} can take 3 legendary actions, choosing from the options below. Only one legendary action option can be used at a time and only at the end of another creature's turn. The ${monster.name} regains spent legendary actions at the start of its turn.`
+            }
+            actions={monster.legendary_actions}
+            className="mt-2 [&_strong]:not-italic"
+          />
+        )}
+      </Card.Content>
 
-      {/* ADDITIONAL INFO */}
-      {monster.desc && (
-        <div className="mt-4">
-          <h2 className="mb-2 text-2xl">
-            Description
-          </h2>
-          <Markdown>
-            {monster.desc}
-          </Markdown>
-        </div>
-      )}
-
-    </div>
+      <Card.Footnote>
+        {monster.desc && (
+          <div className="mt-4">
+            <h2 className="mb-2 text-2xl">
+              Description
+            </h2>
+            <Markdown>
+              {monster.desc}
+            </Markdown>
+          </div>
+        )}
+      </Card.Footnote>
+    </Card>
   );
 }
-
-const Divider = () => <div className="my-2 border-b-2 border-red-800" />;
-
-const Stat = ({ ability, score }: { ability: string, score: number }) => {
-  return (
-    <div>
-      <div className="font-semibold">{ability}</div>
-      <div>{`${score} (${(score<10?'':'+') + modifier(score)})`}</div>
-    </div>
-  );
-};
-
-type AttributeProps = {
-  name: string;
-  value: ReactNode;
-  className?: string;
-}
-
-export const Attribute = ({ name, value, className }: AttributeProps) => {
-  return (
-    <div className={className}>
-      <span className="font-semibold">
-        {name + ': '}
-      </span>
-      <span>
-        {value}
-      </span>
-    </div>
-  );
-}
-
-type AbilityBlockProps = {
-  actions: Action[];
-  className: string;
-  header?: string;
-  desc?: string;
-};
-
-const AbilityBlock = ({ actions, header, desc, className }: AbilityBlockProps) => {
-  return (
-    <div className={className}>
-      {header && (
-        <h2 className="my-4 text-2xl text-red-900 border-b border-red-900">
-          {header}
-        </h2>
-      )}
-      {desc && (
-        <p className="my-2">
-          {desc}
-        </p>
-      )}
-      {actions.map((action) => (
-        <div key={action.name} className="my-1.5">
-          <Markdown>
-            {formatActionMD(action)}
-          </Markdown>
-        </div>
-      ))}
-    </div>
-  );
-};
