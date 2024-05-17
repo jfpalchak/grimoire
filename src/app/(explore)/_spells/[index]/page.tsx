@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import SpellCard from '@/components/spells/spell-card';
 
 export default async function SpellPage({ params }: { params: { index: string }}) {
@@ -8,7 +9,9 @@ export default async function SpellPage({ params }: { params: { index: string }}
       <div className="border-b-2">
         <p className="font-semibold">Category: Spells!</p>
       </div>
-      <SpellCard index={index} />
+      <Suspense fallback={<p>Loading...</p>}>
+        <SpellCard index={index} />
+      </Suspense>
     </section>
   );
 }

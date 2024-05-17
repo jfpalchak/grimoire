@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import MonsterCard from '@/components/monsters/monster-card';
 
 export default async function MonsterPage({ params }: { params: { index: string }}) {
@@ -8,7 +9,9 @@ export default async function MonsterPage({ params }: { params: { index: string 
       <div className="border-b-2">
         <p className="font-semibold">Category: Monsters</p>
       </div>
-      <MonsterCard index={index} />
+      <Suspense fallback={<p>Loading...</p>}>
+        <MonsterCard index={index} />
+      </Suspense>
     </section>
   );
 }
