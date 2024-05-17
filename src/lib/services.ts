@@ -4,6 +4,7 @@ import type {
   Spell,
   Monster,
   Equipment,
+  MagicItem,
   Rules,
   RulesChapter,
   RulesSubsection,
@@ -20,6 +21,10 @@ export const getMonster = async (index: string): Promise<Monster> => {
 export const getEquipment = async (index: string): Promise<Equipment> => {
   return await dnd.get(`equipment/${index}`);
 };
+
+export const getMagicItem = async (index: string): Promise<MagicItem> => {
+  return await dnd.get(`magic-items/${index}`);
+}
 
 export const getRules = async (index: string): Promise<RulesChapter | undefined> => {
   try {
