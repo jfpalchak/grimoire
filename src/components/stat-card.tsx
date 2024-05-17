@@ -11,6 +11,7 @@ type AttributeProps = {
   className?: string;
 };
 
+export const Divider = () => <div className="my-2 border-b-2 border-red-800" />;
 
 export const Attribute = ({ name, value, className }: AttributeProps) => {
   return (
@@ -24,8 +25,6 @@ export const Attribute = ({ name, value, className }: AttributeProps) => {
     </div>
   );
 };
-
-const Divider = () => <div className="my-2 border-b-2 border-red-800" />;
 
 const CardHeader = ({ className, children }: Props) => {
   return (

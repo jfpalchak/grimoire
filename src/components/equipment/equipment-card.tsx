@@ -6,7 +6,8 @@ import { getEquipment } from '@/lib/services';
 import { shortUrl } from '@/utils/format';
 import { isWeapon, isArmor, isVehicle, getCategory } from '@/utils/type-guards';
 import type { Armor, Equipment, Vehicle, Weapon } from '@/types';
-import Card, { Attribute } from '../stat-card';
+
+import Card, { Attribute } from '@/components/stat-card';
 
 const ParsedCategory = ({ equipment }: { equipment: Equipment }) => {
   const category = getCategory(equipment);
@@ -122,7 +123,7 @@ export default async function EquipmentCard({ index }: { index: string }) {
         {isArmor(equipment) && <ArmorDetail armor={equipment} />}
         {isVehicle(equipment) && <VehicleDetail vehicle={equipment} />}
         {isWeapon(equipment) && <WeaponDetail weapon={equipment} />}
-        
+
         {(!isArmor(equipment) || !isWeapon(equipment)) && (
           <Attribute
             name="Category"

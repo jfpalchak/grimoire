@@ -9,7 +9,7 @@ import { shortUrl, formatActionMD, formatMonsterAC } from '@/utils/format';
 import type { Action } from '@/types';
 
 import Markdown from '@/components/markdown';
-import Card, { Attribute } from '../stat-card';
+import Card, { Attribute } from '@/components/stat-card';
 
 type StatProps = {
   ability: string;
