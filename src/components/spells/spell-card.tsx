@@ -3,9 +3,10 @@ import { notFound } from 'next/navigation';
 
 import { getSpell } from '@/lib/services';
 import { formatSpellMD, shortUrl } from '@/utils/format';
-import Markdown from '@/components/markdown';
 import type { DamageDice } from '@/types';
-import Card from '../stat-card';
+
+import Markdown from '@/components/markdown';
+import Card, { Attribute } from '@/components/stat-card';
 
 type TableProps = {
   data: Record<string, string>;
@@ -64,44 +65,47 @@ export default async function SpellCard({ index }: { index: any }) {
 
       <Card.Content>
         {/* STAT BLOCK */}
-        <p>
-          <span className="font-semibold">
-            Casting Time:&nbsp;
-          </span>
-          {spell.casting_time}
-        </p>
-        <p>
-          <span className="font-semibold">
-            Range:&nbsp;
-          </span>
-          {spell.range}
-          {spell.area_of_effect && ` (${spell.area_of_effect.size}-foot ${spell.area_of_effect.type})`}
-        </p>
-        <p>
-          <span className="font-semibold">
-            Components:&nbsp;
-          </span>
-          {spell.components.join(', ')}
-          {spell.material && ` (${spell.material})`}
-        </p>
-        <p>
-          <span className="font-semibold">
-            Duration:&nbsp;
-          </span>
-          {spell.concentration && 'Concentration, '}
-          {spell.duration}
-        </p>
+        <Attribute
+          name="Casting Time"
+          value={spell.casting_time}
+          />
+        <Attribute
+          name="Range"
+          value={
+            <>
+              {spell.range}
+              {spell.area_of_effect && ` (${spell.area_of_effect.size}-foot ${spell.area_of_effect.type})`}
+            </>
+          }
+        />
+        <Attribute 
+          name="Components"
+          value={
+            <>
+              {spell.components.join(', ')}
+              {spell.material && ` (${spell.material})`}
+            </>
+          }
+        />
+        <Attribute
+          name="Duration"
+          value={
+            <>
+              {spell.concentration && 'Concentration, '}
+              {spell.duration}
+            </>
+          }
+        />
         {spell.dc && (
-          <div className="mt-2 w-fit saving-throw peer">
-            <p>
-              <span className="font-semibold">
-                Saving Throw:&nbsp;
-              </span>
+          <Attribute
+            name="Saving Throw"
+            className="mt-2 w-fit saving-throw peer"
+            value={
               <Link href={shortUrl(spell.dc.dc_type.url)} className="hover:underline">
                 {spell.dc.dc_type.name}
               </Link>
-            </p>
-          </div>
+            }
+          />
         )}
 
         {/* DESCRIPTION */}
