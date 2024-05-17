@@ -26,7 +26,7 @@ const ArmorDetail = ({ armor }: { armor: Armor }) => {
   return (
     <div className="mb-2">
       <Attribute
-        name="Armor Class"
+        label="Armor Class"
         value={
           <>
             {armor.armor_class.base}
@@ -36,11 +36,11 @@ const ArmorDetail = ({ armor }: { armor: Armor }) => {
         }
       />
       <Attribute
-        name="Strength Requirement"
+        label="Strength Requirement"
         value={armor.str_minimum || 'None'}
       />
       <Attribute
-        name="Stealth"
+        label="Stealth"
         value={armor.stealth_disadvantage ? 'Disadvantage' : 'Unaffected'}
       />
     </div>
@@ -52,13 +52,13 @@ const VehicleDetail = ({ vehicle }: { vehicle: Vehicle }) => {
     <div className="mb-2">
       {vehicle.speed && (
         <Attribute
-          name="Speed"
+          label="Speed"
           value={Object.values(vehicle.speed).join(' ')}
         />
       )}
       {vehicle.capacity && (
         <Attribute
-          name="Capacity"
+          label="Capacity"
           value={vehicle.capacity}
         />
       )}
@@ -70,7 +70,7 @@ const WeaponDetail = ({ weapon }: { weapon: Weapon }) => {
   return (
     <div className="my-2">
       <Attribute
-        name="Damage"
+        label="Damage"
         value={
           <>
             {weapon.damage.damage_dice}
@@ -79,11 +79,11 @@ const WeaponDetail = ({ weapon }: { weapon: Weapon }) => {
         }
       />
       <Attribute
-        name="Damage Type"
+        label="Damage Type"
         value={weapon.damage.damage_type.name}
       />
       <Attribute
-        name="Range"
+        label="Range"
         value={Object.values(weapon.range).join('/')}
       />
     </div>
@@ -126,16 +126,16 @@ export default async function EquipmentCard({ index }: { index: string }) {
 
         {(!isArmor(equipment) || !isWeapon(equipment)) && (
           <Attribute
-            name="Category"
+            label="Category"
             value={<ParsedCategory equipment={equipment} />}
           />
         )}
         <Attribute
-          name="Weight"
+          label="Weight"
           value={`${equipment.weight} ${equipment.weight === 1 ? 'lb' : 'lbs'}`}
         />
         <Attribute
-          name="Cost"
+          label="Cost"
           value={`${equipment.cost.quantity} ${equipment.cost.unit}`}
         />
         {equipment.desc.length > 0 && (
@@ -166,7 +166,7 @@ export default async function EquipmentCard({ index }: { index: string }) {
         )}
         {equipment.properties.length > 0 && (
           <Attribute 
-            name="Properties"
+            label="Properties"
             value={
               equipment.properties.map(({ index, name, url }, _index) => (
                 <Fragment key={index}>

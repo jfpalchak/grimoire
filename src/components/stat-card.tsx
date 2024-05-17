@@ -6,18 +6,18 @@ type Props = {
 } & PropsWithChildren;
 
 type AttributeProps = {
-  name: string;
+  label: string;
   value: ReactNode;
   className?: string;
 };
 
 export const Divider = () => <div className="my-2 border-b-2 border-red-800" />;
 
-export const Attribute = ({ name, value, className }: AttributeProps) => {
+export const Attribute = ({ label, value, className }: AttributeProps) => {
   return (
     <div className={className}>
       <span className="font-semibold">
-        {name + ': '}
+        {label + ': '}
       </span>
       <span>
         {value}

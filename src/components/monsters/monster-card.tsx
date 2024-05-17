@@ -82,15 +82,15 @@ export default async function MonsterCard({ index }: { index: any }) {
 
       <Card.StatBlock>
         <Attribute
-          name="Armor Class"
+          label="Armor Class"
           value={formatMonsterAC(monster.armor_class)}
         />
         <Attribute
-          name="Hit Points"
+          label="Hit Points"
           value={`${monster.hit_points} (${monster.hit_points_roll ?? monster.hit_dice})`}
         />
         <Attribute 
-          name="Speed"
+          label="Speed"
           value={
             Object.entries(monster.speed)
                   .map(([movement, feet]) => (movement === 'walk') ? feet : `${movement} ${feet}`)
@@ -117,7 +117,7 @@ export default async function MonsterCard({ index }: { index: any }) {
         {proficiencies(monster.proficiencies).map((proficiency) => (
           <Attribute
             key={proficiency[0]}
-            name={proficiency[0]}
+            label={proficiency[0]}
             value={
               proficiency[1].map(({ stat, value, url }, _index) => (
                 <Fragment key={index}>
@@ -132,25 +132,25 @@ export default async function MonsterCard({ index }: { index: any }) {
         ))}
         {monster.damage_vulnerabilities.length > 0 && (
           <Attribute
-            name="Damage Vulnerabilities"
+            label="Damage Vulnerabilities"
             value={monster.damage_vulnerabilities.join(', ')}
           />
         )}
         {monster.damage_resistances.length > 0 && (
           <Attribute
-            name="Damage Resistances"
+            label="Damage Resistances"
             value={monster.damage_resistances.join(', ')}
           />
         )}
         {monster.damage_immunities.length > 0 && (
           <Attribute
-            name="Damage Immunities"
+            label="Damage Immunities"
             value={monster.damage_immunities.join(', ')}
           />
         )}
         {monster.condition_immunities.length > 0 && (
           <Attribute
-            name="Condition Immunities"
+            label="Condition Immunities"
             value={
               monster.condition_immunities.map(({ name, index, url }, _index) => (
                 <Fragment key={index}>
@@ -165,7 +165,7 @@ export default async function MonsterCard({ index }: { index: any }) {
         )}
         {monster.senses && (
           <Attribute
-            name="Senses"
+            label="Senses"
             value={
               Object.entries(monster.senses)
                     .map(([sense, stat]) => (`${sense.replaceAll('_', ' ')} ${stat}`))
@@ -175,17 +175,17 @@ export default async function MonsterCard({ index }: { index: any }) {
         )}
         {monster.languages && (
           <Attribute
-            name="Languages"
+            label="Languages"
             value={monster.languages}
           />
         )}
         <div className="flex gap-6">
           <Attribute
-            name="Challenge"
+            label="Challenge"
             value={`${monster.challenge_rating} (${monster.xp} XP)`}
           />
           <Attribute
-            name="Proficiency Bonus"
+            label="Proficiency Bonus"
             value={`+${monster.proficiency_bonus}`}
           />
         </div>

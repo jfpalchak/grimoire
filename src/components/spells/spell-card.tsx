@@ -7,6 +7,7 @@ import type { DamageDice } from '@/types';
 
 import Markdown from '@/components/markdown';
 import Card, { Attribute } from '@/components/stat-card';
+import { Fragment } from 'react';
 
 type TableProps = {
   data: Record<string, string>;
@@ -48,7 +49,6 @@ export default async function SpellCard({ index }: { index: any }) {
 
   return (
     <Card>
-      {/* HEADER */}
       <Card.Header>
         <Card.Title>
           {spell.name}
@@ -66,11 +66,11 @@ export default async function SpellCard({ index }: { index: any }) {
       <Card.Content>
         {/* STAT BLOCK */}
         <Attribute
-          name="Casting Time"
+          label="Casting Time"
           value={spell.casting_time}
           />
         <Attribute
-          name="Range"
+          label="Range"
           value={
             <>
               {spell.range}
@@ -79,7 +79,7 @@ export default async function SpellCard({ index }: { index: any }) {
           }
         />
         <Attribute 
-          name="Components"
+          label="Components"
           value={
             <>
               {spell.components.join(', ')}
@@ -88,7 +88,7 @@ export default async function SpellCard({ index }: { index: any }) {
           }
         />
         <Attribute
-          name="Duration"
+          label="Duration"
           value={
             <>
               {spell.concentration && 'Concentration, '}
@@ -98,7 +98,7 @@ export default async function SpellCard({ index }: { index: any }) {
         />
         {spell.dc && (
           <Attribute
-            name="Saving Throw"
+            label="Saving Throw"
             className="mt-2 w-fit saving-throw peer"
             value={
               <Link href={shortUrl(spell.dc.dc_type.url)} className="hover:underline">
@@ -153,20 +153,20 @@ export default async function SpellCard({ index }: { index: any }) {
         )}
 
         {/* CLASS LIST */}
-        <div className="mt-5 flex gap-1">
-          <span className="font-semibold">
-            Classes:
-          </span>
-          <ul className="flex gap-1 list-comma">
-            {spell.classes.map(({ name, index, url }) => (
-              <li key={index}>
+        <Attribute 
+          label="Classes"
+          className="mt-5"
+          value={
+            spell.classes.map(({ name, index, url }, _index) => (
+              <Fragment key={index}>
                 <Link href={shortUrl(url)} className="hover:underline">
                   {name}
                 </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+                {_index < spell.classes.length -1 ? ', ' : ''}
+              </Fragment>
+            ))
+          }
+        />
       </Card.Content>
     </Card>
   );
