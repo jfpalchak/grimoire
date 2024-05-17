@@ -5,7 +5,8 @@ import { notFound } from 'next/navigation';
 import { getEquipment } from '@/lib/services';
 import { shortUrl } from '@/utils/format';
 import { isWeapon, isArmor, isVehicle, getCategory } from '@/utils/type-guards';
-import type { Equipment } from '@/types';
+import type { Armor, Equipment, Vehicle, Weapon } from '@/types';
+import Card, { Attribute } from '../stat-card';
 
 const ParsedCategory = ({ equipment }: { equipment: Equipment }) => {
   const category = getCategory(equipment);
@@ -18,7 +19,75 @@ const ParsedCategory = ({ equipment }: { equipment: Equipment }) => {
     );
   }
   return category;
-}
+};
+
+const ArmorDetail = ({ armor }: { armor: Armor }) => {
+  return (
+    <div className="mb-2">
+      <Attribute
+        name="Armor Class"
+        value={
+          <>
+            {armor.armor_class.base}
+            {armor.armor_class.dex_bonus && ' + Dex modifier'}
+            {Number.isInteger(armor.armor_class.max_bonus) && ` (max ${armor.armor_class.max_bonus})`}
+          </>
+        }
+      />
+      <Attribute
+        name="Strength Requirement"
+        value={armor.str_minimum || 'None'}
+      />
+      <Attribute
+        name="Stealth"
+        value={armor.stealth_disadvantage ? 'Disadvantage' : 'Unaffected'}
+      />
+    </div>
+  );
+};
+
+const VehicleDetail = ({ vehicle }: { vehicle: Vehicle }) => {
+  return (
+    <div className="mb-2">
+      {vehicle.speed && (
+        <Attribute
+          name="Speed"
+          value={Object.values(vehicle.speed).join(' ')}
+        />
+      )}
+      {vehicle.capacity && (
+        <Attribute
+          name="Capacity"
+          value={vehicle.capacity}
+        />
+      )}
+    </div>
+  );
+};
+
+const WeaponDetail = ({ weapon }: { weapon: Weapon }) => {
+  return (
+    <div className="my-2">
+      <Attribute
+        name="Damage"
+        value={
+          <>
+            {weapon.damage.damage_dice}
+            {weapon.two_handed_damage && ` (${weapon.two_handed_damage.damage_dice})`}
+          </>
+        }
+      />
+      <Attribute
+        name="Damage Type"
+        value={weapon.damage.damage_type.name}
+      />
+      <Attribute
+        name="Range"
+        value={Object.values(weapon.range).join('/')}
+      />
+    </div>
+  );
+};
 
 export default async function EquipmentCard({ index }: { index: string }) {
 
@@ -29,156 +98,61 @@ export default async function EquipmentCard({ index }: { index: string }) {
   }
 
   return (
-    <div>
-      <h1 className="mt-10 text-xl font-bold">
-        {equipment.name}
-      </h1>
-      <div className="my-3 italic">
-        {isArmor(equipment) && (
-          <span>
-            <ParsedCategory equipment={equipment} />
-            &nbsp;
-          </span>
+    <Card>
+      <Card.Header>
+        <Card.Title>
+          {equipment.name}
+        </Card.Title>
+        <Card.Subtitle>
+          {isArmor(equipment) && (
+            <span>
+              <ParsedCategory equipment={equipment} />
+              &nbsp;
+            </span>
+          )}
+          <Link href={shortUrl(equipment.equipment_category.url)} className="hover:underline">
+            {isWeapon(equipment)
+              ? `${equipment.weapon_range} ${equipment.equipment_category.name} (${getCategory(equipment)})`
+              : equipment.equipment_category.name
+            }
+          </Link>
+        </Card.Subtitle>
+      </Card.Header>
+      <Card.Content>
+        {isArmor(equipment) && <ArmorDetail armor={equipment} />}
+        {isVehicle(equipment) && <VehicleDetail vehicle={equipment} />}
+        {isWeapon(equipment) && <WeaponDetail weapon={equipment} />}
+        
+        {(!isArmor(equipment) || !isWeapon(equipment)) && (
+          <Attribute
+            name="Category"
+            value={<ParsedCategory equipment={equipment} />}
+          />
         )}
-        <Link href={shortUrl(equipment.equipment_category.url)} className="hover:underline">
-          {isWeapon(equipment)
-            ? `${equipment.weapon_range} ${equipment.equipment_category.name} (${getCategory(equipment)})`
-            : equipment.equipment_category.name
-          }
-        </Link>
-      </div>
-
-      {isArmor(equipment) && (
-        <div className="my-2">
-          <div>
-            <span className="font-semibold">
-              Armor Class:&nbsp;
-            </span>
-            <span>
-              {equipment.armor_class.base}
-              {equipment.armor_class.dex_bonus && ' + Dex modifier'}
-              {Number.isInteger(equipment.armor_class.max_bonus) && ` (max ${equipment.armor_class.max_bonus})`}
-            </span>
+        <Attribute
+          name="Weight"
+          value={`${equipment.weight} ${equipment.weight === 1 ? 'lb' : 'lbs'}`}
+        />
+        <Attribute
+          name="Cost"
+          value={`${equipment.cost.quantity} ${equipment.cost.unit}`}
+        />
+        {equipment.desc.length > 0 && (
+          <div className="mt-2 flex flex-col gap-1">
+            {equipment.desc.map((paragraph, i) => (
+              <p key={i}>
+                {paragraph}
+              </p>
+            ))}
           </div>
-          <div>
+        )}
+        {equipment.contents.length > 0 && (
+          <div className="mt-2">
             <span className="font-semibold">
-              Strength Requirement:&nbsp;
+              Contents:
             </span>
-            <span>
-              {equipment.str_minimum || 'None'}
-            </span>
-          </div>
-          <div>
-            <span className="font-semibold">
-              Stealth:&nbsp;
-            </span>
-            <span>
-              {equipment.stealth_disadvantage ? 'Disadvantage' : 'Unaffected'}
-            </span>
-          </div>
-        </div>
-      )}
-
-      {isVehicle(equipment) && (
-        <div className="mb-2">
-          {equipment.speed && (
-            <div>
-              <span className="font-semibold">
-                Speed:&nbsp;
-              </span>
-              <span>
-                {`${equipment.speed.quantity} ${equipment.speed.unit}`}
-              </span>
-            </div>
-          )}
-          {equipment.capacity && (
-            <div>
-              <span className="font-semibold">
-                Capacity:&nbsp;
-              </span>
-              <span>
-                {equipment.capacity}
-              </span>
-            </div>
-          )}
-        </div>
-      )}
-
-      {isWeapon(equipment) && (
-        <div className="my-2">
-          <div>
-            <span className="font-semibold">
-              Damage:&nbsp;
-            </span>
-            <span>
-              {equipment.damage.damage_dice}
-            </span>
-            {equipment.two_handed_damage && (
-              <span>
-                {` (${equipment.two_handed_damage.damage_dice})`}
-              </span>
-            )}
-          </div>
-          <div>
-            <span className="font-semibold">
-              Damage Type:&nbsp;
-            </span>
-            <span>
-              {equipment.damage.damage_type.name}
-            </span>
-          </div>
-          <div>
-            <span className="font-semibold">
-              Range:&nbsp;
-            </span>
-            <span>
-              {equipment.range.normal}
-              {equipment.range.long ? `/${equipment.range.long}` : ''}
-            </span>
-          </div>
-        </div>
-      )}
-
-      {(!isArmor(equipment) || !isWeapon(equipment)) && (
-        <div>
-          <span className="font-semibold">
-            Category:&nbsp;
-          </span>
-          <span>
-            <ParsedCategory equipment={equipment} />
-          </span>
-        </div>
-      )}
-      <div>
-        <span className="font-semibold">
-          Weight:&nbsp;
-        </span>
-        {equipment.weight}
-        &nbsp;
-        {equipment.weight === 1 ? 'lb' : 'lbs'}
-      </div>
-      <div>
-        <span className="font-semibold">
-          Cost:&nbsp;
-        </span>
-        {equipment.cost.quantity} {equipment.cost.unit}
-      </div>
-      {equipment.desc.length > 0 && (
-        <div className="mt-2 flex flex-col gap-1">
-          {equipment.desc.map((paragraph, i) => (
-            <p key={i}>
-              {paragraph}
-            </p>
-          ))}
-        </div>
-      )}
-      {equipment.contents.length > 0 && (
-        <div className="mt-2">
-          <span className="font-semibold">
-            Contents:
-          </span>
-          <ul className="list-inside list-disc">
-            {equipment.contents.map(({ item, quantity }) => (
+            <ul className="list-inside list-disc">
+              {equipment.contents.map(({ item, quantity }) => (
                 <li key={item.index}>
                   {quantity}&nbsp;
                   <Link href={shortUrl(item.url)} className="hover:underline">
@@ -186,26 +160,25 @@ export default async function EquipmentCard({ index }: { index: string }) {
                   </Link>
                 </li>
               ))}
-          </ul>
-        </div>
-      )}
-      {equipment.properties.length > 0 && (
-        <div className="mt-2">
-          <span className="font-semibold">
-            Properties:&nbsp;
-          </span>
-          <span>
-            {equipment.properties.map(({ index, name, url }, _index) => (
-              <Fragment key={index}>
-                <Link href={shortUrl(url)} className="hover:underline">
-                  {name}
-                </Link>
-                {_index < equipment.properties.length -1 ? ', ' : ''}
-              </Fragment>
-            ))}
-          </span>
-        </div>
-      )}
-    </div>
+            </ul>
+          </div>
+        )}
+        {equipment.properties.length > 0 && (
+          <Attribute 
+            name="Properties"
+            value={
+              equipment.properties.map(({ index, name, url }, _index) => (
+                <Fragment key={index}>
+                  <Link href={shortUrl(url)} className="hover:underline">
+                    {name}
+                  </Link>
+                  {_index < equipment.properties.length -1 ? ', ' : ''}
+                </Fragment>
+              ))
+            }
+          />
+        )}
+      </Card.Content>
+    </Card>
   );
 }
