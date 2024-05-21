@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { getEquipment } from '@/lib/services';
-import { shortUrl } from '@/utils/format';
+import { formatArmorAC, shortUrl } from '@/utils/format';
 import { isWeapon, isArmor, isVehicle, getCategory } from '@/utils/type-guards';
 import type { Armor, Equipment, Vehicle, Weapon } from '@/types';
 
@@ -27,13 +27,7 @@ const ArmorDetail = ({ armor }: { armor: Armor }) => {
     <div className="mb-2">
       <Attribute
         label="Armor Class"
-        value={
-          <>
-            {armor.armor_class.base}
-            {armor.armor_class.dex_bonus && ' + Dex modifier'}
-            {Number.isInteger(armor.armor_class.max_bonus) && ` (max ${armor.armor_class.max_bonus})`}
-          </>
-        }
+        value={formatArmorAC(armor.armor_class)}
       />
       <Attribute
         label="Strength Requirement"
@@ -124,7 +118,7 @@ export default async function EquipmentCard({ index }: { index: string }) {
         {isVehicle(equipment) && <VehicleDetail vehicle={equipment} />}
         {isWeapon(equipment) && <WeaponDetail weapon={equipment} />}
 
-        {(!isArmor(equipment) || !isWeapon(equipment)) && (
+        {!(isArmor(equipment) || isWeapon(equipment)) && (
           <Attribute
             label="Category"
             value={<ParsedCategory equipment={equipment} />}
@@ -152,7 +146,7 @@ export default async function EquipmentCard({ index }: { index: string }) {
             <span className="font-semibold">
               Contents:
             </span>
-            <ul className="list-inside list-disc">
+            <ul className="pl-1 list-inside list-disc">
               {equipment.contents.map(({ item, quantity }) => (
                 <li key={item.index}>
                   {quantity}&nbsp;
@@ -168,12 +162,12 @@ export default async function EquipmentCard({ index }: { index: string }) {
           <Attribute 
             label="Properties"
             value={
-              equipment.properties.map(({ index, name, url }, _index) => (
+              equipment.properties.map(({ index, name, url }, i) => (
                 <Fragment key={index}>
                   <Link href={shortUrl(url)} className="hover:underline">
                     {name}
                   </Link>
-                  {_index < equipment.properties.length -1 ? ', ' : ''}
+                  {i < equipment.properties.length -1 ? ', ' : ''}
                 </Fragment>
               ))
             }

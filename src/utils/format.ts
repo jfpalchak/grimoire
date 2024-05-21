@@ -1,4 +1,4 @@
-import type { Action, UsageType, Monster } from '@/types';
+import type { Action, UsageType, Monster, Armor } from '@/types';
 
 // Remove the '/api' portion of a given url string.
 export function shortUrl(url: string): string {
@@ -86,4 +86,12 @@ export function formatMonsterAC(monsterAC: MonsterAC): string {
       return ac;
     })
     .join(', ');
+}
+
+type ArmorAC = Armor['armor_class'];
+
+// Given an equipment's armor_class property,
+// return the object's data formatted as a string.
+export function formatArmorAC({ base, dex_bonus, max_bonus }: ArmorAC): string {
+  return `${base} ${dex_bonus ? '+ Dex modifier' : ''} ${max_bonus ? `(max ${max_bonus})` : ''}`;
 }
