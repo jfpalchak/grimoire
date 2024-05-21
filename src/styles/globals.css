@@ -77,31 +77,32 @@
 
   table {
     @apply w-full text-sm text-center
+          break-inside-avoid-column
           [&_td]:py-1 [&_td]:max-w-1
-          [&_tr:nth-child(even)]:bg-neutral-600/10
+          [&_tr:nth-child(even)]:bg-neutral-600/10;
   }
 }
 
 @layer components {
   .markdown {
-    @apply flex flex-col gap-1.5
-          [&_table]:mb-1
+    @apply flex flex-col gap-1.5 text-pretty
+          [&_table]:mb-2
           [&_h1]:text-3xl [&_h1]:font-semibold
           [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:border-b [&_h2]:my-1
           [&_h3]:text-xl [&_h3]:font-semibold
           [&_h4]:text-lg [&_h4]:font-semibold
-          [&_h5]:font-semibold [&_h5:has(~table)]:text-center [&_h5]:my-1
+          [&_h5]:my-1 [&_h5]:font-semibold [&_h5:has(~table)]:text-center [&_h5:first-of-type:has(~table)]:break-before-column
           [&_ul]:pl-6 [&_ul]:list-disc
           [&_ol]:px-6 [&_ol]:py-2 [&_ol]:list-decimal;
   }
 
   .highlight-saving-throw {
     @apply [&_em:not(:has(strong))]:not-italic 
-          [&_em:not(:has(strong))]:peer-[.saving-throw]:peer-hover:bg-neutral-600/10
+          [&_em:not(:has(strong))]:peer-[.saving-throw]:peer-hover:bg-neutral-600/10;
   }
 
   .list-comma {
-    @apply [&>li]:after-comma
+    @apply [&>li]:after-comma;
   }
 
   .stat-card-texture {
@@ -135,6 +136,6 @@
 
 @layer utilities {
   .after-comma {
-    @apply [&:not(:last-child)]:after:content-[',']
+    @apply [&:not(:last-child)]:after:content-[','];
   }
 }

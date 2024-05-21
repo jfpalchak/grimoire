@@ -43,18 +43,21 @@ export default async function Page({ params: { category }, searchParams }: Param
       </div>
       <div>
         <ul className="mt-5 flex flex-col gap-2">
-          {data.results.filter(searchFilter).map((item) => (
-            <Link
-              key={item.index}
-              href={`${category}/${item.index}`}
-              className="w-48"
-            >
-              <div className="p-4 shadow-md">
-                <p>{item.name}</p>
-                {(typeof item.level === 'number') && <p>Level: {item.level}</p>}
-              </div>
-            </Link>
-          ))}
+          {data.results
+            .filter(searchFilter)
+            // .sort((a, b) => a.level! - b.level!)
+            .map((item) => (
+              <Link
+                key={item.index}
+                href={`${category}/${item.index}`}
+                className="w-full shadow-md rounded-md hover:shadow-lg transition-shadow"
+              >
+                <div className="p-4">
+                  <p className="font-medium">{item.name}</p>
+                  {(typeof item.level === 'number') && <p className="text-sm font-extralight">Level: {item.level}</p>}
+                </div>
+              </Link>
+            ))}
         </ul>
       </div>
     </section>

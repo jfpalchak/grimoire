@@ -25,7 +25,7 @@ export default function Search() {
         Search
       </label>
       <input
-        className="p-2 mb-1 outline-2"
+        className="mb-1 p-2 w-full rounded-lg outline-2 outline-offset-2 border-2"
         placeholder="Search..."
         onChange={(e) => handleSearch(e.target.value)}
         defaultValue={searchParams.get('query')?.toString()}

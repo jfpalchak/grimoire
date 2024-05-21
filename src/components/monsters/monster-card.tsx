@@ -20,20 +20,20 @@ const Stat = ({ ability, score }: StatProps) => {
   const sign = score < 10 ? '' : '+' ;
   return (
     <div>
-      <div className="font-semibold">{ability}</div>
+      <div className="font-semibold uppercase">{ability.substring(0,3)}</div>
       <div>{`${score} (${sign}${modifier(score)})`}</div>
     </div>
   );
 };
 
-type AbilityBlockProps = {
+type ActionBlockProps = {
   actions: Action[];
   className: string;
   header?: string;
   desc?: string;
 };
 
-const AbilityBlock = ({ actions, header, desc, className }: AbilityBlockProps) => {
+const ActionBlock = ({ actions, header, desc, className }: ActionBlockProps) => {
   return (
     <div className={className}>
       {header && (
@@ -66,7 +66,7 @@ export default async function MonsterCard({ index }: { index: any }) {
   }
 
   return (
-    <Card>
+    <Card columns>
       <Card.Header>
         <Card.Title>
           {monster.name}
@@ -103,12 +103,13 @@ export default async function MonsterCard({ index }: { index: any }) {
 
       {/* ABILITY SCORES */}
       <Card.StatBlock className="my-2 flex flex-wrap gap-4 text-center">
-        <Stat ability='STR' score={monster.strength} />
-        <Stat ability='DEX' score={monster.dexterity} />
-        <Stat ability='CON' score={monster.constitution} />
-        <Stat ability='INT' score={monster.intelligence} />
-        <Stat ability='WIS' score={monster.wisdom} />
-        <Stat ability='CHA' score={monster.charisma} />
+        {(['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'] as const)
+          .map((ability) => (
+            <Stat
+              ability={ability}
+              score={monster[ability]}
+            />
+        ))}
       </Card.StatBlock>
 
       <Card.Divider />
@@ -119,12 +120,12 @@ export default async function MonsterCard({ index }: { index: any }) {
             key={proficiency[0]}
             label={proficiency[0]}
             value={
-              proficiency[1].map(({ stat, value, url }, _index) => (
+              proficiency[1].map(({ stat, value, url }, i) => (
                 <Fragment key={index}>
                   <Link href={shortUrl(url)} className="hover:underline">
                     {stat}
                   </Link>
-                  {` +${value}${_index < proficiency[1].length - 1 ? ', ' : ''}`}
+                  {` +${value}${i < proficiency[1].length - 1 ? ', ' : ''}`}
                 </Fragment>
               ))
             }
@@ -152,12 +153,12 @@ export default async function MonsterCard({ index }: { index: any }) {
           <Attribute
             label="Condition Immunities"
             value={
-              monster.condition_immunities.map(({ name, index, url }, _index) => (
+              monster.condition_immunities.map(({ name, index, url }, i) => (
                 <Fragment key={index}>
                   <Link href={shortUrl(url)} className="hover:underline">
                     {name}
                   </Link>
-                  {_index < monster.condition_immunities.length - 1 && ', '}
+                  {i < monster.condition_immunities.length - 1 && ', '}
                 </Fragment>
               ))
             }
@@ -194,17 +195,17 @@ export default async function MonsterCard({ index }: { index: any }) {
       <Card.Divider />
 
       <Card.Content>
-        <AbilityBlock
+        <ActionBlock
           actions={monster.special_abilities}
           className="mt-5"
         />
-        <AbilityBlock 
+        <ActionBlock 
           header="Actions"
           actions={monster.actions}
           className="mt-2"
         />
         {monster.legendary_actions.length > 0 && (
-          <AbilityBlock 
+          <ActionBlock 
             header="Legendary Actions"
             desc={
               `The ${monster.name} can take 3 legendary actions, choosing from the options below. Only one legendary action option can be used at a time and only at the end of another creature's turn. The ${monster.name} regains spent legendary actions at the start of its turn.`

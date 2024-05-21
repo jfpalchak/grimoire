@@ -157,12 +157,12 @@ export default async function SpellCard({ index }: { index: any }) {
           label="Classes"
           className="mt-5"
           value={
-            spell.classes.map(({ name, index, url }, _index) => (
+            spell.classes.map(({ name, index, url }, i) => (
               <Fragment key={index}>
                 <Link href={shortUrl(url)} className="hover:underline">
                   {name}
                 </Link>
-                {_index < spell.classes.length -1 ? ', ' : ''}
+                {i < spell.classes.length -1 ? ', ' : ''}
               </Fragment>
             ))
           }

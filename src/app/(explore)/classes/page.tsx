@@ -14,7 +14,7 @@ export default async function Page() {
           <Link
             key={name}
             href={path}
-            className="w-80 p-4 shadow-md"
+            className="w-80 p-4 shadow-md rounded-md"
           >
             <h4 className="mb-2 text-lg font-semibold">
               {name}

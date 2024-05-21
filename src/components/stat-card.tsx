@@ -74,11 +74,14 @@ const CardFootnote = ({ className, children }: Props) => {
   );
 };
 
-function Card ({ className, children }: Props) {
+type CardProps = { columns?: boolean } & Props;
+
+function Card ({ columns = false, className, children }: CardProps) {
   return (
     <div className={cn(
       'stat-card-texture',
-      'shadow-md shadow-slate-400 p-4',
+      'p-4 shadow-md shadow-slate-500 max-w-5xl mx-auto',
+      columns && 'lg:columns-2',
       className
       )}
     >

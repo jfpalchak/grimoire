@@ -12,7 +12,7 @@ export default async function Page() {
       </div>
       <div className="mt-10 flex flex-wrap gap-5 justify-center">
         {rules.map(({ name, path, sections }) => (
-          <div key={name} className="w-80 p-4 shadow-md">
+          <div key={name} className="w-80 p-4 shadow-md rounded-md">
             <h4 className="mb-2 text-lg font-semibold">
               <Link href={path}>
                 {name}
