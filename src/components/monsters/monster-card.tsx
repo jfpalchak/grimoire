@@ -20,7 +20,7 @@ const Stat = ({ ability, score }: StatProps) => {
   const sign = score < 10 ? '' : '+' ;
   return (
     <div>
-      <div className="font-semibold uppercase">{ability.substring(0,3)}</div>
+      <div className="font-semibold">{ability}</div>
       <div>{`${score} (${sign}${modifier(score)})`}</div>
     </div>
   );
@@ -103,13 +103,12 @@ export default async function MonsterCard({ index }: { index: any }) {
 
       {/* ABILITY SCORES */}
       <Card.StatBlock className="my-2 flex flex-wrap gap-4 text-center">
-        {(['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'] as const)
-          .map((ability) => (
-            <Stat
-              ability={ability}
-              score={monster[ability]}
-            />
-        ))}
+        <Stat ability='STR' score={monster.strength} />
+        <Stat ability='DEX' score={monster.dexterity} />
+        <Stat ability='CON' score={monster.constitution} />
+        <Stat ability='INT' score={monster.intelligence} />
+        <Stat ability='WIS' score={monster.wisdom} />
+        <Stat ability='CHA' score={monster.charisma} />
       </Card.StatBlock>
 
       <Card.Divider />
