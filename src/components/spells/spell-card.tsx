@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { getSpell } from '@/lib/services';
-import { formatSpellMD, shortUrl } from '@/utils/format';
+import { formatDescMD, shortUrl } from '@/utils/format';
 import type { DamageDice } from '@/types';
 
 import Markdown from '@/components/markdown';
@@ -111,7 +111,7 @@ export default async function SpellCard({ index }: { index: any }) {
         {/* DESCRIPTION */}
         <div className="mt-2 highlight-saving-throw">
           <Markdown>
-            {formatSpellMD(spell.desc)}
+            {formatDescMD(spell.desc)}
           </Markdown>
         </div>
         {spell.higher_level && spell.higher_level.length > 0 && (
@@ -120,7 +120,7 @@ export default async function SpellCard({ index }: { index: any }) {
               At Higher Levels:
             </span>
             <Markdown>
-              {formatSpellMD(spell.higher_level)}
+              {formatDescMD(spell.higher_level)}
             </Markdown>
           </div>
         )}

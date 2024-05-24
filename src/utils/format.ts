@@ -11,7 +11,7 @@ export function bookmark(string: string): string {
 }
 
 // Format an array of markdown text to properly render on the DOM.
-export function formatSpellMD(text: string[]): string {
+export function formatDescMD(text: string[]): string {
   return text
     .reduce((article, row, i) => {
       if (row.startsWith('|') && text[i + 1]?.startsWith('|')) {
@@ -39,12 +39,12 @@ function highlight(row: string): string {
 // Given a monster's action/ability object, 
 // return a formatted string containing markdown.
 export function formatActionMD(action: Action): string {
-  return `***${action.name}${formatUsage(action.usage)}*** ${formatDesc(action.desc)}`;
+  return `***${action.name}${formatActionUsage(action.usage)}*** ${formatActionDesc(action.desc)}`;
 }
 
 // Given the usage conditions for an action/ability,
 // return the data formatted as a string.
-function formatUsage(usage?: UsageType): string {
+function formatActionUsage(usage?: UsageType): string {
   if (!usage) return '.';
 
   switch(usage.type) {
@@ -59,7 +59,7 @@ function formatUsage(usage?: UsageType): string {
 
 // Given a string containing the description of an action/ability,
 // format line breaks for markdown, and italicize any instance of Attack/Hit text.
-function formatDesc(desc: string): string {
+function formatActionDesc(desc: string): string {
   const regex = /(Melee or Ranged|Ranged|Melee) Weapon Attack:|Hit:/g;
 
   const formattedDesc = desc.replace(regex, (match) => `_${match}_`)
