@@ -72,7 +72,7 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[url('/assets/soft-texture.png')] bg-background text-foreground;
   }
 
   table {
@@ -87,8 +87,8 @@
   .markdown {
     @apply flex flex-col gap-1.5 text-pretty
           [&_table]:mb-2
-          [&_h1]:text-3xl [&_h1]:font-semibold
-          [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:border-b [&_h2]:my-1
+          [&_h1]:text-3xl [&_h1]:font-semibold [&_h1]:border-b-4 [&_h1]:border-red-800 [&_h1]:mb-2
+          [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:border-b-2 [&_h2]:border-red-800 [&_h2]:my-1
           [&_h3]:text-xl [&_h3]:font-semibold
           [&_h4]:text-lg [&_h4]:font-semibold
           [&_h5]:my-1 [&_h5]:font-semibold [&_h5:has(~table)]:text-center [&_h5:first-of-type:has(~table)]:break-before-column
@@ -105,7 +105,7 @@
     @apply [&>li]:after-comma;
   }
 
-  .stat-card-texture {
+  .scroll-texture {
     background: url('/assets/top-texture.png'), url('/assets/texture.png');
     background-size: 100% auto;
     background-position: top center;
