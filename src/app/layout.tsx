@@ -3,6 +3,9 @@ import { inter } from "@/styles/fonts";
 import "@/styles/globals.css";
 
 import Navbar from "@/components/ui/navbar";
+import { TailwindIndicator } from "@/components/tailwind-indicator";
+import { cn } from "@/utils/cn";
+import { MainNav } from "@/components/ui/main-nav";
 
 export const metadata: Metadata = {
   title: "Grimoire",
@@ -16,11 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Navbar />
+      <body className={cn(inter.className)}>
+        {/* <Navbar /> */}
+        <MainNav />
         <main>
           {children}
         </main>
+        <TailwindIndicator />
       </body>
     </html>
   );
