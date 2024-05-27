@@ -1,26 +1,25 @@
-import { useEffect, useState } from "react";
-import { bookmark } from "@/utils/format";
+import { useEffect, useRef, useState } from "react";
 
-export default function useObserver({ sections }: { sections: string[] }) {
-  const [currentView, setCurrentView] = useState<string | null>(null);
+export default function useObserver() {
+  const [inView, setInView] = useState<string | null>(null);
+  const refs = useRef<HTMLElement[]>([]);
 
   useEffect(() =>{
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) setCurrentView(entry.target.id);
+        if (entry.isIntersecting) setInView(entry.target.id);
       });
     }, { rootMargin: '-45% 0px -60% 0px' });
 
-    sections.forEach((section) => {
-      const target = document.getElementById(bookmark(section));
-      if (target) observer.observe(target);
+    refs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
     });
 
     return () => { 
       observer.disconnect();
     };
 
-  }, [sections]);
+  }, []);
 
-  return { currentView };
+  return { inView, refs };
 }

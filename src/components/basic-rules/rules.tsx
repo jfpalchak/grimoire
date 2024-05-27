@@ -1,37 +1,65 @@
-import React from 'react';
-import { notFound } from 'next/navigation';
+'use client';
 
+import Link from 'next/link';
 import Markdown from '@/components/markdown';
-import { getRules } from '@/lib/services';
-import { bookmark } from '@/utils/format';
+import useObserver from '@/hooks/use-observer';
+import { cn } from '@/utils/cn';
+import { type RulesChapter } from '@/types';
 
-export default async function Rules({ index }: { index: string }) {
-
-  const chapter = await getRules(index);
-
-  if (!chapter) {
-    notFound();
-  }
-
+export default function Rules({ chapter }: { chapter: RulesChapter }) {
+  
+  const { refs, inView } = useObserver();
   const { rules, sections } = chapter;
 
   return (
-    <section>
-      <div className="mb-5 border-b-2">
-        <p className="font-semibold">Rules: {rules.name}</p>
-      </div>
+    <section className="p-4 flex gap-7">
+      <aside className="static hidden md:block">
+        <nav className="sticky top-10 w-64 py-4 border-2 bg-white">
+          <h4 className="mb-2 text-lg pl-4 font-semibold">
+            <Link href={`#${rules.index}`}>
+              {rules.name}
+            </Link>
+          </h4>
+          <ul className="flex flex-col gap-1">
+            {sections.map((section) => (
+              <li 
+                key={section.index}
+                className={cn('py-1 text-sm',
+                  section.index === inView 
+                    ? 'border-l-4 border-l-red-800 font-semibold' 
+                    : 'border-l-4 border-l-transparent',
+                )}
+              >
+                <Link
+                  href={`#${section.index}`}
+                  className="pl-6 hover:font-semibold"
+                >
+                  {section.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
       <article>
-        <div id={bookmark(rules.name)}>
+        <section id={rules.index}>
           <Markdown>
             {rules.desc}
           </Markdown>
-        </div>
-        {sections.map((article) => (
-          <div id={bookmark(article.name)} key={article.index} className="mt-5">
+        </section>
+        {sections.map((article, i) => (
+          <section
+            key={article.index}
+            id={article.index}
+            ref={(el) => { 
+              if (el) refs.current[i] = el; 
+            }}
+            className="mt-5"
+          >
             <Markdown>
               {article.desc}
             </Markdown>
-          </div>
+          </section>
         ))}
       </article>
     </section>

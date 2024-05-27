@@ -1,5 +1,6 @@
+import { notFound } from "next/navigation";
+import { getRules } from "@/lib/services";
 import Rules from "@/components/basic-rules/rules";
-import RulesSideNav from "@/components/basic-rules/rules-sidenav";
 
 interface Props {
   params: {
@@ -9,11 +10,18 @@ interface Props {
 
 export default async function RulePage({ params }: Props) {
 
+  const chapter = await getRules(params.index);
+
+  if (!chapter) {
+    notFound();
+  }
+
   return (
-    <div className="mt-10 mb-20 mx-4 flex gap-7">
-      {/* pass routes as prop, turn into reusable sidenav */}
-      <RulesSideNav />
-      <Rules index={params.index} />
-    </div>
+    <section className="mx-auto max-w-screen-xl">
+      <header className="mt-10 px-4">
+        <p className="font-semibold">Category: {params.index}</p>
+      </header>
+      <Rules chapter={chapter} />
+    </section>
   ); 
 }

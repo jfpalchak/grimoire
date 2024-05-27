@@ -6,13 +6,13 @@ import { bookmark } from '@/utils/format';
 export default async function Page() {
 
   return (
-    <section className="m-10">
-      <div className="border-b-2 font-semibold">
+    <section className="mx-auto max-w-screen-xl">
+      <header className="my-10 mx-10 border-b-2 font-semibold">
         <p>Category: Basic Rules</p>
-      </div>
-      <div className="mt-10 flex flex-wrap gap-5 justify-center">
+      </header>
+      <div className="p-4 flex flex-wrap gap-5 justify-center">
         {rules.map(({ name, path, sections }) => (
-          <div key={name} className="w-80 p-4 shadow-md rounded-md">
+          <div key={name} className="w-80 p-4 bg-white border shadow-md rounded-md">
             <h4 className="mb-2 text-lg font-semibold">
               <Link href={path}>
                 {name}
