@@ -5,9 +5,8 @@ export function shortUrl(url: string): string {
   return url.substring(4);
 }
 
-// Remove all whitespace from a given string.
-export function bookmark(string: string): string {
-  return string.replace(/\s/g, '');
+export function slugify(string: string): string {
+  return string.toLowerCase().replace(/\s/g, '-');
 }
 
 // Format an array of markdown text to properly render on the DOM.

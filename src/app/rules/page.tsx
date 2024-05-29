@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link';
 import { rules } from './routes';
-import { bookmark } from '@/utils/format';
+import { slugify } from '@/utils/format';
 
 export default async function Page() {
 
@@ -22,7 +22,7 @@ export default async function Page() {
               {sections.map((section) => (
                 <li key={section}>
                   <Link
-                    href={`${path}#${bookmark(section)}`}
+                    href={`${path}#${slugify(section)}`}
                     className="hover:underline"
                   >
                     {section}
