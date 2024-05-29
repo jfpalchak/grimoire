@@ -3,7 +3,7 @@ import React from 'react'
 
 export default function Navbar() {
   return (
-    <nav className="border-b-2">
+    <nav className="hidden sm:block border-b-2">
       <ul className="p-4 flex gap-5">
         <Link href="/">Home</Link>
         <Link href="/rules">Rules</Link>
