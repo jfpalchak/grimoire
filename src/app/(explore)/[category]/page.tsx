@@ -1,64 +1,39 @@
 import React from 'react'
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { dnd } from '@/lib/api';
 import Search from '@/components/ui/search';
+import List from './list';
 import type { APIResponse } from '@/types';
 
 type Params = {
-  params: {
-    category: string;
-  };
-  searchParams: {
-    [key: string]: string;
-  };
+  category: string;
 };
 
-// Don't use searchParams as props, as this sends a network request each time we 
-// update the searchParams and receive new prop values from the server.
-// Instead, we'll want to use the useSearchParams hook in a client component, 
-// as this will save our Page from sending new network requests each time we update the url search params.
-export default async function Page({ params: { category }, searchParams }: Params) {
+type Props = {
+  params: Params
+};
 
-  const data: APIResponse = await dnd.get(category);
+const getCategoryByParams = async ({ category }: Params): Promise<APIResponse> => {
+  return await dnd.get(category);
+};
+
+export default async function Page({ params }: Props) {
+
+  const data = await getCategoryByParams(params);
 
   if (!data) {
     notFound();
   }
 
-  const searchFilter = (item: any) => {
-    return (
-      !searchParams.query 
-      || item.name.toLowerCase().includes(searchParams.query)
-      || item.level == searchParams.query
-    );
-  }
-
   return (
     <section className="m-10">
-      <div className="border-b-2 font-semibold">
-        <p>Category: {category}</p>
-        <br/>
+      <header className="border-b-2 font-semibold">
+        <p>Category: {params.category}</p>
+        <br/> 
         <Search />
-      </div>
+      </header>
       <div>
-        <ul className="mt-5 flex flex-col gap-2">
-          {data.results
-            .filter(searchFilter)
-            // .sort((a, b) => a.level! - b.level!)
-            .map((item) => (
-              <Link
-                key={item.index}
-                href={`${category}/${item.index}`}
-                className="w-full shadow-md rounded-md hover:shadow-lg transition-shadow"
-              >
-                <div className="p-4">
-                  <p className="font-medium">{item.name}</p>
-                  {(typeof item.level === 'number') && <p className="text-sm font-extralight">Level: {item.level}</p>}
-                </div>
-              </Link>
-            ))}
-        </ul>
+        <List data={data} />
       </div>
     </section>
   )
