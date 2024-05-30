@@ -87,6 +87,22 @@ export function formatMonsterAC(monsterAC: MonsterAC): string {
     .join(', ');
 }
 
+// Given a monster's speed property,
+// return the object's data formatted as a string.
+export function formatMonsterSpeed (monsterSpeed: Record<string, string>): string {
+  return Object.entries(monsterSpeed)
+    .map(([movement, feet]) => (movement === 'walk') ? feet : `${movement} ${feet}`)
+    .join(', ')
+};
+
+// Given a monster's senses property,
+// return the object's data formatted as a string.
+export function formatMonsterSenses (monsterSenses: Record<string, string | number>): string {
+  return Object.entries(monsterSenses)
+    .map(([sense, stat]) => (`${sense.replaceAll('_', ' ')} ${stat}`))
+    .join(', ')
+};
+
 type ArmorAC = Armor['armor_class'];
 
 // Given an equipment's armor_class property,
