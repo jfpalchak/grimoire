@@ -9,6 +9,8 @@ export function slugify(string: string): string {
   return string.toLowerCase().replace(/\s/g, '-');
 }
 
+export const comma = <T extends unknown> (array: T[], idx: number): string => (idx < array.length - 1 ? ', ' : '');
+
 // Format an array of markdown text to properly render on the DOM.
 export function formatDescMD(text: string[]): string {
   return text
@@ -87,21 +89,26 @@ export function formatMonsterAC(monsterAC: MonsterAC): string {
     .join(', ');
 }
 
-// Given a monster's speed property,
-// return the object's data formatted as a string.
-export function formatMonsterSpeed (monsterSpeed: Record<string, string>): string {
-  return Object.entries(monsterSpeed)
-    .map(([movement, feet]) => (movement === 'walk') ? feet : `${movement} ${feet}`)
-    .join(', ')
+export function formatMonsterSpeed(monsterSpeed: Record<string, string>): string {
+  return formatRecord(monsterSpeed, (movement, feet) => 
+    (movement === 'walk') ? feet : `${movement} ${feet}`);
 };
 
-// Given a monster's senses property,
-// return the object's data formatted as a string.
-export function formatMonsterSenses (monsterSenses: Record<string, string | number>): string {
-  return Object.entries(monsterSenses)
-    .map(([sense, stat]) => (`${sense.replaceAll('_', ' ')} ${stat}`))
-    .join(', ')
+export function formatMonsterSenses(monsterSenses: Record<string, string | number>): string {
+  return formatRecord(monsterSenses, (sense, stat) => 
+    `${sense.replaceAll('_', ' ')} ${stat}`);
 };
+
+// Formats an object's key-value pairs into a string based on the provided options.
+function formatRecord<T extends Record<string, T[keyof T]>>(
+  record: T,
+  formatter: (key: string, value: T[keyof T]) => string,
+  separator: string = ', ',
+): string {
+  return Object.entries(record)
+    .map(([key, value]) => formatter(key, value))
+    .join(separator);
+}
 
 type ArmorAC = Armor['armor_class'];
 
