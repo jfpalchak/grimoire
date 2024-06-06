@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { getSpell } from '@/lib/services';
-import { formatDescMD, shortUrl } from '@/utils/format';
+import { formatDescMD, shortUrl, comma } from '@/utils/format';
 import type { DamageDice } from '@/types';
 
 import Markdown from '@/components/markdown';
@@ -162,7 +162,7 @@ export default async function SpellCard({ index }: { index: any }) {
                 <Link href={shortUrl(url)} className="hover:underline">
                   {name}
                 </Link>
-                {i < spell.classes.length -1 ? ', ' : ''}
+                {comma(spell.classes, i)}
               </Fragment>
             ))
           }

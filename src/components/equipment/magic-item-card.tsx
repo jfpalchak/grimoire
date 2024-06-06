@@ -3,10 +3,9 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
 import { getMagicItem } from '@/lib/services';
-import { formatDescMD, shortUrl } from '@/utils/format';
+import { formatDescMD, shortUrl, comma } from '@/utils/format';
 import Card, { Attribute } from '@/components/stat-card';
 import Markdown from '@/components/markdown';
-
 export default async function MagicItemCard({ index }: { index: string }) {
   const item = await getMagicItem(index);
 
@@ -40,7 +39,7 @@ export default async function MagicItemCard({ index }: { index: string }) {
                   <Link href={shortUrl(url)} className="hover:underline">
                     {name}
                   </Link>
-                  {i < item.variants.length -1 ? ', ' : ''}
+                  {comma(item.variants, i)}
                 </Fragment>
               ))
             }

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { getEquipment } from '@/lib/services';
-import { formatArmorAC, shortUrl } from '@/utils/format';
+import { formatArmorAC, shortUrl, comma } from '@/utils/format';
 import { isWeapon, isArmor, isVehicle, getCategory } from '@/utils/type-guards';
 import type { Armor, Equipment, Vehicle, Weapon } from '@/types';
 
@@ -167,7 +167,7 @@ export default async function EquipmentCard({ index }: { index: string }) {
                   <Link href={shortUrl(url)} className="hover:underline">
                     {name}
                   </Link>
-                  {i < equipment.properties.length -1 ? ', ' : ''}
+                  {comma(equipment.properties, i)}
                 </Fragment>
               ))
             }

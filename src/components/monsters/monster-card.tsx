@@ -6,6 +6,7 @@ import { getMonster } from '@/lib/services';
 import { proficiencies } from '@/utils/proficiencies';
 import { modifier } from '@/utils/modifier';
 import {
+  comma,
   shortUrl,
   formatActionMD,
   formatMonsterAC,
@@ -39,7 +40,7 @@ const legendaryDesc = ({ name }: { name: string }) => (
   The ${name} regains spent legendary actions at the start of its turn.`
 );
 
-const Stat = ({ ability, score }: { ability: string, score: number }) => {
+const AbilityScore = ({ ability, score }: { ability: string, score: number }) => {
   const sign = score < 10 ? '' : '+' ;
   return (
     <div className="w-[30%] py-1 md:w-[15%]">
@@ -113,7 +114,7 @@ export default async function MonsterCard({ index }: { index: any }) {
 
       <Card.StatBlock className="my-2 flex flex-wrap justify-around text-center">
         {abilities.map((ability) => (
-          <Stat
+          <AbilityScore
             key={ability}
             ability={ability}
             score={monster[ability]}
@@ -134,7 +135,7 @@ export default async function MonsterCard({ index }: { index: any }) {
                   <Link href={shortUrl(url)} className="hover:underline">
                     {stat}
                   </Link>
-                  {` +${value}${i < proficiency[1].length - 1 ? ', ' : ''}`}
+                  {` +${value}${comma(proficiency[1], i)}`}
                 </Fragment>
               ))
             }
@@ -158,7 +159,7 @@ export default async function MonsterCard({ index }: { index: any }) {
                   <Link href={shortUrl(url)} className="hover:underline">
                     {name}
                   </Link>
-                  {i < monster.condition_immunities.length - 1 && ', '}
+                  {comma(monster.condition_immunities, i)}
                 </Fragment>
               ))
             }
