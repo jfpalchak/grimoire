@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function useObserver() {
+export function useObserver() {
   const [inView, setInView] = useState<string | null>(null);
   const refs = useRef<HTMLElement[]>([]);
 

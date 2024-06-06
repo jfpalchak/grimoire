@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Markdown from '@/components/markdown';
-import useObserver from '@/hooks/use-observer';
+import { useObserver } from '@/hooks/use-observer';
 import { cn } from '@/utils/cn';
 import { type RulesChapter } from '@/types';
 
