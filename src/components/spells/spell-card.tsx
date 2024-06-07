@@ -39,13 +39,31 @@ const DiceTable = ({ data, stat, caption}: TableProps) => {
   );
 }
 
-export default async function SpellCard({ index }: { index: any }) {  
+export default async function SpellCard({ index }: { index: string }) {  
 
   const spell = await getSpell(index);
   
   if (!spell) {
     notFound();
   }
+
+  const aoe = spell.area_of_effect ? `(${spell.area_of_effect.size}-foot ${spell.area_of_effect.type})` : '';
+  const range = `${spell.range} ${aoe}`;
+  const materials = spell.material ? `(${spell.material})` : '';
+  const components = `${spell.components.join(', ')} ${materials}`;
+  const concentration = spell.concentration ? 'Concentration,' : '';
+  const duration = `${concentration} ${spell.duration}`;
+
+  const spellMeta = (
+    <>
+      {spell.level ? `level ${spell.level}` : 'cantrip'}
+      {' - '}
+      <ReferenceLink href={spell.school.url}>
+        {spell.school.name}
+      </ReferenceLink>
+      {spell.ritual && ' (ritual)'}
+    </>
+  );
 
   return (
     <Card>
@@ -54,48 +72,16 @@ export default async function SpellCard({ index }: { index: any }) {
           {spell.name}
         </Card.Title>
         <Card.Subtitle>
-          {spell.level ? `level ${spell.level}` : 'cantrip'}
-          {' - '}
-          <ReferenceLink href={spell.school.url}>
-            {spell.school.name}
-          </ReferenceLink>
-          {spell.ritual && ' (ritual)'}
+          {spellMeta}
         </Card.Subtitle>
       </Card.Header>
 
       <Card.Content>
         {/* STAT BLOCK */}
-        <Attribute
-          label="Casting Time"
-          value={spell.casting_time}
-          />
-        <Attribute
-          label="Range"
-          value={
-            <>
-              {spell.range}
-              {spell.area_of_effect && ` (${spell.area_of_effect.size}-foot ${spell.area_of_effect.type})`}
-            </>
-          }
-        />
-        <Attribute 
-          label="Components"
-          value={
-            <>
-              {spell.components.join(', ')}
-              {spell.material && ` (${spell.material})`}
-            </>
-          }
-        />
-        <Attribute
-          label="Duration"
-          value={
-            <>
-              {spell.concentration && 'Concentration, '}
-              {spell.duration}
-            </>
-          }
-        />
+        <Attribute label="Casting Time" value={spell.casting_time} />
+        <Attribute label="Range" value={range} />
+        <Attribute label="Components" value={components} />
+        <Attribute label="Duration" value={duration} />
         {spell.dc && (
           <Attribute
             label="Saving Throw"
