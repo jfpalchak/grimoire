@@ -2,11 +2,11 @@ import { notFound } from "next/navigation";
 import { getRules } from "@/lib/services";
 import Rules from "@/components/basic-rules/rules";
 
-interface Props {
+type Props = {
   params: {
     index: string;
   }
-}
+};
 
 export default async function RulePage({ params }: Props) {
 
@@ -19,7 +19,7 @@ export default async function RulePage({ params }: Props) {
   return (
     <section className="mx-auto max-w-screen-xl">
       <header className="mt-10 px-4">
-        <p className="font-semibold">Category: {params.index}</p>
+        <p className="font-semibold">Rules &gt; {params.index.charAt(0).toUpperCase()+params.index.slice(1)}</p>
       </header>
       <Rules chapter={chapter} />
     </section>

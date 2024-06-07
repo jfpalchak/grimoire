@@ -36,7 +36,11 @@ const CardHeader = ({ className, children }: Props) => {
 
 const CardTitle = ({ className, children }: Props) => {
   return (
-    <h1 className={cn('text-3xl font-semibold text-red-900', className)}>
+    <h1 className={cn(
+      'text-3xl font-semibold text-red-900',
+      className,
+      )}
+    >
       {children}
     </h1>
   );
@@ -44,7 +48,11 @@ const CardTitle = ({ className, children }: Props) => {
 
 const CardSubtitle = ({ className, children }: Props) => {
   return (
-    <div className={cn('mt-1 mb-4 italic', className)}>
+    <div className={cn(
+      'mt-1 mb-4 italic',
+      className,
+      )}
+    >
       {children}
     </div>
   );
@@ -60,7 +68,11 @@ const CardContent = ({ className, children }: Props) => {
 
 const CardStatBlock = ({ className, children }: Props) => {
   return (
-    <div className={cn('text-red-900', className)}>
+    <div className={cn(
+      'text-red-900',
+      className,
+      )}
+    >
       {children}
     </div>
   );
@@ -68,7 +80,11 @@ const CardStatBlock = ({ className, children }: Props) => {
 
 const CardFootnote = ({ className, children }: Props) => {
   return (
-    <div className={cn(className)}>
+    <div className={cn(
+      'mt-8 absolute inset-x-2',
+      className,
+      )}
+    >
       {children}
     </div>
   );
@@ -79,10 +95,10 @@ type CardProps = { columns?: boolean } & Props;
 function Card ({ columns = false, className, children }: CardProps) {
   return (
     <div className={cn(
-      'stat-card-texture',
+      'scroll-texture',
       'p-4 shadow-md shadow-slate-500 max-w-5xl mx-auto',
       columns && 'lg:columns-2',
-      className
+      className,
       )}
     >
       {children}

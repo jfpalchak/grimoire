@@ -47,6 +47,8 @@ export default async function SpellCard({ index }: { index: string }) {
     notFound();
   }
 
+  const level = spell.level ? `level ${spell.level}` : 'cantrip';
+  const ritual = spell.ritual && ' (ritual)';
   const aoe = spell.area_of_effect ? `(${spell.area_of_effect.size}-foot ${spell.area_of_effect.type})` : '';
   const range = `${spell.range} ${aoe}`;
   const materials = spell.material ? `(${spell.material})` : '';
@@ -56,12 +58,12 @@ export default async function SpellCard({ index }: { index: string }) {
 
   const spellMeta = (
     <>
-      {spell.level ? `level ${spell.level}` : 'cantrip'}
+      {level}
       {' - '}
       <ReferenceLink href={spell.school.url}>
         {spell.school.name}
       </ReferenceLink>
-      {spell.ritual && ' (ritual)'}
+      {ritual}
     </>
   );
 
