@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { TailwindIndicator } from "@/components/tailwind-indicator";
+import { ApolloWrapper } from "@/components/providers/apollo-wrapper";
 import { MainNav } from "@/components/ui/main-nav";
 import { cn } from "@/utils/cn";
 import { inter } from "@/styles/fonts";
@@ -19,11 +20,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(inter.className)}>
-        <MainNav />
-        <main>
-          {children}
-        </main>
-        <TailwindIndicator />
+        <ApolloWrapper>
+          <MainNav />
+          <main>
+            {children}
+          </main>
+          <TailwindIndicator />
+        </ApolloWrapper>
       </body>
     </html>
   );
