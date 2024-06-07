@@ -1,13 +1,13 @@
-import Link from 'next/link';
+import { Fragment } from 'react';
 import { notFound } from 'next/navigation';
 
 import { getSpell } from '@/lib/services';
-import { formatDescMD, shortUrl, comma } from '@/utils/format';
+import { formatDescMD, comma } from '@/utils/format';
 import type { DamageDice } from '@/types';
 
 import Markdown from '@/components/markdown';
 import Card, { Attribute } from '@/components/stat-card';
-import { Fragment } from 'react';
+import ReferenceLink from '@/components/reference-link';
 
 type TableProps = {
   data: Record<string, string>;
@@ -56,9 +56,9 @@ export default async function SpellCard({ index }: { index: any }) {
         <Card.Subtitle>
           {spell.level ? `level ${spell.level}` : 'cantrip'}
           {' - '}
-          <Link href={shortUrl(spell.school.url)} className="hover:underline">
+          <ReferenceLink href={spell.school.url}>
             {spell.school.name}
-          </Link>
+          </ReferenceLink>
           {spell.ritual && ' (ritual)'}
         </Card.Subtitle>
       </Card.Header>
@@ -101,9 +101,9 @@ export default async function SpellCard({ index }: { index: any }) {
             label="Saving Throw"
             className="mt-2 w-fit saving-throw peer"
             value={
-              <Link href={shortUrl(spell.dc.dc_type.url)} className="hover:underline">
+              <ReferenceLink href={spell.dc.dc_type.url}>
                 {spell.dc.dc_type.name}
-              </Link>
+              </ReferenceLink>
             }
           />
         )}
@@ -159,9 +159,9 @@ export default async function SpellCard({ index }: { index: any }) {
           value={
             spell.classes.map(({ name, index, url }, i) => (
               <Fragment key={index}>
-                <Link href={shortUrl(url)} className="hover:underline">
+                <ReferenceLink href={url}>
                   {name}
-                </Link>
+                </ReferenceLink>
                 {comma(spell.classes, i)}
               </Fragment>
             ))

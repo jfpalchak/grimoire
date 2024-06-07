@@ -1,13 +1,11 @@
 import { Fragment } from 'react';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
 
 import { getMonster } from '@/lib/services';
 import { proficiencies } from '@/utils/proficiencies';
 import { modifier } from '@/utils/modifier';
 import {
   comma,
-  shortUrl,
   formatActionMD,
   formatMonsterAC,
   formatMonsterSpeed,
@@ -17,6 +15,7 @@ import type { Action } from '@/types';
 
 import Markdown from '@/components/markdown';
 import Card, { Attribute } from '@/components/stat-card';
+import ReferenceLink from '@/components/reference-link';
 
 type ActionBlockProps = {
   actions: Action[];
@@ -132,9 +131,9 @@ export default async function MonsterCard({ index }: { index: any }) {
             value={
               proficiency[1].map(({ stat, value, url }, i) => (
                 <Fragment key={index}>
-                  <Link href={shortUrl(url)} className="hover:underline">
+                  <ReferenceLink href={url}>
                     {stat}
-                  </Link>
+                  </ReferenceLink>
                   {` +${value}${comma(proficiency[1], i)}`}
                 </Fragment>
               ))
@@ -156,9 +155,9 @@ export default async function MonsterCard({ index }: { index: any }) {
             value={
               monster.condition_immunities.map(({ name, index, url }, i) => (
                 <Fragment key={index}>
-                  <Link href={shortUrl(url)} className="hover:underline">
+                  <ReferenceLink href={url}>
                     {name}
-                  </Link>
+                  </ReferenceLink>
                   {comma(monster.condition_immunities, i)}
                 </Fragment>
               ))

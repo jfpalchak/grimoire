@@ -1,11 +1,12 @@
 import { Fragment } from 'react';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
 
 import { getMagicItem } from '@/lib/services';
-import { formatDescMD, shortUrl, comma } from '@/utils/format';
+import { formatDescMD, comma } from '@/utils/format';
 import Card, { Attribute } from '@/components/stat-card';
 import Markdown from '@/components/markdown';
+import ReferenceLink from '@/components/reference-link';
+
 export default async function MagicItemCard({ index }: { index: string }) {
   const item = await getMagicItem(index);
 
@@ -36,9 +37,9 @@ export default async function MagicItemCard({ index }: { index: string }) {
             value={
               item.variants.map(({ index, name, url }, i) => (
                 <Fragment key={index}>
-                  <Link href={shortUrl(url)} className="hover:underline">
+                  <ReferenceLink href={url}>
                     {name}
-                  </Link>
+                  </ReferenceLink>
                   {comma(item.variants, i)}
                 </Fragment>
               ))

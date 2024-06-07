@@ -8,15 +8,16 @@ import { isWeapon, isArmor, isVehicle, getCategory } from '@/utils/type-guards';
 import type { Armor, Equipment, Vehicle, Weapon } from '@/types';
 
 import Card, { Attribute } from '@/components/stat-card';
+import ReferenceLink from '../reference-link';
 
 const ParsedCategory = ({ equipment }: { equipment: Equipment }) => {
   const category = getCategory(equipment);
 
   if (typeof category === 'object') {
     return (
-      <Link href={shortUrl(category.url)} className="hover:underline">
+      <ReferenceLink href={category.url}>
         {category.name}
-      </Link>
+      </ReferenceLink>
     );
   }
   return category;
@@ -105,12 +106,12 @@ export default async function EquipmentCard({ index }: { index: string }) {
               &nbsp;
             </span>
           )}
-          <Link href={shortUrl(equipment.equipment_category.url)} className="hover:underline">
+          <ReferenceLink href={equipment.equipment_category.url}>
             {isWeapon(equipment)
               ? `${equipment.weapon_range} ${equipment.equipment_category.name} (${getCategory(equipment)})`
               : equipment.equipment_category.name
             }
-          </Link>
+          </ReferenceLink>
         </Card.Subtitle>
       </Card.Header>
       <Card.Content>
@@ -150,9 +151,9 @@ export default async function EquipmentCard({ index }: { index: string }) {
               {equipment.contents.map(({ item, quantity }) => (
                 <li key={item.index}>
                   {quantity}&nbsp;
-                  <Link href={shortUrl(item.url)} className="hover:underline">
+                  <ReferenceLink href={item.url}>
                     {item.name}
-                  </Link>
+                  </ReferenceLink>
                 </li>
               ))}
             </ul>
@@ -164,9 +165,9 @@ export default async function EquipmentCard({ index }: { index: string }) {
             value={
               equipment.properties.map(({ index, name, url }, i) => (
                 <Fragment key={index}>
-                  <Link href={shortUrl(url)} className="hover:underline">
+                  <ReferenceLink href={url}>
                     {name}
-                  </Link>
+                  </ReferenceLink>
                   {comma(equipment.properties, i)}
                 </Fragment>
               ))
