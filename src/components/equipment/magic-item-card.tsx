@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { notFound } from 'next/navigation';
 
-import { getMagicItem } from '@/lib/services';
+import { getMagicItem } from '@/lib/rest/services';
 import { formatDescMD, comma } from '@/utils/format';
 import Card, { Attribute } from '@/components/stat-card';
 import Markdown from '@/components/markdown';

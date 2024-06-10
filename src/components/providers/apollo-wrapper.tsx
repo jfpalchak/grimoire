@@ -8,11 +8,11 @@ import {
   ApolloClient,
   InMemoryCache,
 } from '@apollo/experimental-nextjs-app-support';
-import { API_URL } from '@/config';
+import { GQL_URL } from '@/config';
 
 const makeClient = () => {
   const httpLink = new HttpLink({
-    uri: API_URL,
+    uri: GQL_URL,
   });
 
   return new ApolloClient({

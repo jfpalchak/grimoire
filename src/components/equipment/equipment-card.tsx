@@ -1,9 +1,8 @@
 import React, { Fragment } from 'react';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import { getEquipment } from '@/lib/services';
-import { formatArmorAC, shortUrl, comma } from '@/utils/format';
+import { getEquipment } from '@/lib/rest/services';
+import { formatArmorAC, comma } from '@/utils/format';
 import { isWeapon, isArmor, isVehicle, getCategory } from '@/utils/type-guards';
 import type { Armor, Equipment, Vehicle, Weapon } from '@/types';
 

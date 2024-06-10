@@ -1,6 +1,6 @@
 import React from 'react'
 import { notFound } from 'next/navigation';
-import { dnd } from '@/lib/api';
+import { dndRest } from '@/lib/rest/fetch';
 import Search from '@/components/ui/search';
 import List from './list';
 import type { APIResponse } from '@/types';
@@ -14,7 +14,7 @@ type Props = {
 };
 
 const getCategoryByParams = async ({ category }: Params): Promise<APIResponse> => {
-  return await dnd.get(category);
+  return await dndRest.get(category);
 };
 
 export default async function Page({ params }: Props) {

@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { notFound } from 'next/navigation';
 
-import { getMonster } from '@/lib/services';
+import { getMonster } from '@/lib/rest/services';
 import { proficiencies } from '@/utils/proficiencies';
 import { modifier } from '@/utils/modifier';
 import {
@@ -11,7 +11,7 @@ import {
   formatMonsterSpeed,
   formatMonsterSenses
 } from '@/utils/format';
-import type { Action } from '@/types';
+import type { Action, Monster } from '@/types';
 
 import Markdown from '@/components/markdown';
 import Card, { Attribute } from '@/components/stat-card';

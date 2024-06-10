@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { notFound } from 'next/navigation';
 
-import { getSpell } from '@/lib/services';
+import { getSpell } from '@/lib/rest/services';
 import { formatDescMD, comma } from '@/utils/format';
 import type { DamageDice } from '@/types';
 

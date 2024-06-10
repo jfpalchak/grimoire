@@ -1,6 +1,6 @@
 import React from 'react'
 import { notFound } from 'next/navigation';
-import { dnd } from '@/lib/api';
+import { dndRest } from '@/lib/rest/fetch';
 import Search from '@/components/ui/search';
 import List from './list';
 import type { APIResponse } from '@/types';
@@ -13,7 +13,7 @@ type Props = {
 
 export default async function Page({ params: { category }, children}: Props) {
 
-  const data: APIResponse = await dnd.get(category);
+  const data: APIResponse = await dndRest.get(category);
 
   if (!data) {
     notFound();

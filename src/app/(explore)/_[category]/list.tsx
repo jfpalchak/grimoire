@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { type  APIResponse } from '@/types';
+import { type APIResponse } from '@/types';
 
 type Props = {
   data: APIResponse;
@@ -13,6 +13,7 @@ export default function List({ data }: Props) {
   const path = usePathname();
   const searchParams = useSearchParams();
   const query = searchParams.get('query');
+
 
   const searchFilter = (item: any) => {
     return (
