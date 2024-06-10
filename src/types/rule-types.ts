@@ -1,6 +1,6 @@
 import type { Reference } from './api-types';
 
-export interface Rules extends Omit<Reference, 'level'> {
+export interface Rules extends Omit<Reference, 'level' | 'url'> {
   desc: string;
   subsections: Reference[];
 }
@@ -8,8 +8,8 @@ export interface Rules extends Omit<Reference, 'level'> {
 export interface RulesSubsection extends Omit<Rules, 'subsections'> {}
 
 export interface RulesChapter {
-  rules: Rules;
-  sections: RulesSubsection[];
+  rules: RulesSubsection;
+  subsections: RulesSubsection[];
 }
 
 export type Alignment = (
