@@ -3,7 +3,7 @@
   * For the simple purposes of this project, could simply use React Query + Fetch API (or even just a fetch) to make our GraphQL requests, especially since we're still making requests to the REST endpoints.
   * ie:
   ```javascript
-  const gqlFetcher<TData>(
+  const gqlFetcher = <TData>(
     query: string,
     variables?: Record<string, unknown>,
   ): (() => Promise<TData>) => {
@@ -12,11 +12,11 @@
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          body: JSON.stringify({
-            query,
-            variables,
-          }),
         },
+        body: JSON.stringify({
+          query,
+          variables,
+        }),
       });
 
       const { data, errors } = await res.json();
@@ -32,7 +32,7 @@
 
   const { data } = useQuery({
     queryKey: ['spells'],
-    queryFn: gqlFetcher(GET_ALL_SPELLS),
+    queryFn: gqlFetcher<Spells>(GET_ALL_SPELLS),
   });
   ```
 
