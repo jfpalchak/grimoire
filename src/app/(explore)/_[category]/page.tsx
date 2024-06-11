@@ -1,9 +1,15 @@
-import React from 'react'
 import { notFound } from 'next/navigation';
-import { dndRest } from '@/lib/rest/fetch';
+import { TypedDocumentNode } from '@apollo/client';
+import { getClient } from '@/lib/graphql/apollo-client';
+import {
+  GET_ALL_MAGIC_ITEMS,
+  GET_ALL_EQUIPMENT,
+  GET_ALL_MONSTERS,
+  GET_ALL_SPELLS,
+  GET_RULE
+  } from '@/lib/graphql/queries';
 import Search from '@/components/ui/search';
 import List from './list';
-import type { APIResponse } from '@/types';
 
 type Params = {
   category: string;
@@ -13,13 +19,28 @@ type Props = {
   params: Params
 };
 
-const getCategoryByParams = async ({ category }: Params): Promise<APIResponse> => {
-  return await dndRest.get(category);
+type Category = 'spells' | 'monsters' | 'equipment' | 'magic-items' | 'rules';
+
+const queries = {
+  rules: GET_RULE,
+  spells: GET_ALL_SPELLS,
+  monsters: GET_ALL_MONSTERS,
+  equipment: GET_ALL_EQUIPMENT,
+  'magic-items': GET_ALL_MAGIC_ITEMS,
+} satisfies Record<Category, TypedDocumentNode>;
+
+const getCategory = async <T extends Category>(
+  { category }: { category: T }
+): Promise<typeof queries[T] | null> => {
+  const query = queries[category];
+  if (!query) return null;
+  const { data } = await getClient().query({ query });
+  return Object.values(data)[0];
 };
 
 export default async function Page({ params }: Props) {
 
-  const data = await getCategoryByParams(params);
+  const data = await getCategory({ category: params.category as Category });
 
   if (!data) {
     notFound();

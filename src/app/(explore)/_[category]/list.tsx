@@ -2,10 +2,10 @@
 
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { type APIResponse } from '@/types';
+import { useMemo } from 'react';
 
 type Props = {
-  data: APIResponse;
+  data: any;
 };
 
 export default function List({ data }: Props) {
@@ -14,21 +14,24 @@ export default function List({ data }: Props) {
   const searchParams = useSearchParams();
   const query = searchParams.get('query');
 
-
-  const searchFilter = (item: any) => {
-    return (
-      !query
-      || item.name.toLowerCase().includes(query)
-      || item.level == query
-    );
-  }
+  const items = useMemo(() => {
+    if (!query) return data;
+    return data.filter((item: any) =>
+      Object.values(item).some(
+        (value: any) =>
+          typeof value !== 'object'
+            ? value.toString().toLowerCase().includes(query)
+            : Object.values(value).some((v: any) =>
+                v.toString().toLowerCase().includes(query)
+              )
+      )
+    )
+  }, [data, query]);
 
   return (
     <ul className="mt-5 flex flex-col gap-2">
-      {data.results
-        .filter(searchFilter)
-        // .sort((a, b) => a.level! - b.level!)
-        .map((item) => (
+      {items
+        .map((item: any) => (
           <Link
             key={item.index}
             href={`${path}/${item.index}`}
