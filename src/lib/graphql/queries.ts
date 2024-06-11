@@ -14,7 +14,7 @@ export interface SpellsQuery {
 
 export const GET_ALL_SPELLS: TypedDocumentNode<SpellsQuery> = gql`
   query GetAllSpells {
-    spells {
+    spells(limit: 400) {
       name
       index
       level
@@ -37,7 +37,7 @@ export interface MonstersQuery {
 
 export const GET_ALL_MONSTERS: TypedDocumentNode<MonstersQuery> = gql`
   query GetAllMonsters {
-    monsters {
+    monsters(limit: 400) {
       index
       name
       type
@@ -59,7 +59,7 @@ export interface MagicItemsQuery {
 
 export const GET_ALL_MAGIC_ITEMS: TypedDocumentNode<MagicItemsQuery> = gql`
   query GetMagicItems {
-    magicItems {
+    magicItems(limit: 400) {
       index
       name
       rarity
@@ -88,7 +88,7 @@ export interface EquipmentsQuery {
 
 export const GET_ALL_EQUIPMENT: TypedDocumentNode<EquipmentsQuery> = gql`
   query GetAllEquipment {
-    equipments {
+    equipments(limit: 400) {
       index
       name
       weight
