@@ -9,7 +9,7 @@ export function slugify(string: string): string {
   return string.toLowerCase().replace(/\s/g, '-');
 }
 
-export const comma = <T extends unknown> (array: T[], idx: number): string => (idx < array.length - 1 ? ', ' : '');
+export const comma = <T>(array: T[], idx: number): string => (idx < array.length - 1 ? ', ' : '');
 
 // Format an array of markdown text to properly render on the DOM.
 export function formatDescMD(text: string[]): string {
