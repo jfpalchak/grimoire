@@ -1,23 +1,11 @@
-import React from 'react'
-import { notFound } from 'next/navigation';
-
+import React, { Suspense } from 'react'
 import Search from '@/components/ui/search';
-import SpellList from '@/components/spells/spell-list';
-import { dndGraph } from '@/lib/graphql/apollo-client';
+import SpellList from './_components/spell-list';
+import { PreloadQuery } from '@/lib/graphql/apollo-client';
 import { GET_ALL_SPELLS } from '@/lib/graphql/queries';
-
-export const getSpells = async () => {
-  const { spells } = await dndGraph.query(GET_ALL_SPELLS);
-  return spells;
-}
+// import SpellFilters from './_components/spell-filter';
 
 export default async function SpellsPage() {
-
-  const data = await getSpells();
-
-  if (!data) {
-    notFound();
-  }
 
   return (
     <section className="m-10">
@@ -26,13 +14,15 @@ export default async function SpellsPage() {
         <br/> 
         <Search />
       </header>
+      <div className="mt-4 mb-10">
+        {/* <SpellFilters /> */}
+      </div>
       <div>
-        <SpellList data={data} />
-        {/* <PreloadQuery query={GET_ALL_SPELLS}>
+        <PreloadQuery query={GET_ALL_SPELLS}>
           <Suspense fallback={<p>LOADING</p>}>
             <SpellList />
           </Suspense>
-        </PreloadQuery> */}
+        </PreloadQuery>
       </div>
     </section>
   )
