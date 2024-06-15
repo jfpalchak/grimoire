@@ -11,7 +11,7 @@ import {
   formatMonsterSpeed,
   formatMonsterSenses
 } from '@/utils/format';
-import type { Action, Monster } from '@/types';
+import type { Action } from '@/types';
 
 import Markdown from '@/components/markdown';
 import Card, { Attribute } from '@/components/stat-card';

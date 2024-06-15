@@ -56,7 +56,7 @@ export default async function SpellCard({ index }: { index: string }) {
   const concentration = spell.concentration ? 'Concentration,' : '';
   const duration = `${concentration} ${spell.duration}`;
 
-  const spellMeta = (
+  const SpellMeta = () => (
     <>
       {level}
       {' - '}
@@ -74,7 +74,7 @@ export default async function SpellCard({ index }: { index: string }) {
           {spell.name}
         </Card.Title>
         <Card.Subtitle>
-          {spellMeta}
+          <SpellMeta />
         </Card.Subtitle>
       </Card.Header>
 

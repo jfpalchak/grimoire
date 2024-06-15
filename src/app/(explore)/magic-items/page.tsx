@@ -1,23 +1,11 @@
-import React from 'react'
-import { notFound } from 'next/navigation';
+import React, { Suspense } from 'react'
 
 import Search from '@/components/ui/search';
 import MagicItemList from '@/components/equipment/magic-item-list';
-import { dndGraph } from '@/lib/graphql/apollo-client';
+import { PreloadQuery } from '@/lib/graphql/apollo-client';
 import { GET_ALL_MAGIC_ITEMS } from '@/lib/graphql/queries';
 
-export const getMagicItems = async () => {
-  const { magicItems } = await dndGraph.query(GET_ALL_MAGIC_ITEMS);
-  return magicItems;
-}
-
 export default async function MagicItemsPage() {
-
-  const data = await getMagicItems();
-
-  if (!data) {
-    notFound();
-  }
 
   return (
     <section className="m-10">
@@ -27,13 +15,12 @@ export default async function MagicItemsPage() {
         <Search />
       </header>
       <div>
-        <MagicItemList data={data} />
-        {/* <PreloadQuery query={GET_ALL_MAGIC_ITEMS}>
+        <PreloadQuery query={GET_ALL_MAGIC_ITEMS}>
           <Suspense fallback={<p>LOADING</p>}>
             <MagicItemList />
           </Suspense>
-        </PreloadQuery> */}
+        </PreloadQuery>
       </div>
     </section>
-  )
+  );
 }

@@ -13,13 +13,13 @@ type RefItemProps = {
   index: string;
 } & RefProps;
 
-export const RefHeader = ({ className, children }: RefProps) => (
+export const ItemHeader = ({ className, children }: RefProps) => (
   <h5 className={cn(className, 'font-medium')}>
     {children}
   </h5>
 );
 
-export const RefText = ({ className, children }: RefProps) => (
+export const ItemContent = ({ className, children }: RefProps) => (
   <div className={cn(className, 'text-sm font-extralight')}>{children}</div>
 );
 

@@ -1,23 +1,11 @@
-import React from 'react'
-import { notFound } from 'next/navigation';
+import React, { Suspense } from 'react'
 
 import Search from '@/components/ui/search';
 import MonsterList from '@/components/monsters/monster-list';
-import { dndGraph } from '@/lib/graphql/apollo-client';
+import { PreloadQuery } from '@/lib/graphql/apollo-client';
 import { GET_ALL_MONSTERS } from '@/lib/graphql/queries';
 
-export const getMonsters = async () => {
-  const { monsters } = await dndGraph.query(GET_ALL_MONSTERS);
-  return monsters;
-}
-
 export default async function MonstersPage() {
-
-  const data = await getMonsters();
-
-  if (!data) {
-    notFound();
-  }
 
   return (
     <section className="m-10">
@@ -27,13 +15,12 @@ export default async function MonstersPage() {
         <Search />
       </header>
       <div>
-        <MonsterList data={data} />
-        {/* <PreloadQuery query={GET_ALL_MONSTERS}>
+        <PreloadQuery query={GET_ALL_MONSTERS}>
           <Suspense fallback={<p>LOADING</p>}>
             <MonsterList />
           </Suspense>
-        </PreloadQuery> */}
+        </PreloadQuery>
       </div>
     </section>
-  )
+  );
 }

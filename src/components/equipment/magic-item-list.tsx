@@ -1,55 +1,53 @@
 'use client';
 
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { useMemo } from 'react';
+import { useSuspenseQuery } from '@apollo/client';
+import { GET_ALL_MAGIC_ITEMS } from '@/lib/graphql/queries';
+import { ReferenceItem } from '../reference-item';
+import { useSearchFilter } from '@/hooks/user-search-filter';
 
-type Props = {
-  data: {
+type MagicItemData = {
+  name: string;
+  index: string;
+  rarity: string;
+  equipment_category: {
     name: string;
-    index: string;
-    rarity: string;
-    equipment_category: {
-      name: string;
-    };
-  }[];
+  };
 };
 
-export default function MagicItemList({ data }: Props) {
+export const MagicItemItem = ({ item }: { item: MagicItemData }) => (
+  <Link
+    key={item.index}
+    href={`/magic-items/${item.index}`}
+    className="w-full bg-white rounded-md shadow-md hover:shadow-lg transition-shadow"
+  >
+    <div className="p-4">
+      <p className="font-medium">{item.name}</p>
+      <p className="text-sm font-extralight">Rarity: {item.rarity}</p>
+      <p className="text-sm font-extralight">Gear: {item.equipment_category.name}</p>
+    </div>
+  </Link>
+);
 
-  // const { data: { items } } = useSuspenseQuery(GET_ALL_MAGIC_ITEMS);
+const useMagicItems = () => {
+  const { data: { magicItems } } = useSuspenseQuery(GET_ALL_MAGIC_ITEMS);
+  return magicItems;
+}
 
-  const searchParams = useSearchParams();
-  const query = searchParams.get('query');
+export default function MagicItemList() {
 
-  const items = useMemo(() => {
-    if (!query) return data;
-    return data.filter((item) =>
-      Object.values(item).some((value) => {
-        if (typeof value !== 'object') {
-          return value.toString().toLowerCase().includes(query);
-        }
-        return Object.values(value).some((v) => v.toString().toLowerCase().includes(query))
-      })
-    );
-  }, [data, query]);
+  const items = useMagicItems();
+  const filteredItems = useSearchFilter(items);
 
   return (
     <ul className="mt-5 flex flex-col gap-2">
-      {[...items]
-        .map((item) => (
-          <Link
-            key={item.index}
-            href={`/magic-items/${item.index}`}
-            className="w-full bg-white rounded-md shadow-md hover:shadow-lg transition-shadow"
-          >
-            <div className="p-4">
-              <p className="font-medium">{item.name}</p>
-              <p className="text-sm font-extralight">Rarity: {item.rarity}</p>
-              <p className="text-sm font-extralight">Gear: {item.equipment_category.name}</p>
-            </div>
-          </Link>
-        ))}
+      {filteredItems.map((item) => (
+        <ReferenceItem key={item.index} index={item.index}>
+          <p className="font-medium">{item.name}</p>
+          <p className="text-sm font-extralight">Rarity: {item.rarity}</p>
+          <p className="text-sm font-extralight">Gear: {item.equipment_category.name}</p>
+        </ReferenceItem>
+      ))}
     </ul>
   );
 }

@@ -29,7 +29,7 @@ type SideNavProps = {
 
 export function ChapterSideNav({ chapter }: SideNavProps) {
 
-  const { rules, sections } = chapter;
+  const { rules, subsections } = chapter;
 
   const { inView } = useChapterObserver();
   
@@ -42,7 +42,7 @@ export function ChapterSideNav({ chapter }: SideNavProps) {
           </Link>
         </h4>
         <ul className="flex flex-col gap-1">
-          {sections.map((section) => (
+          {subsections.map((section) => (
             <li 
               key={section.index}
               className={cn('py-1 text-sm',

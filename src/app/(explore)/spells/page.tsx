@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react'
+
 import Search from '@/components/ui/search';
-import SpellList from './_components/spell-list';
+import SpellList from '@/components/spells/spell-list';
 import { PreloadQuery } from '@/lib/graphql/apollo-client';
 import { GET_ALL_SPELLS } from '@/lib/graphql/queries';
-// import SpellFilters from './_components/spell-filter';
 
 export default async function SpellsPage() {
 
@@ -14,9 +14,6 @@ export default async function SpellsPage() {
         <br/> 
         <Search />
       </header>
-      <div className="mt-4 mb-10">
-        {/* <SpellFilters /> */}
-      </div>
       <div>
         <PreloadQuery query={GET_ALL_SPELLS}>
           <Suspense fallback={<p>LOADING</p>}>
@@ -25,5 +22,5 @@ export default async function SpellsPage() {
         </PreloadQuery>
       </div>
     </section>
-  )
+  );
 }

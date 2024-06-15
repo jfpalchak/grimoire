@@ -6,7 +6,6 @@ import {
   GET_ALL_EQUIPMENT,
   GET_ALL_MONSTERS,
   GET_ALL_SPELLS,
-  GET_RULE
   } from '@/lib/graphql/queries';
 import Search from '@/components/ui/search';
 import List from './list';
@@ -19,19 +18,16 @@ type Props = {
   params: Params
 };
 
-type Category = 'spells' | 'monsters' | 'equipment' | 'magic-items' | 'rules';
+type Category = 'spells' | 'monsters' | 'equipment' | 'magic-items';
 
 const queries = {
-  rules: GET_RULE,
   spells: GET_ALL_SPELLS,
   monsters: GET_ALL_MONSTERS,
   equipment: GET_ALL_EQUIPMENT,
   'magic-items': GET_ALL_MAGIC_ITEMS,
 } satisfies Record<Category, TypedDocumentNode>;
 
-const getCategory = async <T extends Category>(
-  { category }: { category: T }
-): Promise<typeof queries[T] | null> => {
+const getCategory = async <T extends Category>({ category }: { category: T }): Promise<typeof queries[T] | null> => {
   const query = queries[category];
   if (!query) return null;
   const { data } = await getClient().query({ query });
@@ -57,5 +53,5 @@ export default async function Page({ params }: Props) {
         <List data={data} />
       </div>
     </section>
-  )
+  );
 }

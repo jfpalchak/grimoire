@@ -1,8 +1,13 @@
 import { Suspense } from 'react';
 import SpellCard from '@/components/spells/spell-card';
 
-export default async function SpellPage({ params }: { params: { index: string }}) {
-  const { index } = params;
+type Props = {
+  params: {
+    index: string;
+  }
+}
+
+export default async function SpellPage({ params: { index } }: Props) {
 
   return (
     <section className="m-10">
