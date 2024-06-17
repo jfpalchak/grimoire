@@ -1,20 +1,22 @@
 import { gql, type TypedDocumentNode } from "@apollo/client";
 
-export interface SpellsQuery {
-  spells: {
+type Query<TData> = TypedDocumentNode<{ result: TData }>;
+
+export type QueryData = SpellData | MonsterData | EquipmentData | MagicItemData;
+
+export type SpellData = {
+  name: string;
+  index: string;
+  level: number;
+  school: {
     name: string;
     index: string;
-    level: number;
-    school: {
-      name: string;
-      index: string;
-    }
-  }[];
+  }
 }
 
-export const GET_ALL_SPELLS: TypedDocumentNode<SpellsQuery> = gql`
+export const GET_ALL_SPELLS: Query<SpellData[]> = gql`
   query GetAllSpells {
-    spells(limit: 400) {
+    result: spells(limit: 400) {
       name
       index
       level
@@ -26,18 +28,16 @@ export const GET_ALL_SPELLS: TypedDocumentNode<SpellsQuery> = gql`
   }
 `;
 
-export interface MonstersQuery {
-  monsters: {
-    index: string;
-    name: string;
-    type: string;
-    challenge_rating: number;
-  }[];
-}
+export type MonsterData = {
+  index: string;
+  name: string;
+  type: string;
+  challenge_rating: number;
+};
 
-export const GET_ALL_MONSTERS: TypedDocumentNode<MonstersQuery> = gql`
+export const GET_ALL_MONSTERS: Query<MonsterData[]> = gql`
   query GetAllMonsters {
-    monsters(limit: 400) {
+    result: monsters(limit: 400) {
       index
       name
       type
@@ -46,20 +46,18 @@ export const GET_ALL_MONSTERS: TypedDocumentNode<MonstersQuery> = gql`
   }
 `;
 
-export interface MagicItemsQuery {
-  magicItems: {
-    index: string;
+export type MagicItemData = {
+  index: string;
+  name: string;
+  rarity: string;
+  equipment_category: {
     name: string;
-    rarity: string;
-    equipment_category: {
-      name: string;
-    };
-  }[];
-}
+  };
+};
 
-export const GET_ALL_MAGIC_ITEMS: TypedDocumentNode<MagicItemsQuery> = gql`
+export const GET_ALL_MAGIC_ITEMS: Query<MagicItemData[]> = gql`
   query GetMagicItems {
-    magicItems(limit: 400) {
+    result: magicItems(limit: 400) {
       index
       name
       rarity
@@ -70,25 +68,22 @@ export const GET_ALL_MAGIC_ITEMS: TypedDocumentNode<MagicItemsQuery> = gql`
   }
 `;
 
-export interface EquipmentsQuery {
-  equipments: {
-    index: string;
+export type EquipmentData = {
+  index: string;
+  name: string;
+  weight: number;
+  cost: {
+    unit: string;
+    quantity: number;
+  };
+  equipment_category: {
     name: string;
-    weight: number;
-    cost: {
-      unit: string;
-      quantity: number;
-    };
-    equipment_category: {
-      name: string;
-    };
-  }[];
+  };
 }
 
-
-export const GET_ALL_EQUIPMENT: TypedDocumentNode<EquipmentsQuery> = gql`
+export const GET_ALL_EQUIPMENT: Query<EquipmentData[]> = gql`
   query GetAllEquipment {
-    equipments(limit: 400) {
+    result: equipments(limit: 400) {
       index
       name
       weight
@@ -103,22 +98,20 @@ export const GET_ALL_EQUIPMENT: TypedDocumentNode<EquipmentsQuery> = gql`
   }
 `;
 
-export interface RuleQuery {
-  rule: {
+export type RuleData = {
+  name: string;
+  index: string;
+  desc: string;
+  subsections: {
     name: string;
     index: string;
     desc: string;
-    subsections: {
-      name: string;
-      index: string;
-      desc: string;
-    }[]
-  }
+  }[]
 }
 
-export const GET_RULE: TypedDocumentNode<RuleQuery> = gql`
+export const GET_RULE: Query<RuleData> = gql`
   query GetRule($index: String) {
-    rule(index: $index) {
+    result: rule(index: $index) {
       name
       index
       desc
