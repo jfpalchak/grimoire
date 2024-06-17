@@ -5,15 +5,10 @@ import {
   GET_ALL_SPELLS,
 } from '@/lib/graphql/queries';
 
-import SpellCard from '@/components/spells/spell-card';
-import MonsterCard from '@/components/monsters/monster-card';
-import EquipmentCard from '@/components/equipment/equipment-card';
-import MagicItemCard from '@/components/equipment/magic-item-card';
-
-import { SpellItem } from '@/components/spells/spell-list';
-import { MonsterItem } from '@/components/monsters/monster-list';
-import { EquipmentItem } from '@/components/equipment/equipment-list';
-import { MagicItemItem } from '@/components/equipment/magic-item-list';
+import { SpellCard, SpellItem } from '@/components/spells';
+import { MonsterCard, MonsterItem } from '@/components/monsters';
+import { EquipmentCard, EquipmentItem } from '@/components/equipment';
+import { MagicItemCard, MagicItemItem } from '@/components/magic-items';
 
 export type Category = 'spells' | 'monsters' | 'equipment' | 'magic-items';
 
@@ -50,16 +45,13 @@ export const getCategoryConfig = (category: string) => {
   return config;
 };
 
-export const getDynamicRoutes = () => {
+export const getCategoryRoutes = () => {
   return Object.keys(categoryConfig);
 };
 
-export const getDynamicRoutesQueryMap = () => {
-  return Object.entries(categoryConfig).map(([route, { query }]) => ({
-    route,
-    query,
-  }));
-};
-
-// export const getExploreRoutes = async () => {
-// }
+// export const getCategoryRoutesQueryMap = () => {
+//   return Object.entries(categoryConfig).map(([route, { query }]) => ({
+//     route,
+//     query,
+//   }));
+// };

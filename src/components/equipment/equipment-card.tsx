@@ -84,7 +84,7 @@ const WeaponDetail = ({ weapon }: { weapon: Weapon }) => {
   );
 };
 
-export default async function EquipmentCard({ index }: { index: string }) {
+export async function EquipmentCard({ index }: { index: string }) {
 
   const equipment = await getEquipment(index);
 

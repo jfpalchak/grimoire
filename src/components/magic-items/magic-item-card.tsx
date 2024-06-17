@@ -7,7 +7,7 @@ import Card, { Attribute } from '@/components/stat-card';
 import Markdown from '@/components/markdown';
 import ReferenceLink from '@/components/reference-link';
 
-export default async function MagicItemCard({ index }: { index: string }) {
+export async function MagicItemCard({ index }: { index: string }) {
   const item = await getMagicItem(index);
 
   if (!item) {

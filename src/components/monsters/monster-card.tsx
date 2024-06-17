@@ -71,7 +71,7 @@ const ActionBlock = ({ actions, header, desc, className }: ActionBlockProps) => 
   </div>
 );
 
-export default async function MonsterCard({ index }: { index: any }) {
+export async function MonsterCard({ index }: { index: any }) {
 
   const monster = await getMonster(index);
 

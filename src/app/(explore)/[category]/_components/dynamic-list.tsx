@@ -3,7 +3,6 @@
 import { usePathname } from 'next/navigation';
 import { useSuspenseQuery } from '@apollo/client';
 
-import { ReferenceItem } from '@/components/reference-item';
 import { useSearchFilter } from '@/hooks/user-search-filter';
 import { getCategoryConfig } from '@/config/category';
 import { type QueryData } from '@/lib/graphql/queries';
@@ -48,9 +47,7 @@ export default function DynamicList() {
     <ul className="mt-5 flex flex-col gap-2">
       {/* <Pagination currentPage={page} totalPages={totalPages} /> */}
       {filteredItems.map((item) => (
-        <ReferenceItem key={item.index} index={item.index}>
-          <ItemComponent item={item} />
-        </ReferenceItem>
+        <ItemComponent key={item.index} item={item} />
       ))}
     </ul>
   );

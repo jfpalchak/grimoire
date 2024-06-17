@@ -39,7 +39,7 @@ const DiceTable = ({ data, stat, caption}: TableProps) => {
   );
 }
 
-export default async function SpellCard({ index }: { index: string }) {  
+export async function SpellCard({ index }: { index: string }) {  
 
   const spell = await getSpell(index);
   

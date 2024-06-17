@@ -11,7 +11,7 @@ type Props = {
 
 // export const generateStaticParams = async ({ params: { category } }: Props) => {  
 //   const { query } = getCategoryConfig(category);
-//   const { data: { result } } = await getClient().query({ query });
+//   const { data: { result } } = await dndGraph.query({ query });
 //   return result.map((item) => ({
 //     index: item.index,
 //   }));
@@ -27,9 +27,9 @@ const getDynamicCardComponent = (category: string) => {
 
 export default async function IndexPage({ params: { category, index } }: Props) {
 
-  const CardContent = getDynamicCardComponent(category);
+  const CardComponent = getDynamicCardComponent(category);
 
-  if (CardContent === undefined) {
+  if (CardComponent === undefined) {
     return notFound();
   }
 
@@ -39,7 +39,7 @@ export default async function IndexPage({ params: { category, index } }: Props) 
         <p className="font-semibold">Category: {category}</p>
       </header>
       <Suspense fallback={<p>Loading...</p>}>
-        <CardContent index={index} />
+        <CardComponent index={index} />
       </Suspense>
     </section>
   );
