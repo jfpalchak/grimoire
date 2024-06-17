@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { notFound } from 'next/navigation';
 
-import { getSpell } from '@/lib/services';
+import { getSpell } from '@/lib/rest/services';
 import { formatDescMD, comma } from '@/utils/format';
 import type { DamageDice } from '@/types';
 
@@ -39,7 +39,7 @@ const DiceTable = ({ data, stat, caption}: TableProps) => {
   );
 }
 
-export default async function SpellCard({ index }: { index: string }) {  
+export async function SpellCard({ index }: { index: string }) {  
 
   const spell = await getSpell(index);
   
@@ -56,7 +56,7 @@ export default async function SpellCard({ index }: { index: string }) {
   const concentration = spell.concentration ? 'Concentration,' : '';
   const duration = `${concentration} ${spell.duration}`;
 
-  const spellMeta = (
+  const SpellMeta = () => (
     <>
       {level}
       {' - '}
@@ -74,7 +74,7 @@ export default async function SpellCard({ index }: { index: string }) {
           {spell.name}
         </Card.Title>
         <Card.Subtitle>
-          {spellMeta}
+          <SpellMeta />
         </Card.Subtitle>
       </Card.Header>
 

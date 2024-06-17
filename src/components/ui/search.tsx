@@ -1,23 +1,28 @@
 'use client';
 
 import React from 'react';
-import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { useSearchParams, usePathname } from 'next/navigation';
+import { useDebouncedCallback } from 'use-debounce';
 
 export default function Search() {
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const { replace } = useRouter();
-
-  const handleSearch = (term: string) => {
-    const params = new URLSearchParams(searchParams);
+  
+  const handleSearch = useDebouncedCallback((term: string) => {
+    const params = new URLSearchParams(searchParams.toString());
     if (term) {
       params.set('query', term.toLowerCase());
     } else {
       params.delete('query');
     }
-    replace(`${pathname}?${params.toString()}`);
-  }
+    const search = params.toString();
+    const query = search ? `?${search}` : '';
+    // useRouter().replace() or push() causes a refresh of the entire page relying on our current URL,
+    // sending a network request each time the page reloads - so as a work around we'll use the History API.
+    // * look into using nuqs / useQueryState
+    window.history.replaceState(null, '', `${pathname}${query}`);
+  }, 300);
 
   return (
     <div>

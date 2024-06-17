@@ -1,40 +1,55 @@
-import React from 'react'
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
-import { dnd } from '@/lib/api';
-import Search from '@/components/ui/search';
-import List from './list';
-import type { APIResponse } from '@/types';
 
-type Params = {
-  category: string;
-};
+import { PreloadQuery } from '@/lib/graphql/apollo-client';
+import { getCategoryConfig, getCategoryRoutes } from '@/config/category';
+import DynamicList from './_components/dynamic-list';
+import Search from '@/components/ui/search';
 
 type Props = {
-  params: Params
+  params: { 
+    category: string;
+  }
 };
 
-const getCategoryByParams = async ({ category }: Params): Promise<APIResponse> => {
-  return await dnd.get(category);
+// export const dynamicParams = false;
+
+export const generateStaticParams = () => {
+  const routes = getCategoryRoutes();
+  return routes.map((path) => ({
+    category: path 
+  }));
 };
 
-export default async function Page({ params }: Props) {
+const getQueryByCategory = (category: string) => {
+  const { query } = getCategoryConfig(category);
+  return query;
+};
 
-  const data = await getCategoryByParams(params);
+export default async function Page({ params: { category } }: Props) {
 
-  if (!data) {
-    notFound();
+  const QUERY_CATEGORY_ITEMS = getQueryByCategory(category);
+
+  if (QUERY_CATEGORY_ITEMS === undefined) {
+    return notFound();
   }
 
   return (
     <section className="m-10">
       <header className="border-b-2 font-semibold">
-        <p>Category: {params.category}</p>
-        <br/> 
-        <Search />
+        <p>Explore {category}</p>
+        <br/>
+        <Suspense>
+          <Search />
+        </Suspense>
       </header>
       <div>
-        <List data={data} />
+      <PreloadQuery query={QUERY_CATEGORY_ITEMS}>
+        <Suspense fallback={<p>LOADING...</p>}>
+          <DynamicList />
+        </Suspense>
+      </PreloadQuery>
       </div>
     </section>
-  )
+  );
 }

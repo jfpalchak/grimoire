@@ -9,7 +9,7 @@ import { type RulesChapter } from '@/types';
 export default function Rules({ chapter }: { chapter: RulesChapter }) {
   
   const { refs, inView } = useObserver();
-  const { rules, sections } = chapter;
+  const { rules, subsections } = chapter;
 
   return (
     <section className="p-4 flex gap-7">
@@ -21,7 +21,7 @@ export default function Rules({ chapter }: { chapter: RulesChapter }) {
             </Link>
           </h4>
           <ul className="flex flex-col gap-1">
-            {sections.map((section) => (
+            {subsections.map((section) => (
               <li 
                 key={section.index}
                 className={cn('py-1 text-sm',
@@ -47,7 +47,7 @@ export default function Rules({ chapter }: { chapter: RulesChapter }) {
             {rules.desc}
           </Markdown>
         </section>
-        {sections.map((article, i) => (
+        {subsections.map((article, i) => (
           <section
             key={article.index}
             id={article.index}

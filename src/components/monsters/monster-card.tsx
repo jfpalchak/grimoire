@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { notFound } from 'next/navigation';
 
-import { getMonster } from '@/lib/services';
+import { getMonster } from '@/lib/rest/services';
 import { proficiencies } from '@/utils/proficiencies';
 import { modifier } from '@/utils/modifier';
 import {
@@ -71,7 +71,7 @@ const ActionBlock = ({ actions, header, desc, className }: ActionBlockProps) => 
   </div>
 );
 
-export default async function MonsterCard({ index }: { index: any }) {
+export async function MonsterCard({ index }: { index: any }) {
 
   const monster = await getMonster(index);
 

@@ -1,5 +1,6 @@
-import React, { Suspense } from 'react';
-import CardContent from '@/components/card-content';
+import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
+import { getCategoryConfig } from '@/config/category';
 
 type Props = {
   params: {
@@ -8,8 +9,29 @@ type Props = {
   }
 };
 
-export default async function IndexPage({ params }: Props) {
-  const { category, index } = params;
+// export const generateStaticParams = async ({ params: { category } }: Props) => {  
+//   const { query } = getCategoryConfig(category);
+//   const { data: { result } } = await dndGraph.query({ query });
+//   return result.map((item) => ({
+//     index: item.index,
+//   }));
+// };
+
+const getDynamicCardComponent = (category: string) => {
+  const {
+    card: Component,
+  } = getCategoryConfig(category);
+
+  return Component;
+};
+
+export default async function IndexPage({ params: { category, index } }: Props) {
+
+  const CardComponent = getDynamicCardComponent(category);
+
+  if (CardComponent === undefined) {
+    return notFound();
+  }
 
   return (
     <section className="m-10">
@@ -17,7 +39,7 @@ export default async function IndexPage({ params }: Props) {
         <p className="font-semibold">Category: {category}</p>
       </header>
       <Suspense fallback={<p>Loading...</p>}>
-        <CardContent category={category} index={index} />
+        <CardComponent index={index} />
       </Suspense>
     </section>
   );
