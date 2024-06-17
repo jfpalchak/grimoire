@@ -1,14 +1,10 @@
-import { dndRest } from "./fetch";
-import { shortUrl } from "@/utils/format";
+import { dndRest } from './fetch';
 import type {
   Spell,
   Monster,
   Equipment,
   MagicItem,
-  Rules,
-  RulesChapter,
-  RulesSubsection,
-} from "@/types";
+} from '@/types';
 
 export const getSpell = async (index: string): Promise<Spell | undefined> => {
   try {
@@ -40,17 +36,4 @@ export const getMagicItem = async (index: string): Promise<MagicItem | undefined
   } catch (err) {
     console.log('Problem fetching magic item: ', err);
   }
-}
-
-export const getRules = async (index: string): Promise<RulesChapter | undefined> => {
-  try {
-    const rules = await dndRest.get<Rules>(`rules/${index}`);
-
-    const sectionPromises = rules.subsections.map(({ url }) => dndRest.get<RulesSubsection>(shortUrl(url)));
-    const subsections = await Promise.all(sectionPromises);
-
-    return { rules, subsections };
-  } catch (error) {
-    console.log(`Error getting rules for index ${index}:`, error);
-  }
-}
+};
