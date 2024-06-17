@@ -1,20 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import { useSuspenseQuery } from '@apollo/client';
-import { GET_ALL_SPELLS } from '@/lib/graphql/queries';
+import { GET_ALL_SPELLS, type SpellData } from '@/lib/graphql/queries';
 import { ReferenceItem } from '../reference-item';
 import { useSearchFilter } from '@/hooks/user-search-filter';
-
-type SpellData = {
-  name: string;
-  index: string;
-  level: number;
-  school: {
-    name: string;
-    index: string;
-  }
-};
 
 const formatLevel = (level: number) => {
   switch (level) {
@@ -32,22 +21,16 @@ const formatLevel = (level: number) => {
 };
 
 export const SpellItem = ({ item }: { item: SpellData }) => (
-  <Link
-    key={item.index}
-    href={`/spells/${item.index}`}
-    className="w-full bg-white rounded-md shadow-md hover:shadow-lg transition-shadow"
-  >
-    <div className="p-4">
-      <p className="font-medium">{item.name}</p>
-      <p className="text-sm font-extralight">{item.school.name}</p>
-      <p className="text-sm font-extralight">{formatLevel(item.level)}</p>
-    </div>
-  </Link>
+  <>
+    <p className="font-medium">{item.name}</p>
+    <p className="text-sm font-extralight">{item.school.name}</p>
+    <p className="text-sm font-extralight">{formatLevel(item.level)}</p>
+  </>
 );
 
 const useSpells = () => {
-  const { data: { spells } } = useSuspenseQuery(GET_ALL_SPELLS);
-  return spells;
+  const { data: { result } } = useSuspenseQuery(GET_ALL_SPELLS);
+  return result;
 };
 
 export default function SpellList() {

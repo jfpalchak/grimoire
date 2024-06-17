@@ -1,35 +1,21 @@
 'use client';
 
-import Link from 'next/link';
 import { useSuspenseQuery } from '@apollo/client';
-import { GET_ALL_MONSTERS } from '@/lib/graphql/queries';
+import { GET_ALL_MONSTERS, type MonsterData } from '@/lib/graphql/queries';
 import { ReferenceItem } from '../reference-item';
 import { useSearchFilter } from '@/hooks/user-search-filter';
 
-type MonsterData = {
-  name: string;
-  index: string;
-  type: string;
-  challenge_rating: number;
-};
-
 export const MonsterItem = ({ item }: { item: MonsterData }) => (
-  <Link
-    key={item.index}
-    href={`/monsters/${item.index}`}
-    className="w-full bg-white rounded-md shadow-md hover:shadow-lg transition-shadow"
-  >
-    <div className="p-4">
-      <p className="font-medium">{item.name}</p>
-      <p className="text-sm font-extralight">{item.type}</p>
-      <p className="text-sm font-extralight">CR: {item.challenge_rating}</p>
-    </div>
-  </Link>
+  <>
+    <p className="font-medium">{item.name}</p>
+    <p className="text-sm font-extralight">{item.type}</p>
+    <p className="text-sm font-extralight">CR: {item.challenge_rating}</p>
+  </>
 );
 
 const useMonsters = () => {
-  const { data: { monsters } } = useSuspenseQuery(GET_ALL_MONSTERS);
-  return monsters;
+  const { data: { result } } = useSuspenseQuery(GET_ALL_MONSTERS);
+  return result;
 };
 
 export default function MonsterList() {
