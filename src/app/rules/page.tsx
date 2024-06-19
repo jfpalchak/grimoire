@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 import Link from 'next/link';
-import { rules } from './routes';
+import { rules } from '@/config/rules';
 import { slugify } from '@/utils/format';
 
 export default async function Page() {

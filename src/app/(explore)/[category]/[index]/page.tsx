@@ -11,7 +11,7 @@ type Props = {
 
 // export const generateStaticParams = async ({ params: { category } }: Props) => {  
 //   const { query } = getCategoryConfig(category);
-//   const { data: { result } } = await dndGraph.query({ query });
+//   const { result } = await dndGraph.query({ query });
 //   return result.map((item) => ({
 //     index: item.index,
 //   }));

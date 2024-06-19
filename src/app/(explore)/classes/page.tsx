@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { classes } from './routes';
+import { classes } from '@/config/classes';
 
 export default async function Page() {
 
