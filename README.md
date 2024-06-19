@@ -1,7 +1,6 @@
 ### NOTES
 * GraphQL notes:
   * For the simple purposes of this project, could simply use React Query + fetch or GraphQL Request (or even just a fetch) to make our GraphQL requests, especially since we're still making requests to the REST endpoints (could use RQ w/ both gql & rest fetches). 
-    * I appreciate what Apollo client does but it feels a bit overkill for my needs, and using it in tandem with the simple REST fetches for the Cards lacks consistency and feels messy.
   * ie:
   ```javascript
   const gqlFetcher = <TData>(
@@ -31,9 +30,16 @@
     }
   };
 
+  // Grab all spells
   const { data } = useQuery({
     queryKey: ['spells'],
     queryFn: gqlFetcher<Spells>(GET_ALL_SPELLS),
+  });
+
+  // Grab individual spell
+  const { data } = useQuery({
+    queryKey: ['spell', index],
+    queryFn: restFetcher<Spell>(`spells/${index}`),
   });
   ```
 
