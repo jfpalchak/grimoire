@@ -18,11 +18,16 @@ type Props = {
 // };
 
 const getDynamicCardComponent = (category: string) => {
-  const {
-    card: Component,
-  } = getCategoryConfig(category);
-
-  return Component;
+  try {
+    const {
+      card: Component,
+    } = getCategoryConfig(category);
+  
+    return Component;
+  } catch (err) {
+    console.error(err);
+    return;
+  }
 };
 
 export default async function IndexPage({ params: { category, index } }: Props) {

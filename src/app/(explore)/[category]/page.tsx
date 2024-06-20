@@ -22,8 +22,13 @@ export const generateStaticParams = () => {
 };
 
 const getQueryByCategory = (category: string) => {
-  const { query } = getCategoryConfig(category);
-  return query;
+  try {
+    const { query } = getCategoryConfig(category);
+    return query;
+  } catch (err) {
+    console.error(err);
+    return;
+  }
 };
 
 export default async function Page({ params: { category } }: Props) {
