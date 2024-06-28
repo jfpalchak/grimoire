@@ -12,7 +12,8 @@ type Props = {
   }
 };
 
-// export const dynamicParams = false;
+// dynamic segments not included in generateStaticParams will return a 404
+export const dynamicParams = false;
 
 export const generateStaticParams = () => {
   const routes = getCategoryRoutes();
